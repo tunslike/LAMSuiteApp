@@ -1,0 +1,101 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/PoppinsBold.ttf",
+      "sha1": "875cf0cecd647bcf22e79d633d868c1b1ec98dfa"
+    },
+    {
+      "path": "src/assets/fonts/PoppinsLight.ttf",
+      "sha1": "e247a92158e112f8bf7b638c8d95381d66b00dbb"
+    },
+    {
+      "path": "src/assets/fonts/PoppinsMedium.ttf",
+      "sha1": "283f21b44efbdbf276ba802be2d949a36bbc4233"
+    },
+    {
+      "path": "src/assets/fonts/PoppinsRegular.ttf",
+      "sha1": "fdd3002e7d814ee47c1c1b8487c72c6bbb3a2d00"
+    },
+    {
+      "path": "src/assets/fonts/PoppinsSemiBold.ttf",
+      "sha1": "8a4ace9392d06bcb7f8ea2f5169b07e4c383a90d"
+    },
+    {
+      "path": "src/assets/icons/arrow_thin.png",
+      "sha1": "8a0887b4587c2bb1a254dba899d369bedab4a927"
+    },
+    {
+      "path": "src/assets/icons/arrow_tick.png",
+      "sha1": "2a5cef04d58a11bf99ae947b2de3ff19e2ee8d1e"
+    },
+    {
+      "path": "src/assets/icons/check.png",
+      "sha1": "6793eb56975d7cb9df8d6590fe51b0a4fdcd5d62"
+    },
+    {
+      "path": "src/assets/icons/copany.png",
+      "sha1": "8a6ca7a0a5f323d28f44a36ce6f08271342678b2"
+    },
+    {
+      "path": "src/assets/icons/doc_upload.png",
+      "sha1": "76588311eee70561961846574e0765c9062fd9c2"
+    },
+    {
+      "path": "src/assets/icons/email.png",
+      "sha1": "f6319400087e86de0bbcbeccf15334b12f16e136"
+    },
+    {
+      "path": "src/assets/icons/individual.png",
+      "sha1": "636adcbb95a5f37f0b11ade2b193f15aa46ce3d6"
+    },
+    {
+      "path": "src/assets/icons/invest_icon.png",
+      "sha1": "474cc4e33069c57127791b23cd0ffcc32f8280b4"
+    },
+    {
+      "path": "src/assets/icons/loans_icon.png",
+      "sha1": "d5b0fa12bbedb9ed22053436418e8e86dae76d3d"
+    },
+    {
+      "path": "src/assets/icons/pay_icon.png",
+      "sha1": "a6f432484375559cc519811a49d5f8cc61921595"
+    },
+    {
+      "path": "src/assets/icons/phone.png",
+      "sha1": "cf52c8ba1cda779821e21172b09cdcfc4931b524"
+    },
+    {
+      "path": "src/assets/icons/profile.png",
+      "sha1": "4c9c684d066a8512fba23a2965343dad1d8604c0"
+    },
+    {
+      "path": "src/assets/icons/savings_icon.png",
+      "sha1": "0fe1a3a68fc9e52e584a44f22d457c41fcf4845f"
+    },
+    {
+      "path": "src/assets/icons/user.png",
+      "sha1": "639f6f41cc009f2749884f73efd8b50837546ebe"
+    },
+    {
+      "path": "src/assets/images/finserve_logo.png",
+      "sha1": "adc0b15c380123b89fb03b24b52bc2ce00b3f804"
+    },
+    {
+      "path": "src/assets/images/imgbg.png",
+      "sha1": "6efeb260ae7cf3954d7d658147542700ce878dc7"
+    },
+    {
+      "path": "src/assets/images/slider1.png",
+      "sha1": "19a9895a07eba75880f547ddb9b7d86f700a0849"
+    },
+    {
+      "path": "src/assets/images/slider2.png",
+      "sha1": "247b595b30df9d9005e6b5770d860a0936aacb54"
+    },
+    {
+      "path": "src/assets/images/slider3.png",
+      "sha1": "842d8c4dfa944071238bebc7fdaedbb328adb443"
+    }
+  ]
+}
