@@ -22,6 +22,7 @@ const AccountSetupScreen = ({navigation}) => {
 
     const BottomSheetRef = useRef(null);
     const snapPoints = useMemo(() => ['25%', '50%'], []);
+    const [toggleBtn, setToggleBtn] = useState(0);
 
     //callbacks
     const handleSheetChange = useCallback((index) => {
@@ -29,6 +30,16 @@ const AccountSetupScreen = ({navigation}) => {
     }, []);
 
     const handleOpenPress = () => BottomSheetRef.current?.snapToIndex(0);
+
+    // function to toggle button
+    const toggleSkipButton = () => {
+        if(toggleBtn == 0) {
+          setToggleBtn(1)
+        }else if(toggleBtn == 1) {
+          setToggleBtn(0)
+        }
+    }
+    // end of function
 
   return (
     
@@ -79,6 +90,22 @@ const AccountSetupScreen = ({navigation}) => {
   />
 </View>
 
+<TouchableOpacity 
+onPress={() => toggleSkipButton()}
+style={styles.skipSetup}>
+        
+<View style={(toggleBtn == 1) ? styles.checkBox_checked : styles.checkBox_notchecked}>
+    <Image source={icons.check} 
+      style={{
+        height: (toggleBtn == 1) ? wp(5) : wp(4.5), width: (toggleBtn == 1) ? wp(5) : wp(4.5), resizeMode: 'contain', tintColor: COLORS.White
+      }}
+    />
+</View>
+
+<Text style={styles.skipText}>I will skip account setup and do this later!</Text>
+
+</TouchableOpacity>
+
     </View>
 
     <View style={styles.btnBox}>
@@ -105,6 +132,30 @@ const AccountSetupScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+  checkBox_checked: {
+    backgroundColor: COLORS.primaryRed,
+    borderRadius: wp(1.5),
+    marginLeft: wp(1.5)
+  },
+  checkBox_notchecked: {
+    borderColor: COLORS.TextBoxBorderGrey,
+    borderRadius: wp(1.5),
+    borderWidth: 1,
+    borderStyle: 'solid',
+    marginLeft: wp(1.5)
+  },
+  skipText: {
+    color: COLORS.TextColorGrey,
+    fontFamily: FONTS.POPPINS_REGULAR,
+    fontSize: wp(3.1)
+  },
+  skipSetup: {
+    marginTop: wp(4),
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    columnGap: wp(3)
+  },
   sheetHdr: {
     backgroundColor: COLORS.ButtonBgGrey,
     paddingHorizontal: wp(6),

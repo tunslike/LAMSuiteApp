@@ -21,7 +21,22 @@ import {
 
 const VerifyPhoneScreen = ({navigation}) => {
 
-  const[otpValue, SetOtpValue] = useState(0)
+  const[otpValue, SetOtpValue] = useState('');
+  const [activateButton, setActivateButton] = useState(true);
+
+
+  // function to enable verify button
+  const VerifyOTPValue = (text) => {
+  
+    if(text != '' && text.length == 4) {
+      console.log('it is completed here');
+      setActivateButton(false)
+    }else{
+      setActivateButton(true);
+    }
+
+  }// end of function
+
 
   return (
     <KeyboardAwareScrollView 
@@ -56,10 +71,10 @@ const VerifyPhoneScreen = ({navigation}) => {
     <View style={styles.otpBox}>
        <OtpInput 
           numberOfDigits={4}
-          onTextChange={(text) => console.log(text)}
+          onTextChange={(text) => VerifyOTPValue(text)}
           focusColor={COLORS.primaryRed}
           focusStickBlinkingDuration={500}
-          onFilled={(text) => console.log(`OTP is ${text}`)}
+          onFilled={(text) => VerifyOTPValue(text)}
           theme={{
             pinCodeTextStyle: {
                color: COLORS.primaryRed,
@@ -88,7 +103,10 @@ const VerifyPhoneScreen = ({navigation}) => {
  </View>
 
  <View style={styles.btnBox}>
- <FormButton onPress={() => navigation.navigate("CreatePIN")} label="Verify Phone Number" />
+ <FormButton 
+    onPress={() => navigation.navigate("CreatePIN")} 
+    disable={activateButton}
+    label="Verify Phone Number" />
  </View>
 
  </SafeAreaView>

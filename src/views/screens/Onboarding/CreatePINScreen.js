@@ -20,6 +20,21 @@ import {
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const CreatePINScreen = ({navigation}) => {
+
+  const [activateButton, setActivateButton] = useState(true);
+
+    // function to enable verify button
+    const VerifyOTPValue = (text) => {
+  
+      if(text != '' && text.length == 5) {
+        console.log('it is completed here');
+        setActivateButton(false)
+      }else{
+        setActivateButton(true);
+      }
+  
+    }// end of function
+
   return (
     <KeyboardAwareScrollView 
     enableOnAndroid={true}
@@ -39,12 +54,11 @@ const CreatePINScreen = ({navigation}) => {
           }} />
     </View>
 
-
       <View style={styles.whiteBG}> 
 
               <View style={styles.title}>
                 <Text style={styles.mainTitle}>Create your PIN</Text>
-                <Text style={styles.titleDesc}>Please enter a secret 4-digit PIN Number 
+                <Text style={styles.titleDesc}>Please enter a secret 5-digit PIN Number 
                 to secure your account</Text>
               </View>
 
@@ -52,11 +66,11 @@ const CreatePINScreen = ({navigation}) => {
     <View style={styles.otpBox}>
     <OtpInput 
  
-       numberOfDigits={4}
-       onTextChange={(text) => console.log(text)}
+       numberOfDigits={5}
+       onTextChange={(text) =>  VerifyOTPValue(text)}
        focusColor={COLORS.primaryRed}
        focusStickBlinkingDuration={500}
-       onFilled={(text) => console.log(`OTP is ${text}`)}
+       onFilled={(text) =>  VerifyOTPValue(text)}
        theme={{
          pinCodeTextStyle: {
             color: COLORS.primaryRed,
@@ -77,13 +91,16 @@ const CreatePINScreen = ({navigation}) => {
        }}
     />
  </View>
- <Text style={styles.promptTxt}>Your PIN number will be used to log into your account</Text>
+ <Text style={styles.promptTxt}>Your PIN number will be used to log into your account, please do not share with anyone</Text>
 
 
       </View>
 
       <View style={styles.btnBox}>
-      <FormButton onPress={() => navigation.navigate("AccountType")} label="Save PIN Number" />
+      <FormButton 
+          onPress={() => navigation.navigate("AccountType")} 
+          disable={activateButton}
+          label="Save PIN Number" />
       </View>
 
     </SafeAreaView>
@@ -96,8 +113,10 @@ const styles = StyleSheet.create({
     color: COLORS.primaryRed,
     fontFamily: FONTS.POPPINS_REGULAR,
     fontSize: wp(2.8),
-    marginTop: wp(7),
-    alignSelf: 'center'
+    marginTop: wp(10),
+    width: wp(75),
+    alignSelf: 'center',
+    textAlign:'center'
 },
   otpBox: {
     marginTop: wp(7),

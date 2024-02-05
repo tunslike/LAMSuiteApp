@@ -1,6 +1,7 @@
 const COLORS = {
     White: '#FFFFFF',
     primaryBlue: '#21118B',
+    disablePrimaryBlue: '#9f96d6',
     primaryRed: '#F5192F',
     BackgroundGrey: '#EBECEF',
     LandingGreyText: '#B9B4EC',

@@ -47,9 +47,8 @@ const CreateAccountScreen = ({navigation}) => {
     setPhone(values.phone)
 
     navigation.navigate("VerifyPhone");
-    
-  }
 
+  }
   // end of function 
 
   return (
