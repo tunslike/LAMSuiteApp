@@ -14,8 +14,10 @@ import {
   import * as Yup from 'yup'
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
   import { SafeAreaView } from 'react-native-safe-area-context';
+  import { useDispatch, useSelector } from 'react-redux';
   import { COLORS, images, FONTS, icons } from '../../../constants';
   import { OnboardingTextBox, FormButton } from '../../components';
+  import { updateAccountData } from '../../../store/accountSlice';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
   const CreateAccountSchema = Yup.object().shape({
@@ -26,27 +28,32 @@ import {
         .email('Please enter a valid email')
         .required('Please enter your email address'),
       phone: Yup.string()
-        .min(10, 'Phone number must be 11 digits')
-        .max(10, 'Phone number must be 11 digits')
+        .min(11, 'Phone number must be 11 digits')
+        .max(11, 'Phone number must be 11 digits')
         .matches(/^[0-9]+$/, 'Please enter a valid phone number')
         .required('Please enter your phone number')
   })
 
 const CreateAccountScreen = ({navigation}) => {
 
-  const [fullname, setFullname] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-
+  const accountData = useSelector((state) => state.account.accountData);
+  const dispatch = useDispatch();
 
   // function to verify data
   const validateAccountData = (values) => {
 
-    setFullname(values.fullname);
-    setEmail(values.email);
-    setPhone(values.phone)
+    const accountDetails = {
+      fullname: values.fullname,
+      email: values.email,
+      phone: values.phone
+    }
 
-    navigation.navigate("VerifyPhone");
+    //send data
+    dispatch(updateAccountData(accountDetails))
+
+    console.log('this is coming from store: ' + accountData)
+
+    navigation.navigate("VerifyPhone", {full_name:values.fullname, email_address: values.email, phone_number:values.phone});
 
   }
   // end of function 
@@ -113,6 +120,7 @@ const CreateAccountScreen = ({navigation}) => {
                       placeholder="Enter your phone"
                       value={values.phone}
                       phone={1}
+                      maxlength={11}
                       onChange={handleChange('phone')}
                     /> 
                     {errors.phone && 

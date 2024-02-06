@@ -109,7 +109,7 @@ style={styles.skipSetup}>
     </View>
 
     <View style={styles.btnBox}>
-    <FormButton onPress={() => navigation.navigate("AccountType")} label="Complete Setup" />
+    <FormButton onPress={() => navigation.navigate("AccountCreated")} label="Complete Setup" />
     </View>
 
 

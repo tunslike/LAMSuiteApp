@@ -32,7 +32,7 @@ const CreateAccountSchema = Yup.object().shape({
       .required('Please enter your PIN Number')
 })
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({route, navigation}) => {
 
   const {ValidateCustomerLogin, isLoading} = useContext(AuthContext);
   const [username, setUsername] = useState('');

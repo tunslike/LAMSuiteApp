@@ -10,6 +10,7 @@ import VerifyPhoneScreen from "./Onboarding/VerifyPhoneScreen";
 import CreatePINScreen from "./Onboarding/CreatePINScreen";
 import AccountTypeScreen from "./Onboarding/AccountTypeScreen";
 import AccountSetupScreen from "./Onboarding/AccountSetupScreen";
+import AccountCreatedScreen from "./Onboarding/AccountCreatedScreen";
 
 export {
     WelcomeScreen,
@@ -24,4 +25,5 @@ export {
     CreatePINScreen,
     AccountSetupScreen,
     AccountTypeScreen,
+    AccountCreatedScreen
 }

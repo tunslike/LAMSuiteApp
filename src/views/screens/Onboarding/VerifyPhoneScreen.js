@@ -19,11 +19,12 @@ import {
   import { OnboardingTextBox, FormButton } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const VerifyPhoneScreen = ({navigation}) => {
+const VerifyPhoneScreen = ({route, navigation}) => {
+
+  const {full_name, email_address, phone_number} = route.params;
 
   const[otpValue, SetOtpValue] = useState('');
   const [activateButton, setActivateButton] = useState(true);
-
 
   // function to enable verify button
   const VerifyOTPValue = (text) => {
@@ -36,7 +37,6 @@ const VerifyPhoneScreen = ({navigation}) => {
     }
 
   }// end of function
-
 
   return (
     <KeyboardAwareScrollView 
@@ -104,7 +104,7 @@ const VerifyPhoneScreen = ({navigation}) => {
 
  <View style={styles.btnBox}>
  <FormButton 
-    onPress={() => navigation.navigate("CreatePIN")} 
+    onPress={() => navigation.navigate("CreatePIN", {fullname: full_name, email: email_address, phone: phone_number})} 
     disable={activateButton}
     label="Verify Phone Number" />
  </View>

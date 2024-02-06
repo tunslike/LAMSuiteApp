@@ -19,15 +19,19 @@ import {
   import { OnboardingTextBox, FormButton } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const CreatePINScreen = ({navigation}) => {
+const CreatePINScreen = ({route, navigation}) => {
+
+  const {full_name, email_address, phone_number} = route.params;
 
   const [activateButton, setActivateButton] = useState(true);
+  const [pinNumber, setPinNumber] = useState('');
 
     // function to enable verify button
     const VerifyOTPValue = (text) => {
   
       if(text != '' && text.length == 5) {
         console.log('it is completed here');
+        setPinNumber(text);
         setActivateButton(false)
       }else{
         setActivateButton(true);

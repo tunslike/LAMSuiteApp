@@ -1,5 +1,7 @@
 const COLORS = {
     White: '#FFFFFF',
+    successGreen: '#0EA32E',
+    successHeader: '#057D18',
     primaryBlue: '#21118B',
     disablePrimaryBlue: '#9f96d6',
     primaryRed: '#F5192F',

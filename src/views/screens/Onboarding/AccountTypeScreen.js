@@ -24,8 +24,6 @@ const AccountTypeScreen = ({navigation}) => {
   const[coyAccount, setCoyAcct] = useState(1);
   const[indAccount, setIndAcct] = useState(0);
 
-
-
   const changeAccountType = (type) => {
 
     console.log(coyAccount + '/' + indAccount)
