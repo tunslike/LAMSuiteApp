@@ -13,8 +13,12 @@ const check = require("../assets/icons/check.png")
 const docUpload = require("../assets/icons/doc_upload.png")
 const profile = require("../assets/icons/profile.png")
 const success_icons = require("../assets/icons/success_icon.png")
+const notification = require("../assets/icons/notification.png")
+const star = require("../assets/icons/star.png")
 
 export default {
+    star,
+    notification,
     success_icons,
     invest_icon,
     loans_icon,

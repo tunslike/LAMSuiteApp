@@ -15,13 +15,16 @@ import {
   import { OtpInput } from 'react-native-otp-entry';
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
   import { SafeAreaView } from 'react-native-safe-area-context';
+  import { useDispatch } from 'react-redux';
+  import { updatePinNumber } from '../../../store/accountSlice';
   import { COLORS, images, FONTS, icons } from '../../../constants';
   import { OnboardingTextBox, FormButton } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const CreatePINScreen = ({route, navigation}) => {
+const CreatePINScreen = ({navigation}) => {
 
-  const {full_name, email_address, phone_number} = route.params;
+  const dispatch = useDispatch();
+
 
   const [activateButton, setActivateButton] = useState(true);
   const [pinNumber, setPinNumber] = useState('');
@@ -30,9 +33,12 @@ const CreatePINScreen = ({route, navigation}) => {
     const VerifyOTPValue = (text) => {
   
       if(text != '' && text.length == 5) {
+        
         console.log('it is completed here');
-        setPinNumber(text);
+        
+        dispatch(updatePinNumber(text));
         setActivateButton(false)
+
       }else{
         setActivateButton(true);
       }

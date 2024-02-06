@@ -14,10 +14,11 @@ import {
   import * as Yup from 'yup'
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
   import { SafeAreaView } from 'react-native-safe-area-context';
-  import { useDispatch, useSelector } from 'react-redux';
+  import { useDispatch } from 'react-redux';
+  import { useSelector } from 'react-redux';
   import { COLORS, images, FONTS, icons } from '../../../constants';
   import { OnboardingTextBox, FormButton } from '../../components';
-  import { updateAccountData } from '../../../store/accountSlice';
+  import { updateFullname, updateEmail, updatePhone, updatePinNumber } from '../../../store/accountSlice';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
   const CreateAccountSchema = Yup.object().shape({
@@ -36,24 +37,19 @@ import {
 
 const CreateAccountScreen = ({navigation}) => {
 
-  const accountData = useSelector((state) => state.account.accountData);
   const dispatch = useDispatch();
 
   // function to verify data
   const validateAccountData = (values) => {
 
-    const accountDetails = {
-      fullname: values.fullname,
-      email: values.email,
-      phone: values.phone
-    }
-
     //send data
-    dispatch(updateAccountData(accountDetails))
+    dispatch(updateFullname(values.fullname));
+    dispatch(updateEmail(values.email));
+    dispatch(updatePhone(values.phone));
 
-    console.log('this is coming from store: ' + accountData)
+    navigation.navigate("VerifyPhone");
 
-    navigation.navigate("VerifyPhone", {full_name:values.fullname, email_address: values.email, phone_number:values.phone});
+    //navigation.navigate("VerifyPhone", {full_name:values.fullname, email_address: values.email, phone_number:values.phone});
 
   }
   // end of function 

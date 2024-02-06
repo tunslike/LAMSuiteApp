@@ -14,7 +14,8 @@ const COLORS = {
     featureBorderColor: '#322689',
     sliderDescText: '#605B92',
     accountTypeDesc: '#413F5D',
-    companySetupBorder: '#BAB8D5'
+    companySetupBorder: '#BAB8D5',
+    notificationBG: '#EAEDF4',
 
 }
 

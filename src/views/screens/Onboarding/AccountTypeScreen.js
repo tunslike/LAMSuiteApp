@@ -10,16 +10,16 @@ import {
   View, 
   Alert,
   Dimensions} from 'react-native';
-  import { Formik } from 'formik';
-  import * as Yup from 'yup'
-  import { OtpInput } from 'react-native-otp-entry';
-  import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+  import { useDispatch } from 'react-redux';
   import { SafeAreaView } from 'react-native-safe-area-context';
   import { COLORS, images, FONTS, icons } from '../../../constants';
   import { AccountType, FormButton } from '../../components';
+  import { updateAccountType } from '../../../store/accountSlice';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const AccountTypeScreen = ({navigation}) => {
+
+  const dispatch = useDispatch();
 
   const[coyAccount, setCoyAcct] = useState(1);
   const[indAccount, setIndAcct] = useState(0);
@@ -29,9 +29,14 @@ const AccountTypeScreen = ({navigation}) => {
     console.log(coyAccount + '/' + indAccount)
 
     if(type == 1) {
+
+      dispatch(updateAccountType("Scheme"))
       setIndAcct(0)
       setCoyAcct(1)
+
     }else if(type == 2) {
+
+      dispatch(updateAccountType("Personal"))
       setCoyAcct(0)
       setIndAcct(1)
     }

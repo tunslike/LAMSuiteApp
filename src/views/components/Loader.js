@@ -39,7 +39,9 @@ const styles = StyleSheet.create({
     },
     container : {
         position: 'absolute',
-        zIndex: 40,
+        zIndex: 4000,
+        left:wp(-6.25),
+        top: wp(-6.3),
         backgroundColor: 'rgba(0,0,0,0.5)',
         justifyContent: 'center',
         alignItems: 'center'

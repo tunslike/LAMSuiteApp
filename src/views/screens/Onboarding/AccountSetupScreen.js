@@ -9,20 +9,36 @@ import {
   Text, 
   View, 
   Alert,
-  Button,
+  ScrollView,
   Dimensions} from 'react-native';
   import BottomSheet from '@gorhom/bottom-sheet';
-  import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-  import { SafeAreaView } from 'react-native-safe-area-context';
-  import { COLORS, images, FONTS, icons } from '../../../constants';
-  import { AccountSetupButton, FormButton } from '../../components';
+  import { useSelector, useDispatch } from 'react-redux';
+  import {updateEmail, 
+          updateFullname, 
+          updatePhone, 
+          updatePinNumber, 
+          updateAccountType } from '../../../store/accountSlice';
+  import axios from 'axios';
+  import { SelectList } from 'react-native-dropdown-select-list'
+  import { COLORS, images, FONTS, icons, APIBaseUrl } from '../../../constants';
+  import { AccountSetupButton, Loader, FormButton } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const AccountSetupScreen = ({navigation}) => {
 
+    const dispatch = useDispatch();
+    const fullname = useSelector((state) => state.account.fullname);
+    const email = useSelector((state) => state.account.email);
+    const phone = useSelector((state) => state.account.phone);
+    const pinNumber = useSelector((state) => state.account.pinNumber);
+    const account_type = useSelector((state) => state.account.account_type);
+
     const BottomSheetRef = useRef(null);
     const snapPoints = useMemo(() => ['25%', '50%'], []);
     const [toggleBtn, setToggleBtn] = useState(0);
+    const [isLoading, setIsLoading] = useState(false)
+    const [profileData, setProfileData] = useState('');
+    const [selected, setSelected] = React.useState("");
 
     //callbacks
     const handleSheetChange = useCallback((index) => {
@@ -41,10 +57,96 @@ const AccountSetupScreen = ({navigation}) => {
     }
     // end of function
 
+    // function to save create account 
+    const submitCustomerAccount = () => {
+
+      const data = {
+        "full_name" : fullname,
+        "phoneNumber": phone,
+        "emailAddress": email,
+        "account_type": account_type,
+        "pinNumber" : pinNumber,
+        "employer_profile_id": selected
+      };
+
+      setIsLoading(true);
+
+      axios.post(APIBaseUrl.developmentUrl + 'customer/newCustomer',data,{
+        headers: {
+          'Content-Type' : 'application/json',
+          'Access-Control-Allow-Origin': 'http://localhost:8082'
+        }
+      })
+      .then(response => {
+
+        setIsLoading(false)
+
+        console.log(response)
+
+        if(response.data.responseCode == 200) {
+
+          navigation.navigate("AccountCreated");
+
+        }else{
+
+          Alert.alert('Oops! Unable to process your request, please try again')
+
+        }
+
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    }
+    // end function 
+
+    // function to fetch employer profile
+    const fetchEmployerProfile = () => {
+
+            //show loader
+          setIsLoading(true);
+
+          axios.get(APIBaseUrl.developmentUrl + 'customer/getEmployerProfiles',{},{
+            headers: {
+              'Content-Type' : 'application/json',
+              'Access-Control-Allow-Origin': 'http://localhost:8082'
+            }
+          })
+          .then(response => {
+
+            let data = response.data.map((item) => {
+              return {key: item.profile_ID, value: item.company_NAME}
+            })
+
+            setIsLoading(false)
+            setProfileData(data)
+
+          })
+          .catch(error => {
+            console.log(error);
+          });
+
+    }
+    // end of function
+
+    //USE EFFECT
+    useEffect(() => {
+
+      //fetch providers
+      fetchEmployerProfile();
+
+  }, []);
+
   return (
     
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
     <StatusBar barStyle="dark-content" />
+
+    {isLoading &&
+      <Loader title="Processing your request, please wait..." />
+    }
+
 
     <View style={styles.logo}>
     <Image source={images.appLogo} 
@@ -62,7 +164,7 @@ const AccountSetupScreen = ({navigation}) => {
       </View>
 
       <View style={styles.dropBox}>
-      
+      {/** 
       <TouchableOpacity
         onPress={handleOpenPress}
       style={styles.dropDown}>
@@ -74,6 +176,35 @@ const AccountSetupScreen = ({navigation}) => {
         />
         <Text style={styles.dropTxt}>Select Company or Employer name</Text>
       </TouchableOpacity>
+      */}
+
+      <SelectList 
+      placeholder="Select employer or company name"
+      searchPlaceholder="Select or search..."
+      setSelected={(val) => setSelected(val)} 
+      data={profileData} 
+      fontFamily={FONTS.POPPINS_REGULAR}
+      save="key"
+      boxStyles={styles.dropDown}
+      dropdownStyles={{
+        fontFamily: FONTS.POPPINS_REGULAR,
+        borderColor: COLORS.companySetupBorder,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        fontSize: wp(3.3),
+      }}
+      dropdownTextStyles={{
+        fontFamily: FONTS.POPPINS_REGULAR,
+        fontSize: wp(3.3),
+        color: COLORS.TextColorGrey
+      }}
+      inputStyles={{
+        fontFamily: FONTS.POPPINS_REGULAR,
+        fontSize: wp(3.5),
+        color: COLORS.TextColorGrey
+      }}
+  />
+
   </View>
 
   <View style={styles.kycBox}>
@@ -109,10 +240,13 @@ style={styles.skipSetup}>
     </View>
 
     <View style={styles.btnBox}>
-    <FormButton onPress={() => navigation.navigate("AccountCreated")} label="Complete Setup" />
+    <FormButton 
+      disable={(toggleBtn == 0) ? true : false}
+      onPress={() => submitCustomerAccount()} 
+      label="Complete Setup" />
     </View>
 
-
+{/** 
     <BottomSheet
       ref={BottomSheetRef}
       index={-1}
@@ -125,8 +259,8 @@ style={styles.skipSetup}>
           </View>
        
       </View>
-    </BottomSheet>
-  </View>
+    </BottomSheet>*/}
+  </ScrollView>
 
   )
 }

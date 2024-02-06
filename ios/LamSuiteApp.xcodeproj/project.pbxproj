@@ -21,6 +21,7 @@
 		6FF6898AC972457380791C1C /* slider2.png in Resources */ = {isa = PBXBuildFile; fileRef = B0F34A9CA8344ABEAA2229BF /* slider2.png */; };
 		75F25AF6EE4E4B8EB4B0E388 /* copany.png in Resources */ = {isa = PBXBuildFile; fileRef = 194066A426124F53B547D777 /* copany.png */; };
 		7699B88040F8A987B510C191 /* libPods-LamSuiteApp-LamSuiteAppTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-LamSuiteApp-LamSuiteAppTests.a */; };
+		7FA61A3DA60E4592ACC43946 /* doc_upload.png in Resources */ = {isa = PBXBuildFile; fileRef = B0A22720FDFA45F8AD8EB07D /* doc_upload.png */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8784D9F4CBAC47EDB4B8FE9E /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = 480F007B4683404D8B4B2DE0 /* check.png */; };
 		8B64A36B90BA4A4EBCF3B94E /* email.png in Resources */ = {isa = PBXBuildFile; fileRef = 7D44328F69234A5D98F13FAC /* email.png */; };
@@ -37,7 +38,6 @@
 		E0C4FDBE26624DB794280C45 /* individual.png in Resources */ = {isa = PBXBuildFile; fileRef = 6C2FA74916814006B849742C /* individual.png */; };
 		F60EC57FB0944B8CB13244B7 /* PoppinsSemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5D9BF86E7EBC45DFAB770E04 /* PoppinsSemiBold.ttf */; };
 		F74B2DE0E0B746858E9A9E07 /* PoppinsLight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96B2A7AAFB4B4C198EF8E088 /* PoppinsLight.ttf */; };
-		7FA61A3DA60E4592ACC43946 /* doc_upload.png in Resources */ = {isa = PBXBuildFile; fileRef = B0A22720FDFA45F8AD8EB07D /* doc_upload.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +82,7 @@
 		A23870E4704D47A3900BFD11 /* PoppinsRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsRegular.ttf; path = ../src/assets/fonts/PoppinsRegular.ttf; sourceTree = "<group>"; };
 		A28150FA6DB84FE7BD09F04D /* arrow_tick.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = arrow_tick.png; path = ../src/assets/icons/arrow_tick.png; sourceTree = "<group>"; };
 		A8B6349EEFED4F2A882B441D /* user.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = user.png; path = ../src/assets/icons/user.png; sourceTree = "<group>"; };
+		B0A22720FDFA45F8AD8EB07D /* doc_upload.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = doc_upload.png; path = ../src/assets/icons/doc_upload.png; sourceTree = "<group>"; };
 		B0F34A9CA8344ABEAA2229BF /* slider2.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = slider2.png; path = ../src/assets/images/slider2.png; sourceTree = "<group>"; };
 		BE1DEAC4339D4DF1BD927480 /* finserve_logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = finserve_logo.png; path = ../src/assets/images/finserve_logo.png; sourceTree = "<group>"; };
 		C6AE8D4AFCD149FCAA9B0C5A /* profile.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = profile.png; path = ../src/assets/icons/profile.png; sourceTree = "<group>"; };
@@ -91,7 +92,6 @@
 		F01062D63439417B9E638451 /* pay_icon.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = pay_icon.png; path = ../src/assets/icons/pay_icon.png; sourceTree = "<group>"; };
 		F6A679E077A24B1298BB2A80 /* invest_icon.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = invest_icon.png; path = ../src/assets/icons/invest_icon.png; sourceTree = "<group>"; };
 		FA0B565D6E7B48149FC88EAE /* slider1.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = slider1.png; path = ../src/assets/images/slider1.png; sourceTree = "<group>"; };
-		B0A22720FDFA45F8AD8EB07D /* doc_upload.png */ = {isa = PBXFileReference; name = "doc_upload.png"; path = "../src/assets/icons/doc_upload.png"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
