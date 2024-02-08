@@ -6,6 +6,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { DashboardScreen, HistoryScreen, LoansScreen, ProfileScreen } from '../screens';
 
+import { COLORS, icons, images } from '../../constants';
+import { TabIcon } from '../components';
+
 const Tab = createBottomTabNavigator();
 
 const TabNavigator = () => {
@@ -17,15 +20,15 @@ const TabNavigator = () => {
             tabBarHideOnKeyboard: true,
             headerShown: false,
             tabBarStyle: {
-                backgroundColor: 'grey',
+                backgroundColor: COLORS.primaryBlue,
                 position: 'absolute',
                 bottom: 0,
                 left: 0,
                 right: 0,
                 elevation: 0,
-                height: hp(6.8),
-                borderRadius: 50,
-                marginBottom: Platform.OS === 'ios' ? hp(3.2) : hp(2),
+                height: hp(6.9),
+                borderRadius: wp(5),
+                marginBottom: Platform.OS === 'ios' ? hp(3.5) : hp(2),
                 marginHorizontal:10,
                 borderTopColor: 'transparent'
             }
@@ -50,7 +53,7 @@ const TabNavigator = () => {
                 tabBarIcon: ({focused}) => 
                 <TabIcon 
                     focused={focused} 
-                    icon={icons.cart}
+                    icon={icons.history}
                     title="History"    
                 />
             }}
@@ -62,7 +65,7 @@ const TabNavigator = () => {
                 tabBarIcon: ({focused}) => 
                 <TabIcon 
                     focused={focused} 
-                    icon={icons.history}
+                    icon={icons.loan}
                     title="Loans"    
                 />
             }}
@@ -74,7 +77,7 @@ const TabNavigator = () => {
                 tabBarIcon: ({focused}) => 
                 <TabIcon 
                     focused={focused} 
-                    icon={icons.profile}
+                    icon={icons.user}
                     title="Profile" 
                     addStyle={{
                         marginLeft:-18,

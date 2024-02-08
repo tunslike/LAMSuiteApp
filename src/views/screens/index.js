@@ -11,8 +11,10 @@ import CreatePINScreen from "./Onboarding/CreatePINScreen";
 import AccountTypeScreen from "./Onboarding/AccountTypeScreen";
 import AccountSetupScreen from "./Onboarding/AccountSetupScreen";
 import AccountCreatedScreen from "./Onboarding/AccountCreatedScreen";
+import NewLoanScreen from "./Loan/NewLoanScreen";
 
 export {
+    NewLoanScreen,
     WelcomeScreen,
     LoginScreen,
     SliderScreen,

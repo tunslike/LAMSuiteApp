@@ -1,5 +1,6 @@
 const COLORS = {
     White: '#FFFFFF',
+    checkedColorGreen: '#0D916D',
     successGreen: '#0EA32E',
     successHeader: '#057D18',
     primaryBlue: '#21118B',
@@ -16,6 +17,11 @@ const COLORS = {
     accountTypeDesc: '#413F5D',
     companySetupBorder: '#BAB8D5',
     notificationBG: '#EAEDF4',
+    loanStatusGreen: '#0CF615',
+    accountNumberColor: '#F6A60C',
+    balanceAmountColor: '#FEF6E6',
+    tabColorActive: '#F3F5FC',
+    textLoanAmount: '#1D2D66',
 
 }
 
