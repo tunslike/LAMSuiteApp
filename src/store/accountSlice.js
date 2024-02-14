@@ -6,13 +6,22 @@ const initialState = {
     email: '',
     phone: '',
     account_type: '',
-    pinNumber: ''
+    pinNumber: '',
+    customerEntryID: '',
+    employerProfileID: '',
+    completedBioData: '',
 }
 
 export const accountSlice = createSlice({
     name: 'account',
     initialState: initialState,
     reducers: {
+        updateCompletedBioData: (state, action) => {
+            state.completedBioData = action.payload
+        },
+        updateEmployerProfileID: (state, action) => {
+            state.employerProfileID = action.payload
+        },
         updateFullname: (state, action) => {
             state.fullname = action.payload
         },
@@ -28,9 +37,15 @@ export const accountSlice = createSlice({
         updatePinNumber: (state, action) => {
             state.pinNumber = action.payload
         },
+        updateCustomerEntryID: (state, action) => {
+            state.customerEntryID = action.payload
+        }
     },
 })
 
-export const {updateEmail, updateFullname, updateAccountType, updatePhone, updatePinNumber} = accountSlice.actions;
+export const {updateEmail, updateFullname, 
+             updateAccountType, updatePhone, 
+             updatePinNumber, updateCustomerEntryID, 
+             updateEmployerProfileID, updateCompletedBioData} = accountSlice.actions;
 
 export default accountSlice.reducer;

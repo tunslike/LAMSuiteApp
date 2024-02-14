@@ -10,7 +10,7 @@ import { FONTS, COLORS, icons } from '../../constants'
 const InnerHeader = ({title, onPress}) => {
   return (
    <View style={styles.header}>
-        <TouchableOpacity style={styles.bellBG}>
+        <TouchableOpacity onPress={onPress} style={styles.bellBG}>
         <Image source={icons.arrow_back}
         style={{
             height: wp(4.5), width: wp(4.5), resizeMode: 'contain', tintColor: COLORS.primaryBlue

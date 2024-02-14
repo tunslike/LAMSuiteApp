@@ -9,7 +9,13 @@ import { WelcomeScreen,
          CreatePINScreen, 
          AccountSetupScreen, 
          AccountTypeScreen,
-        AccountCreatedScreen,
+         AccountCreatedScreen,
+         BioDataScreen,
+         PersonalDetailsScreen,
+         EmployerDetailsScreen,
+         NOKDetailsScreen,
+         DocumentUploadScreen,
+         KYCCompleteScreen
         } from '../screens';
 
 const Stack = createNativeStackNavigator();
@@ -27,6 +33,12 @@ const AuthStack = () => {
             <Stack.Screen name='CreatePIN' component={CreatePINScreen} options={{animation: 'slide_from_right'}} />
             <Stack.Screen name='AccountType' component={AccountTypeScreen} options={{animation: 'slide_from_right'}} />
             <Stack.Screen name='AccountSetup' component={AccountSetupScreen} options={{animation: 'slide_from_right'}} />
+            <Stack.Screen name='BiodataUpdate' component={BioDataScreen} options={{animation: 'slide_from_right'}} />
+            <Stack.Screen name='PersonalDetails' component={PersonalDetailsScreen} options={{animation: 'slide_from_right'}} />
+            <Stack.Screen name='EmployerDetails' component={EmployerDetailsScreen} options={{animation: 'slide_from_right'}} />
+            <Stack.Screen name='NOKDetails' component={NOKDetailsScreen} options={{animation: 'slide_from_right'}} />
+            <Stack.Screen name='KYCDataCompleted' component={KYCCompleteScreen} options={{animation: 'slide_from_bottom'}} />
+            <Stack.Screen name='DocumentUpload' component={DocumentUploadScreen} options={{animation: 'slide_from_right'}} />
             <Stack.Screen name='AccountCreated' component={AccountCreatedScreen} options={{animation: 'slide_from_right'}} />
         </Stack.Navigator>
     )

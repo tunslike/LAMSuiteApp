@@ -13,14 +13,10 @@ import {
   Dimensions} from 'react-native';
   import BottomSheet from '@gorhom/bottom-sheet';
   import { useSelector, useDispatch } from 'react-redux';
-  import {updateEmail, 
-          updateFullname, 
-          updatePhone, 
-          updatePinNumber, 
-          updateAccountType } from '../../../store/accountSlice';
+  import {updateEmployerProfileID} from '../../../store/accountSlice';
   import axios from 'axios';
   import { SelectList } from 'react-native-dropdown-select-list'
-  import { COLORS, images, FONTS, icons, APIBaseUrl } from '../../../constants';
+  import { COLORS, images, FONTS, icons, APIBaseUrl, AppName } from '../../../constants';
   import { AccountSetupButton, Loader, FormButton } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -32,13 +28,14 @@ const AccountSetupScreen = ({navigation}) => {
     const phone = useSelector((state) => state.account.phone);
     const pinNumber = useSelector((state) => state.account.pinNumber);
     const account_type = useSelector((state) => state.account.account_type);
+    const bioDataComplete = useSelector((state) => state.account.completedBioData);
 
     const BottomSheetRef = useRef(null);
     const snapPoints = useMemo(() => ['25%', '50%'], []);
     const [toggleBtn, setToggleBtn] = useState(0);
     const [isLoading, setIsLoading] = useState(false)
     const [profileData, setProfileData] = useState('');
-    const [selected, setSelected] = React.useState("");
+    const [selected, setSelected] = React.useState(null);
 
     //callbacks
     const handleSheetChange = useCallback((index) => {
@@ -54,6 +51,14 @@ const AccountSetupScreen = ({navigation}) => {
         }else if(toggleBtn == 1) {
           setToggleBtn(0)
         }
+    }
+    // end of function
+
+    // function to set employer profile ID
+    const SaveEmployerProfileID = (value) => {
+    
+        dispatch(updateEmployerProfileID(value));
+        setSelected(value)
     }
     // end of function
 
@@ -126,7 +131,26 @@ const AccountSetupScreen = ({navigation}) => {
           .catch(error => {
             console.log(error);
           });
+    }// end of function
 
+    // check if employer is selected
+    const CheckEmployerSelected = (kyc_type) => {
+        if(!selected) {
+          Alert.alert(AppName.AppName, 'Please select your employer to proceed!')
+          return;
+        }
+
+        if(kyc_type == 'biodata') {
+
+          navigation.navigate("PersonalDetails");
+          return;
+
+        }else if(kyc_type == 'document') {
+
+          navigation.navigate("DocumentUpload")
+          return;
+
+        }
     }
     // end of function
 
@@ -181,7 +205,7 @@ const AccountSetupScreen = ({navigation}) => {
       <SelectList 
       placeholder="Select employer or company name"
       searchPlaceholder="Select or search..."
-      setSelected={(val) => setSelected(val)} 
+      setSelected={(val) => SaveEmployerProfileID(val)} 
       data={profileData} 
       fontFamily={FONTS.POPPINS_REGULAR}
       save="key"
@@ -211,12 +235,15 @@ const AccountSetupScreen = ({navigation}) => {
   <Text style={styles.kycHeader}>PROVIDE KYC DETAILS</Text>
 
   <AccountSetupButton 
-      label="Complete Bio-Data"
+      label="Bio-Data Update"
+      onPress={() => (bioDataComplete == 'completed') ? null : CheckEmployerSelected('biodata')}
       icon={icons.profile}
+      completed={(bioDataComplete == 'completed') ? true : null}
   />
 
   <AccountSetupButton 
       label="Upload Documents"
+      onPress={() => CheckEmployerSelected('document')}
       icon={icons.docUpload}
   />
 </View>
@@ -232,7 +259,6 @@ style={styles.skipSetup}>
       }}
     />
 </View>
-
 <Text style={styles.skipText}>I will skip account setup and do this later!</Text>
 
 </TouchableOpacity>
@@ -284,7 +310,7 @@ const styles = StyleSheet.create({
     fontSize: wp(3.1)
   },
   skipSetup: {
-    marginTop: wp(4),
+    marginTop: wp(2),
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',

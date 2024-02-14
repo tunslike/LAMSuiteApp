@@ -6,27 +6,39 @@ import { StyleSheet,
          import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { FONTS, COLORS, icons } from '../../constants'
 
-const AccountSetupButton = ({type, label, icon, description, onPress}) => {
+const AccountSetupButton = ({type, label, completed, icon, description, onPress}) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
         <View style={styles.iconBox}>
             <Image source={icon} 
                 style={{
                     height: wp(4), width: wp(4), resizeMode: 'contain', 
-                    tintColor: COLORS.primaryRed
+                    tintColor: (completed) ? COLORS.primaryBlue :COLORS.primaryRed
                 }}
             />
         </View>
         <View style={{flex: 1, marginLeft: wp(5)}}>
-                <Text style={styles.header}>{label}</Text>
+                <Text style={[styles.header, {color: (completed) ? COLORS.primaryBlue : COLORS.primaryRed}]}>{label}</Text>
         </View>
-            
+
+        {(completed) &&
+            <Image source={icons.check} 
+            style={{
+                height: wp(8), width: wp(8), resizeMode: 'contain', 
+                tintColor: COLORS.successGreen
+            }}
+        />
+        }
+
+        {(!completed) &&
             <Image source={icons.arrow_thick} 
-                style={{
-                    height: wp(4.2), width: wp(4.2), resizeMode: 'contain', 
-                    tintColor: COLORS.primaryRed
-                }}
-            />
+            style={{
+                height: wp(4.2), width: wp(4.2), resizeMode: 'contain', 
+                tintColor: COLORS.primaryRed
+            }}
+        />
+        }
+            
     </TouchableOpacity>
   )
 }
@@ -57,7 +69,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding: wp(2),
         borderRadius: wp(4),
-        marginBottom: wp(4),
+        marginBottom: wp(3),
         paddingHorizontal: wp(5)
     }
 })

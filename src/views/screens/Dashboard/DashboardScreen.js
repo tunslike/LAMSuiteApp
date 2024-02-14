@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { 
   Image,
   ImageBackground,
@@ -11,16 +11,55 @@ import {
   Alert,
   ScrollView,
   Dimensions} from 'react-native';
-  import { Formik } from 'formik';
-  import * as Yup from 'yup'
-  import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-  import { SafeAreaView } from 'react-native-safe-area-context';
   import { COLORS, images, FONTS, icons } from '../../../constants';
-  import { AccountCard, ServiceCard, GreenCheckBox, TransactionCard, Loader, CreditRating } from '../../components';
+  import { AccountCard, AccountCardNoLoan, ServiceCard, GreenCheckBox, TransactionCard, Loader, CreditRating } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
+  import { cleanCustomerFullname } from '../../../constants';
+  import { useSelector } from 'react-redux';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const DashboardScreen = ({navigation}) => {
+
+  // store 
+  const customerData = useSelector((state) => state.customer.customerData);
+  const loanData = useSelector((state) => state.customer.loanData);
+
+  // context
+  const {customerFullname} = useContext(AuthContext);
+
+  //states
+  const [greetings, setGreetings] = useState('');
+
+
+  // return customer first name
+  const cleanCustomerFullname = (customerFullname) => {
+    const names = customerFullname.split(" ");
+    return names[0];
+  }
+
+   //return greetings
+   checkTimeGreetings = () => {
+
+    var today = new Date()
+    var curHr = today.getHours()
+
+    if (curHr < 12) {
+      setGreetings('Good Morning')
+    } else if (curHr < 18) {
+      setGreetings('Good Afternoon')
+    } else {
+      setGreetings('Good Evening')
+    }
+}
+
+  //USE EFFECT
+  useEffect(() => {
+
+    //return greetings
+    this.checkTimeGreetings();
+
+  }, []);
+
   return (
     <ScrollView style={{
       flexGrow: 1,
@@ -35,8 +74,8 @@ const DashboardScreen = ({navigation}) => {
                   }}
                 />
                 <View>
-                    <Text style={styles.titleHeader}>Hello, Babatunde</Text>
-                    <Text style={styles.titleGreeting}>Good morning</Text>
+                    <Text style={styles.titleHeader}>Hello, {cleanCustomerFullname(customerFullname)}</Text>
+                    <Text style={styles.titleGreeting}>{greetings}</Text>
                 </View>
           </View>
           <View style={styles.tabAreas}>
@@ -53,7 +92,14 @@ const DashboardScreen = ({navigation}) => {
 
         <View style={styles.dashboardArea}>
 
-            <AccountCard />
+        {(!loanData) &&
+          <AccountCardNoLoan />
+        }
+
+        {loanData &&
+          <AccountCard />
+        }
+
         </View>
 
         <TouchableOpacity 

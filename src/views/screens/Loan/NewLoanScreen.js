@@ -16,7 +16,7 @@ import {
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
   import { SafeAreaView } from 'react-native-safe-area-context';
   import { COLORS, images, FONTS, icons } from '../../../constants';
-  import { GreenCheckBox, TenorCard, InnerHeader } from '../../components';
+  import { GreenCheckBox, BlueButton, SummaryLine, TenorCard, InnerHeader } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -34,7 +34,8 @@ const NewLoanScreen = ({navigation}) => {
         flexGrow: 1,
         backgroundColor: COLORS.BackgroundGrey
       }}>
-        <InnerHeader title="Apply for a Loan" />
+        <InnerHeader onPress={() => navigation.goBack()} 
+          title="Apply for a Loan" />
 
         <View style={styles.midBody}>
             <Text style={styles.preTitle}>Your pre-approved amount</Text>
@@ -77,12 +78,38 @@ const NewLoanScreen = ({navigation}) => {
               <TenorCard onPress={() => changeLoanTenor(3)} active={(tenor == 3) ? true : null} title="3 Months" />
               <TenorCard onPress={() => changeLoanTenor(6)} active={(tenor == 6) ? true : null} title="6 Months" />
           </View>
-
-
+        </View>
+        <View style={styles.loanOptions}>
+              <Text style={styles.txtDisburse}>Disbursement Account</Text>
+              <TouchableOpacity
+                style={styles.addOptionsBtn}
+              >
+                  <Text style={styles.optionTxt}>Add Account</Text>
+             
+              </TouchableOpacity>
         </View>
 
+        <View style={styles.loanOptions_second}>
+        <Text style={styles.txtDisburse}>Loan Purpose</Text>
+        <TouchableOpacity
+          style={styles.addOptionsBtn_second}
+        >
+            <Text style={styles.optionTxt}>Select here</Text>
 
+        </TouchableOpacity>
+  </View>
         </View>
+
+     <View style={styles.loanSummary}>
+      <Text style={styles.loanSummaryTxt}>Loan Summary</Text>
+
+            <SummaryLine title="Monthly Repayment" narration="NGN 38,903.00" />
+            <SummaryLine title="First Repayment Date" narration="Mon, 01 Feb 2024" />
+            <SummaryLine title="Total Repayment" narration="NGN 103,343.00" />
+            <SummaryLine title="Loan Interest" narration="1.75%" />
+
+            <BlueButton onPress={() => navigation.navigate("ConfirmLoan")} label="Continue" />
+     </View>   
       </ScrollView>
   )
 }
@@ -90,13 +117,85 @@ const NewLoanScreen = ({navigation}) => {
 export default NewLoanScreen
 
 const styles = StyleSheet.create({
+  signInBox: {
+    alignSelf: 'center',
+    backgroundColor: COLORS.primaryBlue,
+    paddingHorizontal: wp(31.3),
+    paddingVertical: Platform.OS === 'ios' ? wp(3.9) : wp(3.2),
+    borderRadius: wp(4),
+    marginBottom: wp(3)
+  },
+  loanSummaryTxt: {
+    fontFamily: FONTS.POPPINS_SEMIBOLD,
+    fontSize: wp(3.5),
+    color: '#160B53',
+    marginBottom: wp(3)
+  },
+  loanSummary: {
+    backgroundColor: COLORS.White,
+    marginTop: wp(3),
+    borderTopRightRadius: wp(8),
+    borderTopLeftRadius: wp(8),
+    padding: wp(4.4),
+    paddingBottom: wp(8),
+    marginHorizontal: wp(2)
+  },
+  txtDisburse: {
+      color: COLORS.accountTypeDesc,
+      fontFamily: FONTS.POPPINS_MEDIUM,
+      fontSize: wp(3.2)
+  },
+  optionTxt: {
+    fontFamily: FONTS.POPPINS_REGULAR,
+    fontSize: wp(2.6),
+    color: COLORS.ButtonBorderBlue
+  },
+  addOptionsBtn: {
+    flexDirection: 'row', 
+    justifyContent: 'flex-start', 
+    alignItems: 'center',
+    columnGap: wp(2),
+    borderRadius: wp(4),
+    borderColor: '#a7c0eb',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    paddingHorizontal: wp(3),
+    paddingVertical: wp(1)
+  },
+
+  addOptionsBtn_second: {
+    flexDirection: 'row', 
+    justifyContent: 'flex-start', 
+    alignItems: 'center',
+    columnGap: wp(2),
+    borderRadius: wp(4),
+    borderColor: '#a7c0eb',
+    borderWidth: 1,
+    borderStyle: 'solid',
+    paddingHorizontal: wp(4),
+    paddingVertical: wp(1)
+  },
+  loanOptions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: wp(4),
+    marginHorizontal: wp(4)
+  },
+  loanOptions_second: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: wp(3),
+    marginHorizontal: wp(4)
+  },
   tenor: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
     marginHorizontal: wp(3),
     marginTop: wp(4),
-    marginBottom: wp(3)
+    marginBottom: wp(1)
   },
   btnBG: {
     backgroundColor: COLORS.notificationBG,
@@ -159,7 +258,7 @@ const styles = StyleSheet.create({
     fontSize: wp(3.2),
     color: COLORS.accountTypeDesc,
     alignSelf: 'center',
-    marginTop: wp(8)
+    marginTop: wp(6)
   },
   preTitle: {
     fontFamily: FONTS.POPPINS_MEDIUM,

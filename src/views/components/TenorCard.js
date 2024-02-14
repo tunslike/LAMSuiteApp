@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   container: {
       borderWidth: 1,
       borderStyle: 'solid',
-      paddingVertical: wp(1.4),
+      paddingVertical: wp(1),
       paddingHorizontal: wp(2.4),
       borderColor: COLORS.companySetupBorder,
       flexDirection: 'row',
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   container_active: {
     borderWidth: 1,
     borderStyle: 'solid',
-    paddingVertical: wp(0.7),
+    paddingVertical: wp(0.3),
     paddingRight:wp(1.8),
     borderColor: COLORS.primaryRed,
     flexDirection: 'row',

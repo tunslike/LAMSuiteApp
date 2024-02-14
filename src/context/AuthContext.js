@@ -2,14 +2,19 @@ import React, {createContext, useState, useEffect} from 'react';
 import { Keyboard } from 'react-native';
 import axios from 'axios';
 import {APIBaseUrl} from '../constants';
+import { useDispatch } from 'react-redux';
+import {updateCustomerData, updateLoadData, updateEmployerLoanProfile} from '../store/customerSlice';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({children, navigation}) => {
 
-    const [userToken, setUserToken] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
+    const dispatch = useDispatch();
+
+    const [userToken, setUserToken] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [customerFullname, setCustomerFullname] = useState(null)
 
     // FUNCTION TO VALIDATE USER LOGIN
     const ValidateCustomerLogin = (customerEntry, customerAccessCode) => {
@@ -44,11 +49,18 @@ export const AuthProvider = ({children, navigation}) => {
               setIsLoading(false);
 
               console.log(response.data.response);
+              console.log(response.data.response);
 
               if(response.data.response.responseCode == '200') {
-  
+
                    console.log('****************/ LOGIN WAS SUCCESSFUL /********************')
-                   setUserToken(response.data.customer.customer_ENTRY_ID)
+
+                   dispatch(updateCustomerData(response.data.customer))
+                   dispatch(updateLoadData(response.data.activeLoan))
+                   dispatch(updateEmployerLoanProfile(response.data.employerloanProfile))
+                   
+                   setCustomerFullname(response.data.customer.full_NAME);
+                   setUserToken(response.data.customer.customer_ENTRY_ID);
                    
               }else {
   
@@ -79,7 +91,8 @@ export const AuthProvider = ({children, navigation}) => {
         <AuthContext.Provider value={{
                                         userToken, 
                                         ValidateCustomerLogin, 
-                                        isLoading
+                                        isLoading,
+                                        customerFullname
                                     }}>
             {children}
         </AuthContext.Provider>

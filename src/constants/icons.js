@@ -26,8 +26,15 @@ const arrow_back = require("../assets/icons/arrow_back.png")
 const airtime = require("../assets/icons/airtime.png")
 const add = require("../assets/icons/add.png")
 const minus = require("../assets/icons/minus.png")
+const offer_letter = require("../assets/icons/offer_letter.png")
+const sign = require("../assets/icons/sign.png")
+const arrow_next = require("../assets/icons/arrow_next.png")
+
 
 export default {
+    arrow_next,
+    sign,
+    offer_letter,
     add,
     minus,
     arrow_back,

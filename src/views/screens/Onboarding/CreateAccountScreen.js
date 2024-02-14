@@ -16,8 +16,9 @@ import {
   import { SafeAreaView } from 'react-native-safe-area-context';
   import { useDispatch } from 'react-redux';
   import { useSelector } from 'react-redux';
+  import TextLink from 'react-native-text-link';
   import { COLORS, images, FONTS, icons } from '../../../constants';
-  import { OnboardingTextBox, FormButton } from '../../components';
+  import { OnboardingTextBox, FormButton, RedCheckBox } from '../../components';
   import { updateFullname, updateEmail, updatePhone, updatePinNumber } from '../../../store/accountSlice';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -123,6 +124,26 @@ const CreateAccountScreen = ({navigation}) => {
                       <Text style={styles.formErrortext}>{errors.phone}</Text>
                     }       
                   </View>
+
+                  <View style={styles.termsBody}>
+
+                  <TextLink 
+                  textStyle={styles.textLinkStyle}
+                  textLinkStyle={{color: COLORS.primaryRed}}
+                  links={[
+                    {
+                      text: 'Terms & Conditions',
+                      onPress: () =>  console.log('link to terms'),
+                    },
+                    {
+                      text: 'Privacy Policy',
+                      onPress: () =>  console.log('link to privacy'),
+                    },
+                  ]}>
+                  By continuing, you agree to our Terms & Conditions and Privacy Policy.
+                  </TextLink>
+                    
+                  </View>
               </View>
 
               <View style={styles.btnBox}>
@@ -144,7 +165,16 @@ const CreateAccountScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-
+  textLinkStyle: {
+    fontFamily: FONTS.POPPINS_REGULAR,
+    fontSize: wp(3),
+    color: COLORS.sliderDescText,
+    lineHeight: wp(4)
+  },
+  termsBody: {
+      marginTop: wp(5),
+      marginHorizontal: wp(3)
+  },
   formErrortext: {
     fontFamily: FONTS.POPPINS_LIGHT,
     fontSize: wp(2.8),
