@@ -54,44 +54,44 @@
 		00E356EE1AD99517003FC87E /* LamSuiteAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LamSuiteAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* LamSuiteAppTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LamSuiteAppTests.m; sourceTree = "<group>"; };
-		0943D593FA6C42A983324104 /* loans_icon.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = loans_icon.png; path = ../src/assets/icons/loans_icon.png; sourceTree = "<group>"; };
+		0943D593FA6C42A983324104 /* loans_icon.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = loans_icon.png; path = ../src/assets/icons/loans_icon.png; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* LamSuiteApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LamSuiteApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = LamSuiteApp/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = LamSuiteApp/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = LamSuiteApp/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = LamSuiteApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = LamSuiteApp/main.m; sourceTree = "<group>"; };
-		194066A426124F53B547D777 /* copany.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = copany.png; path = ../src/assets/icons/copany.png; sourceTree = "<group>"; };
+		194066A426124F53B547D777 /* copany.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = copany.png; path = ../src/assets/icons/copany.png; sourceTree = "<group>"; };
 		19F6CBCC0A4E27FBF8BF4A61 /* libPods-LamSuiteApp-LamSuiteAppTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LamSuiteApp-LamSuiteAppTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		255907B2B68647AEB4BCA646 /* PoppinsMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsMedium.ttf; path = ../src/assets/fonts/PoppinsMedium.ttf; sourceTree = "<group>"; };
+		255907B2B68647AEB4BCA646 /* PoppinsMedium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsMedium.ttf; path = ../src/assets/fonts/PoppinsMedium.ttf; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-LamSuiteApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LamSuiteApp.debug.xcconfig"; path = "Target Support Files/Pods-LamSuiteApp/Pods-LamSuiteApp.debug.xcconfig"; sourceTree = "<group>"; };
-		480F007B4683404D8B4B2DE0 /* check.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = check.png; path = ../src/assets/icons/check.png; sourceTree = "<group>"; };
-		49BA77F3F34E414DA9C028ED /* PoppinsBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsBold.ttf; path = ../src/assets/fonts/PoppinsBold.ttf; sourceTree = "<group>"; };
+		480F007B4683404D8B4B2DE0 /* check.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = check.png; path = ../src/assets/icons/check.png; sourceTree = "<group>"; };
+		49BA77F3F34E414DA9C028ED /* PoppinsBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsBold.ttf; path = ../src/assets/fonts/PoppinsBold.ttf; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-LamSuiteApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LamSuiteApp.release.xcconfig"; path = "Target Support Files/Pods-LamSuiteApp/Pods-LamSuiteApp.release.xcconfig"; sourceTree = "<group>"; };
-		5A362DD0E8A8468ABD9D4474 /* savings_icon.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = savings_icon.png; path = ../src/assets/icons/savings_icon.png; sourceTree = "<group>"; };
+		5A362DD0E8A8468ABD9D4474 /* savings_icon.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = savings_icon.png; path = ../src/assets/icons/savings_icon.png; sourceTree = "<group>"; };
 		5B7EB9410499542E8C5724F5 /* Pods-LamSuiteApp-LamSuiteAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LamSuiteApp-LamSuiteAppTests.debug.xcconfig"; path = "Target Support Files/Pods-LamSuiteApp-LamSuiteAppTests/Pods-LamSuiteApp-LamSuiteAppTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5D9BF86E7EBC45DFAB770E04 /* PoppinsSemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsSemiBold.ttf; path = ../src/assets/fonts/PoppinsSemiBold.ttf; sourceTree = "<group>"; };
+		5D9BF86E7EBC45DFAB770E04 /* PoppinsSemiBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsSemiBold.ttf; path = ../src/assets/fonts/PoppinsSemiBold.ttf; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-LamSuiteApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-LamSuiteApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6B6053125E3449DAB9B80E6E /* phone.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = phone.png; path = ../src/assets/icons/phone.png; sourceTree = "<group>"; };
-		6C2FA74916814006B849742C /* individual.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = individual.png; path = ../src/assets/icons/individual.png; sourceTree = "<group>"; };
-		7D44328F69234A5D98F13FAC /* email.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = email.png; path = ../src/assets/icons/email.png; sourceTree = "<group>"; };
+		6B6053125E3449DAB9B80E6E /* phone.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = phone.png; path = ../src/assets/icons/phone.png; sourceTree = "<group>"; };
+		6C2FA74916814006B849742C /* individual.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = individual.png; path = ../src/assets/icons/individual.png; sourceTree = "<group>"; };
+		7D44328F69234A5D98F13FAC /* email.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = email.png; path = ../src/assets/icons/email.png; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = LamSuiteApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-LamSuiteApp-LamSuiteAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LamSuiteApp-LamSuiteAppTests.release.xcconfig"; path = "Target Support Files/Pods-LamSuiteApp-LamSuiteAppTests/Pods-LamSuiteApp-LamSuiteAppTests.release.xcconfig"; sourceTree = "<group>"; };
-		8DBC2E726DDC4C1B91A18915 /* slider3.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = slider3.png; path = ../src/assets/images/slider3.png; sourceTree = "<group>"; };
-		96B2A7AAFB4B4C198EF8E088 /* PoppinsLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsLight.ttf; path = ../src/assets/fonts/PoppinsLight.ttf; sourceTree = "<group>"; };
-		A23870E4704D47A3900BFD11 /* PoppinsRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsRegular.ttf; path = ../src/assets/fonts/PoppinsRegular.ttf; sourceTree = "<group>"; };
-		A28150FA6DB84FE7BD09F04D /* arrow_tick.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = arrow_tick.png; path = ../src/assets/icons/arrow_tick.png; sourceTree = "<group>"; };
-		A8B6349EEFED4F2A882B441D /* user.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = user.png; path = ../src/assets/icons/user.png; sourceTree = "<group>"; };
-		B0A22720FDFA45F8AD8EB07D /* doc_upload.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = doc_upload.png; path = ../src/assets/icons/doc_upload.png; sourceTree = "<group>"; };
-		B0F34A9CA8344ABEAA2229BF /* slider2.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = slider2.png; path = ../src/assets/images/slider2.png; sourceTree = "<group>"; };
-		BE1DEAC4339D4DF1BD927480 /* finserve_logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = finserve_logo.png; path = ../src/assets/images/finserve_logo.png; sourceTree = "<group>"; };
-		C6AE8D4AFCD149FCAA9B0C5A /* profile.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = profile.png; path = ../src/assets/icons/profile.png; sourceTree = "<group>"; };
-		CF47134B11FC4BB4A9FF6863 /* imgbg.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = imgbg.png; path = ../src/assets/images/imgbg.png; sourceTree = "<group>"; };
-		D9576734AADA49B48648F85D /* arrow_thin.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = arrow_thin.png; path = ../src/assets/icons/arrow_thin.png; sourceTree = "<group>"; };
+		8DBC2E726DDC4C1B91A18915 /* slider3.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = slider3.png; path = ../src/assets/images/slider3.png; sourceTree = "<group>"; };
+		96B2A7AAFB4B4C198EF8E088 /* PoppinsLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsLight.ttf; path = ../src/assets/fonts/PoppinsLight.ttf; sourceTree = "<group>"; };
+		A23870E4704D47A3900BFD11 /* PoppinsRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = PoppinsRegular.ttf; path = ../src/assets/fonts/PoppinsRegular.ttf; sourceTree = "<group>"; };
+		A28150FA6DB84FE7BD09F04D /* arrow_tick.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = arrow_tick.png; path = ../src/assets/icons/arrow_tick.png; sourceTree = "<group>"; };
+		A8B6349EEFED4F2A882B441D /* user.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = user.png; path = ../src/assets/icons/user.png; sourceTree = "<group>"; };
+		B0A22720FDFA45F8AD8EB07D /* doc_upload.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = doc_upload.png; path = ../src/assets/icons/doc_upload.png; sourceTree = "<group>"; };
+		B0F34A9CA8344ABEAA2229BF /* slider2.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = slider2.png; path = ../src/assets/images/slider2.png; sourceTree = "<group>"; };
+		BE1DEAC4339D4DF1BD927480 /* finserve_logo.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = finserve_logo.png; path = ../src/assets/images/finserve_logo.png; sourceTree = "<group>"; };
+		C6AE8D4AFCD149FCAA9B0C5A /* profile.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = profile.png; path = ../src/assets/icons/profile.png; sourceTree = "<group>"; };
+		CF47134B11FC4BB4A9FF6863 /* imgbg.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = imgbg.png; path = ../src/assets/images/imgbg.png; sourceTree = "<group>"; };
+		D9576734AADA49B48648F85D /* arrow_thin.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = arrow_thin.png; path = ../src/assets/icons/arrow_thin.png; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F01062D63439417B9E638451 /* pay_icon.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = pay_icon.png; path = ../src/assets/icons/pay_icon.png; sourceTree = "<group>"; };
-		F6A679E077A24B1298BB2A80 /* invest_icon.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = invest_icon.png; path = ../src/assets/icons/invest_icon.png; sourceTree = "<group>"; };
-		FA0B565D6E7B48149FC88EAE /* slider1.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = slider1.png; path = ../src/assets/images/slider1.png; sourceTree = "<group>"; };
+		F01062D63439417B9E638451 /* pay_icon.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = pay_icon.png; path = ../src/assets/icons/pay_icon.png; sourceTree = "<group>"; };
+		F6A679E077A24B1298BB2A80 /* invest_icon.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = invest_icon.png; path = ../src/assets/icons/invest_icon.png; sourceTree = "<group>"; };
+		FA0B565D6E7B48149FC88EAE /* slider1.png */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = slider1.png; path = ../src/assets/images/slider1.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,7 +215,6 @@
 				B0A22720FDFA45F8AD8EB07D /* doc_upload.png */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
@@ -571,6 +570,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M5FPHYQR87;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = LamSuiteApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -598,6 +598,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = M5FPHYQR87;
 				INFOPLIST_FILE = LamSuiteApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -4,13 +4,25 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     customerData: [],
     loanData: [],
-    employerLoanProfile: []
+    employerLoanProfile: [],
+    customerEmployerDetails: [],
+    approvedLoanAmount: '',
+    bankAccountID: '',
 }
 
 export const customerSlice = createSlice({
     name: 'customer',
     initialState: initialState,
     reducers: {
+        updateBankAccountID: (state, action) => {
+            state.bankAccountID = action.payload
+        },
+        updateApprovedloanAmount: (state, action) => {
+            state.approvedLoanAmount = action.payload
+        },
+        updateCustomerEmployerDetails: (state, action) => {
+            state.customerEmployerDetails = action.payload
+        },
         updateCustomerData: (state, action) => {
             state.customerData = action.payload
         },
@@ -22,6 +34,12 @@ export const customerSlice = createSlice({
         }
     },
 })
-export const {updateCustomerData, updateLoadData, updateEmployerLoanProfile} = customerSlice.actions;
+export const {updateCustomerData, 
+              updateLoadData, 
+              updateEmployerLoanProfile, 
+              updateCustomerEmployerDetails,
+              updateApprovedloanAmount,
+              updateBankAccountID
+            } = customerSlice.actions;
 
 export default customerSlice.reducer;

@@ -15,7 +15,7 @@ const RedCheckBox = ({textLabel, toggleBtn, onPress}) => {
     <View style={(toggleBtn == 1) ? styles.checkBox_checked : styles.checkBox_notchecked}>
         <Image source={icons.check} 
           style={{
-            height: (toggleBtn == 1) ? wp(4) : wp(4), width: (toggleBtn == 1) ? wp(5) : wp(4.5), resizeMode: 'contain', tintColor: COLORS.White
+            height: (toggleBtn == 1) ? wp(3) : wp(4), width: (toggleBtn == 1) ? wp(3) : wp(4), resizeMode: 'contain', tintColor: COLORS.White
           }}
         />
     </View>

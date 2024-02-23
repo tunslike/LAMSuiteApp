@@ -17,7 +17,13 @@ import {
   import { AccountSetupButton, GreenCheckBox, FormButton } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const LoanCompleted = ({navigation}) => {
+const LoanCompleted = ({route, navigation}) => {
+
+  const {loanAmount, loanTenor} = route.params;
+
+  const formatCurrencyText = (value) => {
+    return value.toLocaleString('en-US', {maximumFractionDigits:2})
+  }
 
   return (
 
@@ -50,7 +56,7 @@ const LoanCompleted = ({navigation}) => {
 
         <View style={styles.amountCounter}>
         <GreenCheckBox />
-        <Text style={styles.textAprAmount}>50,000.00</Text>
+        <Text style={styles.textAprAmount}>{formatCurrencyText(loanAmount)}</Text>
 
     </View>
 

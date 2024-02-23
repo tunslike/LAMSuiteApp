@@ -66,13 +66,17 @@ const AccountSetupScreen = ({navigation}) => {
     const submitCustomerAccount = () => {
 
       const data = {
-        "full_name" : fullname,
-        "phoneNumber": phone,
-        "emailAddress": email,
-        "account_type": account_type,
-        "pinNumber" : pinNumber,
-        "employer_profile_id": selected
+        full_name : fullname,
+        phoneNumber: phone,
+        emailAddress: email,
+        account_type: account_type,
+        pinNumber : pinNumber,
+        employer_profile_id: selected
       };
+
+      console.log(data)
+
+      return;
 
       setIsLoading(true);
 

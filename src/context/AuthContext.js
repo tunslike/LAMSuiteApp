@@ -3,7 +3,8 @@ import { Keyboard } from 'react-native';
 import axios from 'axios';
 import {APIBaseUrl} from '../constants';
 import { useDispatch } from 'react-redux';
-import {updateCustomerData, updateLoadData, updateEmployerLoanProfile} from '../store/customerSlice';
+import {updateCustomerData, updateLoadData, updateCustomerEmployerDetails, 
+        updateEmployerLoanProfile} from '../store/customerSlice';
 
 export const AuthContext = createContext();
 
@@ -58,7 +59,8 @@ export const AuthProvider = ({children, navigation}) => {
                    dispatch(updateCustomerData(response.data.customer))
                    dispatch(updateLoadData(response.data.activeLoan))
                    dispatch(updateEmployerLoanProfile(response.data.employerloanProfile))
-                   
+                   dispatch(updateCustomerEmployerDetails(response.data.customerEmployerDetails))
+
                    setCustomerFullname(response.data.customer.full_NAME);
                    setUserToken(response.data.customer.customer_ENTRY_ID);
                    

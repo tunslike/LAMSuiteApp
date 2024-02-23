@@ -21,8 +21,10 @@ import RedCheckBox from "./RedCheckBox";
 import BiodataTextbox from "./BiodataTextbox";
 import AccountCardNoLoan from "./AccountCardNoLoan";
 import DropdownTextBox from "./DropdownTextBox";
+import BankAccountNumberCard from "./BankAccountNumberCard";
 
 export {
+    BankAccountNumberCard,
     DropdownTextBox,
     AccountCardNoLoan,
     BiodataTextbox,

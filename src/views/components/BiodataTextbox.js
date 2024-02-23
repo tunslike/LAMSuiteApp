@@ -16,7 +16,7 @@ const BiodataTextbox = ({ label, full, placeholder,maxlength, phone, onFocus, on
         <TextInput
             value={value}
             onChangeText={onChange}
-            style={[styles.inputStyle, {width: (full) ? wp(87) : wp(41)}]}
+            style={[styles.inputStyle, {width: (full) ? '100%' : wp(41)}]}
             placeholderTextColor={COLORS.darkGray}
             keyboardType={(phone == 1) ? "phone-pad" : "default"}
             autoCapitalize='none'

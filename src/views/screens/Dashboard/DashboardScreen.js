@@ -15,21 +15,44 @@ import {
   import { AccountCard, AccountCardNoLoan, ServiceCard, GreenCheckBox, TransactionCard, Loader, CreditRating } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import { cleanCustomerFullname } from '../../../constants';
-  import { useSelector } from 'react-redux';
+  import { useSelector, useDispatch } from 'react-redux';
+  import { updateApprovedloanAmount } from '../../../store/customerSlice';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const DashboardScreen = ({navigation}) => {
 
   // store 
+  const dispatch = useDispatch();
   const customerData = useSelector((state) => state.customer.customerData);
   const loanData = useSelector((state) => state.customer.loanData);
+  const customerEmployerDetails = useSelector((state) => state.customer.customerEmployerDetails);
+  const employerLoanProfile = useSelector((state) => state.customer.employerLoanProfile);
 
   // context
   const {customerFullname} = useContext(AuthContext);
 
   //states
   const [greetings, setGreetings] = useState('');
+  const [approvedLoan, setApprovedLoan] = useState(false);
+  const [loanAmount, setLoanAmount] = useState(0);
 
+
+  // check if pre-approved amount is there
+  const checkPreApprovedAmount = () => {
+
+    if(customerEmployerDetails != null && employerLoanProfile != null) {
+
+      let annualSal = customerEmployerDetails.annual_SALARY;
+      let interest = employerLoanProfile.loan_LIMIT_PERCENT;
+      let apprvLoan = (annualSal / interest);
+
+      dispatch(updateApprovedloanAmount(apprvLoan))
+      setLoanAmount(apprvLoan.toLocaleString('en-US', {maximumFractionDigits:2}));
+
+      setApprovedLoan(true);
+    }
+  }
+  // end of function
 
   // return customer first name
   const cleanCustomerFullname = (customerFullname) => {
@@ -54,6 +77,9 @@ const DashboardScreen = ({navigation}) => {
 
   //USE EFFECT
   useEffect(() => {
+
+    //check preapproved amount
+    checkPreApprovedAmount();
 
     //return greetings
     this.checkTimeGreetings();
@@ -102,22 +128,20 @@ const DashboardScreen = ({navigation}) => {
 
         </View>
 
-        <TouchableOpacity 
+        {(approvedLoan) && 
+                <TouchableOpacity 
                     onPress={() => navigation.navigate("NewLoan")}
-        style={styles.apprvLoan}>
-           
-            <GreenCheckBox />
+                    style={styles.apprvLoan}>
+                <GreenCheckBox />
+                <Text style={styles.txtApprove}>You have been pre-approved to get a loan of: </Text>
+                  
+                <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
+                <Text style={styles.curSign}>₦</Text>
+                <Text style={styles.loanAmount}>{loanAmount}</Text>
+                </View>
         
-               <Text style={styles.txtApprove}>You have been pre-approved to get a loan of: </Text>
-            
-               <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
-               <Text style={styles.curSign}>₦</Text>
-               <Text style={styles.loanAmount}>50,000.00</Text>
-               </View>
-              
-            
-            
-        </TouchableOpacity>
+                </TouchableOpacity>
+        }
 
         <View style={styles.serviceList}>
 
@@ -272,7 +296,7 @@ const styles = StyleSheet.create({
   },
   loanAmount: {
     fontFamily: FONTS.POPPINS_SEMIBOLD,
-    fontSize: wp(5.3),
+    fontSize: wp(5),
     color: COLORS.primaryRed
   },
   txtApprove: {

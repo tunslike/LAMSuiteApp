@@ -29,9 +29,11 @@ const minus = require("../assets/icons/minus.png")
 const offer_letter = require("../assets/icons/offer_letter.png")
 const sign = require("../assets/icons/sign.png")
 const arrow_next = require("../assets/icons/arrow_next.png")
+const account_icon = require("../assets/icons/account_icon.png")
 
 
 export default {
+    account_icon,
     arrow_next,
     sign,
     offer_letter,

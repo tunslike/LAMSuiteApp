@@ -13,18 +13,26 @@ import {
   Dimensions} from 'react-native';
   import BottomSheet from '@gorhom/bottom-sheet';
   import { useSelector, useDispatch } from 'react-redux';
-  import {updateEmail, 
-          updateFullname, 
-          updatePhone, 
-          updatePinNumber, 
-          updateAccountType } from '../../../store/accountSlice';
+  import {updateEmail} from '../../../store/accountSlice';
   import axios from 'axios';
+  import * as ImagePicker from 'react-native-image-picker'
   import { SelectList } from 'react-native-dropdown-select-list'
-  import { COLORS, images, FONTS, icons, APIBaseUrl } from '../../../constants';
+  import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
   import { AccountSetupButton, Loader, FormButton } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const DocumentUploadScreen = () => {
+
+  // function to pick images
+  const handlePicker = (docType) => {
+
+        ImagePicker.showImagePicker({}, (response) => {
+
+          console.log('Response = ', response);
+
+        })
+  }
+  // end of function
 
   //USE EFFECT
   useEffect(() => {
@@ -52,33 +60,33 @@ const DocumentUploadScreen = () => {
 
 
   <AccountSetupButton 
-  label="Proof of Address"
-  onPress={() => CheckEmployerSelected('document')}
-  icon={icons.docUpload}
+    label="Proof of Address"
+    onPress={() => handlePicker(1)}
+    icon={icons.docUpload}
+  />
+
+<AccountSetupButton 
+    label="Means of Identification"
+    onPress={() => handlePicker(1)}
+    icon={icons.docUpload}
 />
 
 <AccountSetupButton 
-label="Means of Identification"
-onPress={() => CheckEmployerSelected('document')}
-icon={icons.docUpload}
+    label="Work ID Card"
+    onPress={() => handlePicker(1)}
+    icon={icons.docUpload}
 />
 
 <AccountSetupButton 
-label="Work ID Card"
-onPress={() => CheckEmployerSelected('document')}
-icon={icons.docUpload}
+    label="Employment Letter"
+    onPress={() => handlePicker(1)}
+    icon={icons.docUpload}
 />
 
 <AccountSetupButton 
-label="Employment Letter"
-onPress={() => CheckEmployerSelected('document')}
-icon={icons.docUpload}
-/>
-
-<AccountSetupButton 
-label="Passport photograph"
-onPress={() => CheckEmployerSelected('document')}
-icon={icons.docUpload}
+    label="Passport photograph"
+    onPress={() => handlePicker(1)}
+    icon={icons.docUpload}
 />
 
     </View>

@@ -20,8 +20,10 @@ import PersonalDetailsScreen from "./KYC/PersonalDetailsScreen";
 import EmployerDetailsScreen from "./KYC/EmployerDetailsScreen";
 import NOKDetailsScreen from "./KYC/NOKDetailsScreen";
 import KYCCompleteScreen from "./KYC/KYCCompleteScreen";
+import DisbursementAccount from "./Loan/DisbursementAccount";
 
 export {
+    DisbursementAccount,
     KYCCompleteScreen,
     NOKDetailsScreen,
     EmployerDetailsScreen,
