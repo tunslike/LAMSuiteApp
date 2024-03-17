@@ -105,7 +105,6 @@ const CreatePINScreen = ({navigation}) => {
 
 
       </View>
-
       <View style={styles.btnBox}>
       <FormButton 
           onPress={() => navigation.navigate("AccountType")} 

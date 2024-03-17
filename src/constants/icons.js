@@ -30,9 +30,22 @@ const offer_letter = require("../assets/icons/offer_letter.png")
 const sign = require("../assets/icons/sign.png")
 const arrow_next = require("../assets/icons/arrow_next.png")
 const account_icon = require("../assets/icons/account_icon.png")
-
+const thumbup = require("../assets/icons/thumbup.png")
+const thumbdown = require("../assets/icons/thumbdown.png")
+const money_bag = require("../assets/icons/money_bag.png")
+const payment = require("../assets/icons/payment.png")
+const calender = require("../assets/icons/calender.png")
+const bank_transfer = require("../assets/icons/bank_transfer.png")
+const phone_transfer = require("../assets/icons/phone_transfer.png")
 
 export default {
+    phone_transfer, 
+    bank_transfer,
+    payment,
+    calender,
+    money_bag,
+    thumbdown,
+    thumbup,
     account_icon,
     arrow_next,
     sign,

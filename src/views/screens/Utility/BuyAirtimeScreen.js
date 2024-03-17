@@ -18,7 +18,7 @@ import {
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const ProfileScreen = ({navigation}) => {
+const BuyAirtimeScreen = ({navigation}) => {
 
   // CUSTOMER STORE
   const customerID = useSelector((state) => state.customer.customerData.customer_ENTRY_ID);
@@ -86,7 +86,7 @@ const ProfileScreen = ({navigation}) => {
         <Loader title="Processing your request, please wait..." />
       }
 
-      <InnerHeader onPress={() => navigation.goBack()} title="Profile" />
+      <InnerHeader onPress={() => navigation.goBack()} title="History" />
 
     
 
@@ -98,4 +98,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default ProfileScreen;
+export default BuyAirtimeScreen;

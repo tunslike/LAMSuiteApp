@@ -6,7 +6,7 @@ import { StyleSheet,
          import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { FONTS, COLORS, icons, images } from '../../constants'
 
-const AccountCard = ({rating, onPress}) => {
+const AccountCard = ({loanNumber, loanBalance, nextPayment, employer, status }) => {
 
   const { width, height } = Dimensions.get("window");
 
@@ -23,31 +23,34 @@ const AccountCard = ({rating, onPress}) => {
      >
       <View style={styles.topData}>
           <View style={styles.coyDetails}>
-              <Text style={styles.acctNo}>03903929392</Text>
-              <Text style={styles.coyName}>Finserve Investment Limited</Text>
+              <Text style={styles.acctNo}>{loanNumber}</Text>
+              <Text style={styles.coyName}>{employer}</Text>
           </View>
           <View style={styles.loanStatus}>
               <Text style={styles.txtStatus}>Status</Text>
-              <View style={styles.loanFlag}>
-                <Image source={icons.check} 
-                  style={{
-                    height: wp(5), width: wp(5), tintColor: COLORS.loanStatusGreen, resizeMode: 'contain'
-                  }}
-                />
-                <Text style={styles.txtActive}>Active</Text>
-              </View>
+
+              {(status == 1) &&
+                  <View style={styles.loanFlag}>
+                  <Image source={icons.check} 
+                    style={{
+                      height: wp(5), width: wp(5), tintColor: COLORS.loanStatusGreen, resizeMode: 'contain'
+                    }}
+                  />
+                  <Text style={styles.txtActive}>Active</Text>
+                </View>
+              }
           </View>
       </View>
       <View style={styles.bottomData}>
           <View style={styles.amtArea}>
                 <Text style={styles.lnTxthdr}>Loan Balance</Text>
                 <View style={styles.currency}>
-                  <Text style={styles.curSign}>₦</Text><Text style={styles.loanAmt}>250,000.00</Text>
+                  <Text style={styles.curSign}>₦</Text><Text style={styles.loanAmt}>{Intl.NumberFormat('en-US').format(loanBalance)}</Text>
                 </View>
           </View>
                   <View style={styles.repymt}>
                   <Text style={styles.lnTxthdr}>Next Repayment</Text>
-                  <Text style={styles.repayAmt}>14,345.30</Text>
+                  <Text style={styles.repayAmt}>₦{Intl.NumberFormat('en-US').format(nextPayment)}</Text>
                   </View>
       </View>
      </ImageBackground>
@@ -116,7 +119,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: wp(0.5),
+    padding: wp(0.2),
     borderColor: COLORS.loanStatusGreen,
     borderWidth:1,
     borderStyle: 'solid',

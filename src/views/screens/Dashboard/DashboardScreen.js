@@ -11,6 +11,7 @@ import {
   Alert,
   ScrollView,
   Dimensions} from 'react-native';
+  import axios from 'axios';
   import { COLORS, images, FONTS, icons } from '../../../constants';
   import { AccountCard, AccountCardNoLoan, ServiceCard, GreenCheckBox, TransactionCard, Loader, CreditRating } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
@@ -35,7 +36,6 @@ const DashboardScreen = ({navigation}) => {
   const [greetings, setGreetings] = useState('');
   const [approvedLoan, setApprovedLoan] = useState(false);
   const [loanAmount, setLoanAmount] = useState(0);
-
 
   // check if pre-approved amount is there
   const checkPreApprovedAmount = () => {
@@ -122,13 +122,19 @@ const DashboardScreen = ({navigation}) => {
           <AccountCardNoLoan />
         }
 
-        {loanData &&
-          <AccountCard />
+        {(loanData) &&
+          <AccountCard 
+            loanNumber = {loanData.loan_NUMBER}
+            loanBalance = {loanData.loan_AMOUNT}
+            nextPayment = {loanData.monthly_REPAYMENT}
+            employer = {loanData.employer_NAME}
+            status = {loanData.loan_STATUS}
+          />
         }
 
         </View>
 
-        {(approvedLoan) && 
+        {(approvedLoan && loanData.loan_STATUS == 1) && 
                 <TouchableOpacity 
                     onPress={() => navigation.navigate("NewLoan")}
                     style={styles.apprvLoan}>
@@ -158,6 +164,7 @@ const DashboardScreen = ({navigation}) => {
                 />
 
                 <ServiceCard 
+                  onPress={() => navigation.navigate("RepayLoan")}
                   image={images.repay_loan_bg}
                   label="Repayment"
                   icon={icons.repayment}
@@ -170,6 +177,7 @@ const DashboardScreen = ({navigation}) => {
                 />
 
                 <ServiceCard 
+                  onPress={() => navigation.navigate("BuyAirtime")}
                   image={images.buy_airtime_bg}
                   label="Buy Airtime"
                   icon={icons.airtime}
@@ -182,6 +190,7 @@ const DashboardScreen = ({navigation}) => {
                 />
 
                 <ServiceCard 
+                  onPress={() => navigation.navigate("BuyData")}
                   image={images.buy_data_bg}
                   label="Buy Data"
                   icon={icons.data}

@@ -68,7 +68,7 @@ const LoanCompleted = ({route, navigation}) => {
 
     <View style={{marginTop: wp(13)}}>
         <TouchableOpacity 
-          onPress={() => navigation.navigate("Dashboard")}
+          onPress={() => navigation.navigate("Tab")}
         style={styles.loginButton}>
           <Text style={styles.loginTxtbutton}>Back to Dashboard</Text>
 

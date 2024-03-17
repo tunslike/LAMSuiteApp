@@ -21,8 +21,18 @@ import EmployerDetailsScreen from "./KYC/EmployerDetailsScreen";
 import NOKDetailsScreen from "./KYC/NOKDetailsScreen";
 import KYCCompleteScreen from "./KYC/KYCCompleteScreen";
 import DisbursementAccount from "./Loan/DisbursementAccount";
+import ForgotPassword from "./Landing/ForgotPassword";
+import LoanDetailsScreen from "./Loan/LoanDetailsScreen";
+import LoanRepaymentScreen from "./Loan/LoanRepaymentScreen";
+import BuyAirtimeScreen from "./Utility/BuyAirtimeScreen";
+import BuyDataScreen from "./Utility/BuyDataScreen";
 
 export {
+    BuyAirtimeScreen,
+    BuyDataScreen,
+    LoanRepaymentScreen,
+    LoanDetailsScreen,
+    ForgotPassword,
     DisbursementAccount,
     KYCCompleteScreen,
     NOKDetailsScreen,

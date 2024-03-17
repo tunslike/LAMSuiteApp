@@ -22,8 +22,14 @@ import BiodataTextbox from "./BiodataTextbox";
 import AccountCardNoLoan from "./AccountCardNoLoan";
 import DropdownTextBox from "./DropdownTextBox";
 import BankAccountNumberCard from "./BankAccountNumberCard";
+import LoanHistoryCard from "./LoanHistoryCard";
+import PaymentScheduleCard from "./PaymentScheduleCard";
+import LoanPaymentTypeCard from "./LoanPaymentTypeCard";
 
 export {
+    LoanPaymentTypeCard,
+    PaymentScheduleCard,
+    LoanHistoryCard,
     BankAccountNumberCard,
     DropdownTextBox,
     AccountCardNoLoan,
