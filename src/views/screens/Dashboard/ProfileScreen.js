@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, {useState, useContext} from 'react'
 import { 
   Image,
   ImageBackground,
@@ -14,67 +14,30 @@ import {
   import axios from 'axios';
   import { useSelector, useDispatch } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { GreenCheckBox, BreakdownEntry, Loader, InnerHeader } from '../../components';
+  import { ProfileLinks, Loader, InnerHeader } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const ProfileScreen = ({navigation}) => {
 
-  // CUSTOMER STORE
-  const customerID = useSelector((state) => state.customer.customerData.customer_ENTRY_ID);
-  const accountNumberID = useSelector((state) => state.customer.bankAccountID);
+  const {ExitAuthenticatedUser} = useContext(AuthContext);
 
-  // STATES
-  const [isLoading, setIsLoading] = useState(false)
 
-  
+    // function to load facilities
+    const LogoutAuthenticatedUser = () => {
 
-    // functiont to submit client loan request
-    const submitCustomerLoanRequest = () => {
-
-      //data
-    const data = {
-      customerID : customerID,
-      loanAmount : loanAmt,
-      loanTenor : loanSetTenor,
-      loanPurpose : loanSetPurpose,
-      accountID : accountNumberID
-  }
-
-    console.log(data);
-
-    setIsLoading(true);
-
-      axios.post(APIBaseUrl.developmentUrl + 'loanService/submitCustomerLoanRequest',data,{
-        headers: {
-          'Content-Type' : 'application/json',
-          'Access-Control-Allow-Origin': 'http://localhost:8082'
-        }
-      })
-      .then(response => {
-
-        setIsLoading(false)
-        
-        if(response.data.responseCode == 200) {
-  
-            // SHOW SUCCESS
-            navigation.navigate("LoanCompleted", {loanAmount:loanAmt, loanTenor:loanSetTenor});
-            return
-        
-        }else{
-
-          Alert.alert('Oops! Unable to process your request, please try again')
-
-        }
-
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      Alert.alert("Finserve", 'Do you want to logout?', [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'Yes', onPress: () => {
+          ExitAuthenticatedUser();
+        }},
+      ]);
     }
-    // end of function
-
-
+  // end of function
 
   return (
     <ScrollView style={{
@@ -82,11 +45,61 @@ const ProfileScreen = ({navigation}) => {
         backgroundColor: COLORS.BackgroundGrey
       }}>
 
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
-
       <InnerHeader onPress={() => navigation.goBack()} title="Profile" />
+
+      <Text style={styles.headerTitle}>Account</Text>
+      <View style={styles.midBody}>
+          <ProfileLinks 
+            icon={icons.profile_person}
+            linkName="View Profile"
+          />
+          <ProfileLinks 
+          icon={icons.profile_notification}
+          linkName="Notification"
+          />
+          <ProfileLinks 
+          icon={icons.change_password}
+          linkName="Change Password"
+          />
+      </View>
+
+      <Text style={styles.headerTitle}>Support</Text>
+      <View style={styles.midBody}>
+          <ProfileLinks 
+            icon={icons.send_email}
+            linkName="Need Help? Send Email"
+          />
+          <ProfileLinks 
+          icon={icons.faq}
+          linkName="Frequently Asked Questions"
+          />
+      </View>
+
+      <Text style={styles.headerTitle}>About Us</Text>
+      <View style={styles.midBody}>
+          <ProfileLinks 
+            icon={icons.profile_about}
+            linkName="About Finserve"
+          />
+          <ProfileLinks 
+          icon={icons.profile_privacy}
+          linkName="Privacy Policy"
+          />
+          <ProfileLinks 
+          icon={icons.agreement}
+          linkName="Terms of agreement"
+          />
+          <ProfileLinks 
+          icon={icons.feedback}
+          linkName="Give us Feedback"
+          />
+      </View>
+
+      <TouchableOpacity 
+        onPress={() => LogoutAuthenticatedUser()}
+        style={styles.logoutbtn}>
+        <Text style={styles.logoutTxt}>Logout</Text>
+      </TouchableOpacity>
 
     
 
@@ -95,7 +108,40 @@ const ProfileScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
-
+  logoutTxt: {
+    color: COLORS.White,
+    textAlign: 'center',
+    fontFamily: FONTS.POPPINS_MEDIUM,
+    fontSize: wp(3.5)
+  },
+  logoutbtn: {
+    backgroundColor: COLORS.primaryRed,
+    marginTop: wp(5),
+    width: wp(53),
+    alignSelf: 'center',
+    paddingHorizontal: wp(4),
+    paddingVertical: wp(3),
+    marginHorizontal: wp(6),
+    marginBottom: wp(28),
+    borderRadius: wp(7)
+  },
+  headerTitle: {
+    marginTop: wp(4),
+    fontFamily: FONTS.POPPINS_REGULAR,
+    color: COLORS.TextColorGrey,
+    fontSize: wp(3),
+    marginLeft: wp(10)
+  },
+  midBody: {
+    paddingTop: wp(8),
+    borderRadius: wp(8),
+    marginHorizontal: wp(2),
+    backgroundColor: COLORS.White,
+    marginTop: wp(1.5),
+    paddingBottom: wp(4),
+    padding: wp(3),
+    marginTop: wp(2),
+  },
 })
 
 export default ProfileScreen;

@@ -25,8 +25,14 @@ import BankAccountNumberCard from "./BankAccountNumberCard";
 import LoanHistoryCard from "./LoanHistoryCard";
 import PaymentScheduleCard from "./PaymentScheduleCard";
 import LoanPaymentTypeCard from "./LoanPaymentTypeCard";
+import KYCStatusCard from "./KYCStatusCard";
+import KYCStatusCardItem from "./KYCStatusCardItem";
+import ProfileLinks from "./ProfileLinks";
 
 export {
+    ProfileLinks,
+    KYCStatusCardItem,
+    KYCStatusCard,
     LoanPaymentTypeCard,
     PaymentScheduleCard,
     LoanHistoryCard,

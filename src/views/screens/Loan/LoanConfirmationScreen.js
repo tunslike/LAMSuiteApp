@@ -23,6 +23,7 @@ const LoanConfirmationScreen = ({route, navigation}) => {
   // CUSTOMER STORE
   const customerID = useSelector((state) => state.customer.customerData.customer_ENTRY_ID);
   const accountNumberID = useSelector((state) => state.customer.bankAccountID);
+  const accountBankDetails = useSelector((state) => state.customer.bankAccountDetails);
 
   // ROUTE VALUE
   const {loanAmt, monthlyRepay, totalRepay, loanSetTenor, loanSetPurpose, repaySetDate, interestRate} = route.params;
@@ -157,7 +158,7 @@ const LoanConfirmationScreen = ({route, navigation}) => {
       <BreakdownEntry 
             header1="Disbursement Account" 
             header2="Loan Purpose" 
-            desc1="GTB Bank | 1*******9203" 
+            desc1={accountBankDetails}
             desc2={loanSetPurpose} 
             descStyle={{
                 color: COLORS.ButtonBorderBlue

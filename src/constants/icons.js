@@ -37,8 +37,36 @@ const payment = require("../assets/icons/payment.png")
 const calender = require("../assets/icons/calender.png")
 const bank_transfer = require("../assets/icons/bank_transfer.png")
 const phone_transfer = require("../assets/icons/phone_transfer.png")
+const kyc_user = require("../assets/icons/kyc_user.png")
+const kyc_employer = require("../assets/icons/kyc_employer.png")
+const kyc_nok = require("../assets/icons/kyc_nok.png")
+const kyc_upload = require("../assets/icons/kyc_upload.png")
+const profile_arrow = require("../assets/icons/profile_arrow.png")
+const profile_person = require("../assets/icons/profile_person.png")
+const profile_notification = require("../assets/icons/profile_notification.png")
+const profile_privacy = require("../assets/icons/profile_privacy.png")
+const profile_about = require("../assets/icons/profile_about.png")
+const send_email = require("../assets/icons/send_email.png")
+const faq = require("../assets/icons/faq.png")
+const change_password = require("../assets/icons/change_password.png")
+const feedback = require("../assets/icons/feedback.png")
+const agreement = require("../assets/icons/agreement.png")
 
 export default {
+    agreement,
+    feedback,
+    change_password,
+    faq,
+    send_email,
+    profile_about,
+    profile_privacy,
+    profile_person,
+    profile_notification,
+    profile_arrow,
+    kyc_employer,
+    kyc_nok,
+    kyc_upload,
+    kyc_user,
     phone_transfer, 
     bank_transfer,
     payment,

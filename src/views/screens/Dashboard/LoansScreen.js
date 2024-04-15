@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { 
   Image,
   ImageBackground,
@@ -23,29 +23,25 @@ const LoansScreen = ({navigation}) => {
 
   // CUSTOMER STORE
   const customerID = useSelector((state) => state.customer.customerData.customer_ENTRY_ID);
-  const loanData = useSelector((state) => state.customer.loanData);
   const accountNumberID = useSelector((state) => state.customer.bankAccountID);
 
   // STATES
   const [isLoading, setIsLoading] = useState(false)
+  const [loanDetails, setLoanDetails] = useState('');
 
     // functiont to submit client loan request
-    const submitCustomerLoanRequest = () => {
+    const fetchCustomerLoanDetails = () => {
 
       //data
     const data = {
-      customerID : customerID,
-      loanAmount : loanAmt,
-      loanTenor : loanSetTenor,
-      loanPurpose : loanSetPurpose,
-      accountID : accountNumberID
+      customerID : customerID
   }
 
     console.log(data);
 
     setIsLoading(true);
 
-      axios.post(APIBaseUrl.developmentUrl + 'loanService/submitCustomerLoanRequest',data,{
+      axios.post(APIBaseUrl.developmentUrl + 'loanService/confirmCustomerLoan',data,{
         headers: {
           'Content-Type' : 'application/json',
           'Access-Control-Allow-Origin': 'http://localhost:8082'
@@ -54,18 +50,11 @@ const LoansScreen = ({navigation}) => {
       .then(response => {
 
         setIsLoading(false)
-        
-        if(response.data.responseCode == 200) {
-  
-            // SHOW SUCCESS
-            navigation.navigate("LoanCompleted", {loanAmount:loanAmt, loanTenor:loanSetTenor});
-            return
-        
-        }else{
 
-          Alert.alert('Oops! Unable to process your request, please try again')
-
-        }
+        console.log(response.data)
+        
+        setLoanDetails(response.data)
+        
 
       })
       .catch(error => {
@@ -73,6 +62,14 @@ const LoansScreen = ({navigation}) => {
       });
     }
     // end of function
+
+
+      //USE EFFECT
+  useEffect(() => {
+
+    fetchCustomerLoanDetails();
+
+  }, []);
 
 
 
@@ -89,42 +86,79 @@ const LoansScreen = ({navigation}) => {
       <InnerHeader onPress={() => navigation.goBack()} title="Manage Loan" />
 
 
-      <View style={styles.midBodyNoPadding}>
-      <Text style={styles.hdrTxt}>Review your loan profile</Text>
-      <View style={styles.creditScore}>
-      <Image source={icons.thumbdown} 
-        style={{
-          height: wp(3.5), width: wp(3.5), resizeMode: 'contain', tintColor: COLORS.primaryRed
-        }}
-      />
-        <Text style={styles.creditTxt}>Your loan credit score is 40/120</Text>
-      </View>
-      </View>
+      {loanDetails.credit_SCORE && 
+        <View style={styles.midBodyNoPadding}>
+        <Text style={styles.hdrTxt}>Review your loan profile</Text>
+        <View style={styles.creditScore}>
+        <Image source={icons.thumbdown} 
+          style={{
+            height: wp(3.5), width: wp(3.5), resizeMode: 'contain', tintColor: COLORS.primaryRed
+          }}
+        />
+          <Text style={styles.creditTxt}>Your loan credit score is 40/120</Text>
+        </View>
+        </View>
+      }
+   
 
 <Text style={styles.headerTitle}>Active Loan</Text>
 
-      {(loanData.loan_STATUS == 1) &&
+      {loanDetails.loan_ID &&
     
           <View style={styles.midBody}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("LoanDetails", {loadID: loanData.loan_ID})}
+            onPress={() => (loanDetails.loan_STATUS == 3) ? navigation.navigate("LoanDetails", {loadID: loanDetails.loan_ID}) : null}
           >
                 <View style={styles.statusRow}>
-                      <View style={styles.activeBox}>
-                        <Text style={styles.preTitle}>APPROVED</Text>
-                      </View>
-                      <Text style={styles.runningStatus}>{moment(loanData.authorise_DISBURSE_DATE).format('DD-MMM-YYYY')}</Text>
+
+                {
+                  (loanDetails.loan_STATUS == 3) &&
+                  <View style={styles.activeBox}>
+                     <Text style={styles.preTitle}>AUTHORISED</Text>
+                  </View>
+                }
+                {
+                  (loanDetails.loan_STATUS != 3) &&
+                    <View style={[styles.activeBox_pending]}>
+                      <Text style={styles.preTitle_pending}>PENDING REVIEW</Text>
+                    </View>
+                }
+
+                      <Text style={styles.runningStatus}>{moment(loanDetails.authorise_DISBURSE_DATE).format('DD-MMM-YYYY')}</Text>
                 </View>
-                <Text style={styles.loanPurpose}>{loanData.loan_PURPOSE}</Text>
-                <Text style={styles.loanAmt}>₦ {Intl.NumberFormat('en-US').format(loanData.loan_AMOUNT)}</Text>
-                <Text style={styles.loanDesc}>Your loan request has been approved and disbursed</Text>
+                <Text style={styles.loanPurpose}>{loanDetails.loan_PURPOSE}</Text>
+                <Text style={styles.loanAmt}>₦ {Intl.NumberFormat('en-US').format(loanDetails.loan_AMOUNT)}</Text>
+                {loanDetails.loan_STATUS == 3 &&
+                  <Text style={styles.loanDesc}>Your loan request has been approved and disbursed</Text>
+                }
+
+                {loanDetails.loan_STATUS != 3 &&
+                  <Text style={styles.loanDesc}>Your loan request has been approved and is being reviewed</Text>
+                }
           </TouchableOpacity>
         </View>
       }
 
+      {
+        !loanDetails.loan_ID &&
+        <View style={styles.loanHistoryBody}>
+          <Text style={styles.textHistory}>You do not have an active loan!</Text>
+        </View>
+      }
 
       <Text style={styles.headerTitle}>Loan History</Text>
-      <LoanHistoryCard 
+
+
+      {!loanDetails.loan_HISTORY &&
+          <View style={styles.loanHistoryBody}>
+            <Text style={styles.textHistory}>Your loan history will show here</Text>
+          </View>
+      }
+
+      {loanDetails.loan_HISTORY && 
+
+        <View>
+        <LoanHistoryCard 
         onPress={() => navigation.navigate("LoanDetails")}
         loanPurpose="House Rent"
         loanAmount="N57,000"
@@ -145,7 +179,9 @@ const LoansScreen = ({navigation}) => {
         status="Completed"
         date="November 03rd, 2023"
       />
-    
+        </View>
+      
+      }    
 
     </ScrollView>
   )
@@ -203,6 +239,12 @@ const styles = StyleSheet.create({
     marginTop: wp(2),
     marginLeft: wp(3.2)
 },
+
+textHistory: {
+  fontFamily: FONTS.POPPINS_REGULAR,
+  fontSize: wp(3),
+  color: COLORS.primaryRed
+},
   loanAmt: {
     fontFamily: FONTS.POPPINS_SEMIBOLD,
     fontSize: wp(4.5),
@@ -227,10 +269,39 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       marginLeft: wp(2)
   },
+
+  activeBox_pending: {
+    borderColor: COLORS.accountNumberColor,
+      borderWidth: 1,
+      borderStyle: 'solid',
+      padding: wp(0.6),
+      borderRadius: wp(5),
+      width:'35%',
+      alignItems: 'center',
+      marginLeft: wp(2)
+  },
+  
   preTitle: {
     fontFamily: FONTS.POPPINS_MEDIUM,
     fontSize: wp(3),
     color: COLORS.successGreen,
+  },
+
+  preTitle_pending: {
+    fontFamily: FONTS.POPPINS_MEDIUM,
+    fontSize: wp(3),
+    color: COLORS.accountNumberColor,
+  },
+  loanHistoryBody: {
+    borderRadius: wp(8),
+    marginHorizontal: wp(2),
+    backgroundColor: COLORS.White,
+    marginTop: wp(1.5),
+    paddingBottom: wp(4),
+    padding: wp(3),
+    justifyContent: 'center',
+    alignItems: 'center',
+    minHeight: wp(35)
   },
   midBody: {
     borderRadius: wp(8),

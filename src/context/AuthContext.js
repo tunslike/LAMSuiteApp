@@ -1,10 +1,19 @@
 import React, {createContext, useState, useEffect} from 'react';
-import { Keyboard } from 'react-native';
+import {Alert, Keyboard } from 'react-native';
 import axios from 'axios';
 import {APIBaseUrl} from '../constants';
 import { useDispatch } from 'react-redux';
-import {updateCustomerData, updateLoadData, updateCustomerEmployerDetails, 
-        updateEmployerLoanProfile} from '../store/customerSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+            updateCustomerData, 
+            updateLoadData, 
+            updateCustomerEmployerDetails, 
+            updateEmployerLoanProfile, 
+            updateBiodataStatus, 
+            updateDOCdataStatus, 
+            updateEmpdataStatus,
+            updateNOKdataStatus
+        } from '../store/customerSlice';
 
 export const AuthContext = createContext();
 
@@ -61,40 +70,55 @@ export const AuthProvider = ({children, navigation}) => {
                    dispatch(updateEmployerLoanProfile(response.data.employerloanProfile))
                    dispatch(updateCustomerEmployerDetails(response.data.customerEmployerDetails))
 
+                   dispatch(updateBiodataStatus(response.data.customer.is_RECORD_FOUND ? 1 : 0))
+                   dispatch(updateEmpdataStatus(response.data.customer.is_EMPLOYER_FOUND ? 1 : 0))
+                   dispatch(updateNOKdataStatus(response.data.customer.is_NOK_FOUND ? 1 : 0))
+                   dispatch(updateDOCdataStatus(response.data.customer.is_DOCUMENT_FOUND ? 1 : 0))
+
+                   AsyncStorage.setItem('userLogged', response.data.customer.customer_ENTRY_ID);
+
                    setCustomerFullname(response.data.customer.full_NAME);
                    setUserToken(response.data.customer.customer_ENTRY_ID);
                    
               }else {
-  
-                  console.log(response.data.statusMessage)
-                  //show error message
-                  setErrorMessage(response.data.statusMessage);
-  
-                  //set loading off
-                  setIsLoading(false)
-  
-                  return;
+
+                setIsLoading(false)
+                Alert.alert("Finserve", "Incorrect Username or Pin Number!")
+                return;
               }
           })
           .catch(error => {
   
               setIsLoading(false);
               setErrorMessage('Service is unavailable, please retry!')
+              Alert.alert("Finserve", "Incorrect Username or Pin Number!")
   
               console.log(error);
           });
 
-
-
     }
     // END OF FUNCTION
+
+    // FUNCTION TO LOGOUT USER
+      const ExitAuthenticatedUser = async () => {
+
+        try{
+    
+            // disable tokens
+            setUserToken(null)
+
+        }catch(exception) {
+            console.log(exception)
+        }
+    }// END OF FUNCTION
 
     return(
         <AuthContext.Provider value={{
                                         userToken, 
                                         ValidateCustomerLogin, 
                                         isLoading,
-                                        customerFullname
+                                        customerFullname,
+                                        ExitAuthenticatedUser
                                     }}>
             {children}
         </AuthContext.Provider>

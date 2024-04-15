@@ -26,8 +26,12 @@ import LoanDetailsScreen from "./Loan/LoanDetailsScreen";
 import LoanRepaymentScreen from "./Loan/LoanRepaymentScreen";
 import BuyAirtimeScreen from "./Utility/BuyAirtimeScreen";
 import BuyDataScreen from "./Utility/BuyDataScreen";
+import KYCStatusScreen from "./KYC/KYCStatusScreen";
+import BankTransferRepayment from "./Loan/BankTransferRepayment";
 
 export {
+    BankTransferRepayment,
+    KYCStatusScreen,
     BuyAirtimeScreen,
     BuyDataScreen,
     LoanRepaymentScreen,

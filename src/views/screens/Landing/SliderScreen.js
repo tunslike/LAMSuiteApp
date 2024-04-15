@@ -110,7 +110,10 @@ console.log(activateDotIndex)
               <SliderButton onPress={() => {
               _carouselRef.current.snapToItem(activateDotIndex + 1)
               }} type={1} label="Continue" />
-              <SliderButton type={2} label="Skip" />
+              <SliderButton 
+                onPress={() => setActiveDotIndex(2)}
+                type={2} 
+                label="Skip" />
         </View>
       }
 
@@ -121,7 +124,7 @@ console.log(activateDotIndex)
 const styles = StyleSheet.create({
   loginTxt: {
     fontFamily: FONTS.POPPINS_MEDIUM,
-    fontSize:  wp(3.5),
+    fontSize:  wp(3.3),
     color: COLORS.primaryRed,
     fontWeight: '400',
     marginRight: wp(1.5),
@@ -135,8 +138,8 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: COLORS.primaryRed,
     borderWidth: 1,
-    paddingHorizontal: wp(7),
-    paddingVertical: Platform.OS === 'ios' ? wp(3) :  wp(2.8),
+    paddingHorizontal: wp(7.5),
+    paddingVertical: Platform.OS === 'ios' ? wp(3.2) :  wp(2.8),
   },
   slideBtns: {
     marginBottom: wp(23)

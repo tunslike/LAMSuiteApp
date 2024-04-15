@@ -6,34 +6,27 @@ import { StyleSheet,
          import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { FONTS, COLORS, icons } from '../../constants'
 
-const LoanPaymentTypeCard = ({channelName, icon, active, accountNo, onPress}) => {
+const KYCStatusCard = ({status, onPress, icon}) => {
   return (
     <TouchableOpacity 
     onPress={onPress}
-    style={[styles.container, {borderColor: (active) ? COLORS.primaryRed : COLORS.TextBoxBorderGrey,}]}>
+    style={[styles.container, {borderColor: COLORS.TextBoxBorderGrey}]}>
           <View style={styles.iconBox}>
           <Image source={icon} 
           style={{
-            height: wp(5), width: wp(5), resizeMode: 'contain', tintColor: (active) ? COLORS.primaryRed : COLORS.ButtonBorderBlue
+            height: wp(5), width: wp(5), resizeMode: 'contain', tintColor: COLORS.primaryRed
           }}
         />
           </View>
            
                   <View style={{flex: 1}}>
-                      <Text style={[styles.acctName, {color: (active) ? COLORS.primaryRed : COLORS.primaryBlue,}]}>{channelName}</Text>
+                      <Text style={[styles.acctName, {color: COLORS.primaryBlue}]}>KYC Status</Text>
                   </View>
-
-                  {(active) && 
-                    <TouchableOpacity style={[styles.rmvBody, {backgroundColor: COLORS.primaryRed}]}>
-                        <Text style={[styles.removetxt, {color: COLORS.White}]}>Active</Text>
-                    </TouchableOpacity>
-                  }
-
-                  {(!active) && 
+               
                     <TouchableOpacity style={styles.rmvBody}>
-                      <Text style={styles.removetxt}>Pay now</Text>
+                      <Text style={styles.removetxt}>{status}</Text>
                     </TouchableOpacity>
-                  }                  
+                              
     </TouchableOpacity>
   )
 }
@@ -57,7 +50,7 @@ const styles = StyleSheet.create({
   },
   acctName: {
     fontFamily: FONTS.POPPINS_MEDIUM,
-    fontSize: wp(3.1)
+    fontSize: wp(3.3)
   },
   iconBox: {
     padding:wp(1.5),
@@ -65,18 +58,18 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.ButtonBgGrey
 },
   container: {
-      borderWidth: 1,
-      borderStyle: 'solid',
+    backgroundColor: COLORS.White,
       flexDirection: 'row',
       justifyContent: 'flex-start',
       alignItems: 'center',
       borderRadius: wp(4),
-      columnGap: wp(5),
-      marginHorizontal: wp(6),
+      columnGap: wp(3),
+      marginHorizontal: wp(2),
       paddingHorizontal: wp(3),
       paddingVertical: wp(3),
       marginBottom: wp(3.3)
+
   },
 })
 
-export default LoanPaymentTypeCard;
+export default KYCStatusCard;

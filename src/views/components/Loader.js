@@ -1,51 +1,36 @@
 import React from 'react'
 import { StyleSheet, 
-        Text, 
-        View, 
-        ActivityIndicator, Dimensions
-        } from 'react-native';
-import { COLORS, images, FONTS, icons } from '../../constants';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+         Text, 
+         View,
+         ActivityIndicator
+      } from 'react-native'
+         import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { FONTS, COLORS, icons } from '../../constants'
 
-
-const Loader = ({title}) => {
-    const { width, height } = Dimensions.get("window");
-
+const Loader = () => {
   return (
-    <View style={[styles.container, {height, width}]}>
-    <ActivityIndicator size="large" style={styles.indicator}/>
-    <Text style={styles.loaderText}>{title}</Text>
+    <View style={styles.preloader}>
+      <ActivityIndicator style={styles.loader} color={COLORS.White} size={'large'} />
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-    indicator: {
-        padding: wp(5),
-        backgroundColor: COLORS.White,
-        borderRadius: wp(5)
-    },
-    loaderText: {
-        color: COLORS.White,
-        fontSize: wp(3),
-        marginTop: wp(5),
-        fontFamily: FONTS.POPPINS_SEMIBOLD,
-    },
-    loaderBody: {
-        backgroundColor: COLORS.White,
-        height: wp(25),
-        width: wp(25),
-        borderRadius: wp(3)
-    },
-    container : {
-        position: 'absolute',
-        zIndex: 4000,
-        left:wp(-6.25),
-        top: wp(-6.3),
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
+
+  loader: {
+    marginTop: hp(5)
+  },
+  preloader: {
+      position: 'absolute',
+      zIndex: 9999,
+      alignSelf: 'center',
+      top: '40%',
+      backgroundColor: COLORS.darkGrayTransparent,
+      height: wp(30),
+      width: wp(30),
+      borderRadius: wp(10),
+  },
+   
 })
 
 export default Loader;

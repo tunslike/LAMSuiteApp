@@ -25,7 +25,7 @@ const OnboardingTextBox = ({ placeholder,maxlength, phone, onFocus, onChange, va
             onChangeText={onChange}
             style={styles.inputStyle}
             placeholder={placeholder}
-            placeholderTextColor={COLORS.darkGray}
+            placeholderTextColor="#bfbfbf"
             keyboardType={(phone == 1) ? "phone-pad" : "default"}
             autoCapitalize='none'
             onSubmitEditing={Keyboard.dismiss}

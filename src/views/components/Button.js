@@ -24,7 +24,7 @@ const Button = ({label, onPress}) => {
 
 const styles = StyleSheet.create({
   labelTxt: {
-    fontFamily: FONTS.POPPINS_MEDIUM,
+    fontFamily: FONTS.POPPINS_SEMIBOLD,
     fontSize: wp(3.8),
     color: COLORS.primaryRed,
     fontWeight: '400',
@@ -38,12 +38,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: COLORS.White,
     alignSelf: 'center',
-    borderRadius: wp(4.5),
+    borderRadius: wp(5),
     borderWidth: 1,
     borderStyle: 'solid',
     paddingHorizontal: wp(8),
-    paddingVertical: Platform.OS === 'ios' ? wp(3.5) : wp(2.7),
-
+    paddingVertical: Platform.OS === 'ios' ? wp(3.3) : wp(2.7),
    }
 })
 

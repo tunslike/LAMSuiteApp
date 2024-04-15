@@ -147,7 +147,7 @@ const CreateAccountScreen = ({navigation}) => {
               </View>
 
               <View style={styles.btnBox}>
-              <FormButton onPress={handleSubmit} label="Create an account" />
+              <FormButton onPress={handleSubmit} label="Continue" />
               <TouchableOpacity
                   onPress={() => navigation.navigate("Login")}
                   style={styles.signBox}>

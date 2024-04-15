@@ -22,6 +22,7 @@ const COLORS = {
     balanceAmountColor: '#FEF6E6',
     tabColorActive: '#F3F5FC',
     textLoanAmount: '#1D2D66',
+    darkGrayTransparent: 'rgba(74, 81, 97, 0.7)'
 
 }
 

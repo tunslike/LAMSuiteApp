@@ -12,10 +12,10 @@ import {
   ScrollView,
   Dimensions} from 'react-native';
   import axios from 'axios';
-  import { COLORS, images, FONTS, icons } from '../../../constants';
-  import { AccountCard, AccountCardNoLoan, ServiceCard, GreenCheckBox, TransactionCard, Loader, CreditRating } from '../../components';
+  import { COLORS, images, FONTS, icons, APIBaseUrl } from '../../../constants';
+  import { AccountCard, AccountCardNoLoan, ServiceCard, GreenCheckBox, TransactionCard, Loader, CreditRating, KYCStatusCard } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
-  import { cleanCustomerFullname } from '../../../constants';
+  import { SafeAreaView } from 'react-native-safe-area-context';
   import { useSelector, useDispatch } from 'react-redux';
   import { updateApprovedloanAmount } from '../../../store/customerSlice';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -26,6 +26,11 @@ const DashboardScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const customerData = useSelector((state) => state.customer.customerData);
   const loanData = useSelector((state) => state.customer.loanData);
+
+  const biodata = useSelector((state) => state.customer.biodata);
+  const empdata = useSelector((state) => state.customer.empdata);
+  const nokdata = useSelector((state) => state.customer.nokdata);
+
   const customerEmployerDetails = useSelector((state) => state.customer.customerEmployerDetails);
   const employerLoanProfile = useSelector((state) => state.customer.employerLoanProfile);
 
@@ -35,7 +40,10 @@ const DashboardScreen = ({navigation}) => {
   //states
   const [greetings, setGreetings] = useState('');
   const [approvedLoan, setApprovedLoan] = useState(false);
+  const [loanAccount, setLoanAccount] = useState('');
   const [loanAmount, setLoanAmount] = useState(0);
+  const [KYStatus, setKYCStatus] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   // check if pre-approved amount is there
   const checkPreApprovedAmount = () => {
@@ -53,6 +61,37 @@ const DashboardScreen = ({navigation}) => {
     }
   }
   // end of function
+
+  // function to verify data
+  const validateCustomerLoan = () => {
+
+    //data
+    const data = {
+      "customerID" : customerData.customer_ENTRY_ID,
+    }
+
+    setIsLoading(true);
+
+      axios.post(APIBaseUrl.developmentUrl + 'loanService/confirmCustomerLoan',data,{
+        headers: {
+          'Content-Type' : 'application/json',
+          'Access-Control-Allow-Origin': 'http://localhost:8082'
+        }
+      })
+      .then(response => {
+
+        setIsLoading(false)
+
+        console.log(response.data)
+
+        setLoanAccount(response.data)
+
+      })
+      .catch(error => {
+        console.log(error + "1");
+      });
+
+  }// end of function 
 
   // return customer first name
   const cleanCustomerFullname = (customerFullname) => {
@@ -78,6 +117,12 @@ const DashboardScreen = ({navigation}) => {
   //USE EFFECT
   useEffect(() => {
 
+    if(biodata == 1 && nokdata == 1 && empdata == 1) {
+      setKYCStatus(true);
+    }
+
+    validateCustomerLoan();
+
     //check preapproved amount
     checkPreApprovedAmount();
 
@@ -91,6 +136,10 @@ const DashboardScreen = ({navigation}) => {
       flexGrow: 1,
       backgroundColor: COLORS.BackgroundGrey
     }}>
+
+    {isLoading &&
+      <Loader />
+    }
 
     <View style={styles.header}>
           <View style={styles.logoArea}>
@@ -118,23 +167,33 @@ const DashboardScreen = ({navigation}) => {
 
         <View style={styles.dashboardArea}>
 
-        {(!loanData) &&
+        {
+          !KYStatus &&
+          <KYCStatusCard 
+          onPress={() => navigation.navigate("KYCStatus")}
+          icon={icons.profile} 
+          status="Pending" 
+      />
+        }
+   
+
+        {(loanAccount.loan_STATUS != 3) &&
           <AccountCardNoLoan />
         }
 
-        {(loanData) &&
+        {(loanAccount.loan_STATUS == 3) &&
           <AccountCard 
-            loanNumber = {loanData.loan_NUMBER}
-            loanBalance = {loanData.loan_AMOUNT}
-            nextPayment = {loanData.monthly_REPAYMENT}
-            employer = {loanData.employer_NAME}
-            status = {loanData.loan_STATUS}
+            loanNumber = {loanAccount.loan_NUMBER}
+            loanBalance = {loanAccount.loan_AMOUNT}
+            nextPayment = {loanAccount.monthly_REPAYMENT}
+            employer = {loanAccount.employer_NAME}
+            status = {loanAccount.loan_STATUS}
           />
         }
 
         </View>
 
-        {(approvedLoan && loanData.loan_STATUS == 1) && 
+        {(approvedLoan && loanAccount.loan_STATUS == null) && 
                 <TouchableOpacity 
                     onPress={() => navigation.navigate("NewLoan")}
                     style={styles.apprvLoan}>
@@ -164,7 +223,7 @@ const DashboardScreen = ({navigation}) => {
                 />
 
                 <ServiceCard 
-                  onPress={() => navigation.navigate("RepayLoan")}
+                  onPress={() => (loanAccount.loan_ID && loanAccount.loan_STATUS == 3) ? navigation.navigate("RepayLoan") : Alert.alert("Finserve", "Sorry, you do not have a running loan!")}
                   image={images.repay_loan_bg}
                   label="Repayment"
                   icon={icons.repayment}
@@ -214,6 +273,10 @@ const DashboardScreen = ({navigation}) => {
                     </TouchableOpacity>
                   </View>
                 <View style={styles.transactionList}>
+
+                <Text style={styles.noTransTxt}>No transaction found!</Text>
+
+                {/**
                       <TransactionCard
                         icon={icons.airtime}
                         amount="10,000"
@@ -245,6 +308,7 @@ const DashboardScreen = ({navigation}) => {
                   date="01-Jan-2024"
                   narration="Airtime MTN Recharge"
                 />
+                */}
                 </View>
         </View>
 
@@ -254,8 +318,16 @@ const DashboardScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+  noTransTxt: {
+    alignSelf: 'center',
+    fontFamily: FONTS.POPPINS_REGULAR,
+    fontSize: wp(3),
+    color: COLORS.sliderDescText,
+    marginBottom: wp(10)
+  },
   transactionList: {
-    marginVertical: wp(5)
+    marginVertical: wp(5),
+    paddingBottom: wp(5)
   },
   viewTxt: {
     fontFamily: FONTS.POPPINS_REGULAR,

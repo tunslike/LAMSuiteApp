@@ -29,7 +29,7 @@ const AccountCard = ({loanNumber, loanBalance, nextPayment, employer, status }) 
           <View style={styles.loanStatus}>
               <Text style={styles.txtStatus}>Status</Text>
 
-              {(status == 1) &&
+              {(status == 3) &&
                   <View style={styles.loanFlag}>
                   <Image source={icons.check} 
                     style={{

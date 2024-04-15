@@ -6,32 +6,32 @@ import { StyleSheet,
          import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { FONTS, COLORS, icons } from '../../constants'
 
-const LoanPaymentTypeCard = ({channelName, icon, active, accountNo, onPress}) => {
+const KYCStatusCardItem = ({channelName, icon, active, accountNo, onPress}) => {
   return (
     <TouchableOpacity 
     onPress={onPress}
-    style={[styles.container, {borderColor: (active) ? COLORS.primaryRed : COLORS.TextBoxBorderGrey,}]}>
+    style={[styles.container, {borderColor: COLORS.TextBoxBorderGrey}]}>
           <View style={styles.iconBox}>
           <Image source={icon} 
           style={{
-            height: wp(5), width: wp(5), resizeMode: 'contain', tintColor: (active) ? COLORS.primaryRed : COLORS.ButtonBorderBlue
+            height: wp(5), width: wp(5), resizeMode: 'contain', tintColor: COLORS.ButtonBorderBlue
           }}
         />
           </View>
            
                   <View style={{flex: 1}}>
-                      <Text style={[styles.acctName, {color: (active) ? COLORS.primaryRed : COLORS.primaryBlue,}]}>{channelName}</Text>
+                      <Text style={[styles.acctName, {color: COLORS.primaryBlue}]}>{channelName}</Text>
                   </View>
 
                   {(active) && 
-                    <TouchableOpacity style={[styles.rmvBody, {backgroundColor: COLORS.primaryRed}]}>
-                        <Text style={[styles.removetxt, {color: COLORS.White}]}>Active</Text>
+                    <TouchableOpacity style={styles.rmvBody}>
+                        <Text style={[styles.removetxt, {color: COLORS.successGreen}]}>Completed</Text>
                     </TouchableOpacity>
                   }
 
                   {(!active) && 
                     <TouchableOpacity style={styles.rmvBody}>
-                      <Text style={styles.removetxt}>Pay now</Text>
+                      <Text style={styles.removetxt}>Pending</Text>
                     </TouchableOpacity>
                   }                  
     </TouchableOpacity>
@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
       paddingHorizontal: wp(3),
       paddingVertical: wp(3),
       marginBottom: wp(3.3)
+
   },
 })
 
-export default LoanPaymentTypeCard;
+export default KYCStatusCardItem;

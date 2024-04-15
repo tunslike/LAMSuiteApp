@@ -18,11 +18,12 @@ import {
   import { SafeAreaView } from 'react-native-safe-area-context';
   import { useDispatch } from 'react-redux';
   import { useSelector } from 'react-redux';
-  import TextLink from 'react-native-text-link';
+  import { SelectList } from 'react-native-dropdown-select-list'
   import DateTimePickerModal from "react-native-modal-datetime-picker";
   import { COLORS, images, FONTS, AppName, APIBaseUrl, icons } from '../../../constants';
-  import { Loader, DropdownTextBox, BiodataTextbox, FormButton, RedCheckBox } from '../../components';
+  import { Loader, DropdownTextBox, BiodataTextbox, FormButton, InnerHeader } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+  import { updateEmpdataStatus } from '../../../store/customerSlice';
 
   const CreateAccountSchema = Yup.object().shape({
     gradelevel: Yup.string()
@@ -46,10 +47,14 @@ import {
 
 const EmployerDetailsScreen = ({navigation}) => {
 
+  const customerData = useSelector((state) => state.customer.customerData);
+
   const [isLoading, setIsLoading] = useState(false)
   const dispatch = useDispatch();
   const customerID = useSelector((state) => state.account.customerEntryID);
   const employerProfileID = useSelector((state) => state.account.employerProfileID);
+  const [employerid, setEmployerID] = useState('');
+  const [profileData, setProfileData] = useState('');
 
   const sectorList = ["Private", "Public", "Government"];
 
@@ -80,8 +85,8 @@ const EmployerDetailsScreen = ({navigation}) => {
 
     //data
     const data = {
-      customerID : customerID,
-      employerProfileID: employerProfileID,
+      customer_id: customerData.customer_ENTRY_ID,
+      employerProfileID: employerid,
       sector: sector,
       grade_level: values.gradelevel,
       service_length: values.servicelength,
@@ -89,6 +94,8 @@ const EmployerDetailsScreen = ({navigation}) => {
       salary_payment_date : values.salarydate,
       annual_salary: values.annualsalary
     };
+
+    console.log(data)
 
     setIsLoading(true);
 
@@ -104,8 +111,10 @@ const EmployerDetailsScreen = ({navigation}) => {
 
         if(response.data.response.responseCode == 200) {
 
-          //update customer entry ID
-          navigation.navigate("NOKDetails");
+          
+          dispatch(updateEmpdataStatus(1));          
+          Alert.alert('Finserve', 'Your Employer details has been saved!')
+          navigation.navigate("KYCStatus");
 
         }else{
 
@@ -121,9 +130,39 @@ const EmployerDetailsScreen = ({navigation}) => {
   }
   // end of function 
 
+  // function to fetch employer profile
+  const fetchEmployerProfile = () => {
+
+    //show loader
+  setIsLoading(true);
+
+  axios.get(APIBaseUrl.developmentUrl + 'customer/getEmployerProfiles',{},{
+    headers: {
+      'Content-Type' : 'application/json',
+      'Access-Control-Allow-Origin': 'http://localhost:8082'
+    }
+  })
+  .then(response => {
+
+    let data = response.data.map((item) => {
+      return {key: item.profile_ID, value: item.company_NAME}
+    })
+
+    setIsLoading(false)
+    setProfileData(data)
+
+  })
+  .catch(error => {
+    console.log(error);
+  });
+}// end of function
+
     //USE EFFECT
     useEffect(() => {
-     
+
+      //fetch providers
+      fetchEmployerProfile();
+
   }, []);
 
   return (
@@ -136,35 +175,17 @@ const EmployerDetailsScreen = ({navigation}) => {
       backgroundColor: COLORS.BackgroundGrey
     }}
  > 
-    <SafeAreaView>
-      <StatusBar barStyle="dark-content" />
 
       {isLoading &&
         <Loader title="Processing your request, please wait..." />
       }
 
-      <View style={{flexDirection: 'row', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center',
-                    paddingRight: wp(4)}}>
-      <View style={styles.logo}>
-      <Image source={images.appLogo} 
-      style={{
-            height: wp(16), width: wp(16), borderRadius: wp(4), resizeMode: 'contain'
-      }} />
-</View>
-<View>
-<View style={styles.nextBody}>
-<Image source={icons.arrow_next} 
-    style={{
-      height: wp(4.1), width: wp(4.1), resizeMode: 'contain', tintColor: COLORS.primaryRed
-    }}
-/>
-<Text style={styles.nextStep}>Next of Kin Details</Text>
-</View>
-<Text style={styles.completeStatus}>Completed 2 of 3</Text>
-</View>
-      </View>
+      <InnerHeader onPress={() => navigation.goBack()} title="Employer Details" />
+
+      {isLoading &&
+        <Loader title="Processing your request, please wait..." />
+      }
+    
     
 
   {/* FORM STARTS HERE */}
@@ -183,11 +204,42 @@ const EmployerDetailsScreen = ({navigation}) => {
     <View>
                   <View style={styles.whiteBG}> 
                   <View style={styles.title}>
-                  <Text style={styles.mainTitle}>Employer Details</Text>
-                  <Text style={styles.titleDesc}>Complete the details below to update your employer details</Text>
+                  <Text style={styles.titleDesc}>Complete your employer details below</Text>
               </View>
 
               <View style={styles.formBox}>
+
+              <View style={styles.dropBox}>
+
+              <SelectList 
+              placeholder="Select employer or company name"
+              searchPlaceholder="Select or search..."
+              setSelected={(val) => setEmployerID(val)} 
+              data={profileData} 
+              fontFamily={FONTS.POPPINS_REGULAR}
+              save="key"
+              boxStyles={styles.dropDown}
+              dropdownStyles={{
+                fontFamily: FONTS.POPPINS_REGULAR,
+                borderColor: COLORS.TextBoxBorderGrey,
+                borderWidth: 1,
+                borderStyle: 'solid',
+                fontSize: wp(3.3),
+              }}
+              dropdownTextStyles={{
+                fontFamily: FONTS.POPPINS_REGULAR,
+                fontSize: wp(3.3),
+                color: COLORS.TextColorGrey
+              }}
+              inputStyles={{
+                fontFamily: FONTS.POPPINS_REGULAR,
+                fontSize: wp(3.2),
+                flex:1,
+                color: COLORS.TextColorGrey
+              }}
+          />
+        
+          </View>
 
       
         <View style={styles.formRow}>
@@ -269,7 +321,6 @@ const EmployerDetailsScreen = ({navigation}) => {
 </Formik>
  {/* FORM ENDS HERE */}
 
-    </SafeAreaView>
     </KeyboardAwareScrollView>
   )
 }
@@ -282,6 +333,17 @@ const styles = StyleSheet.create({
     columnGap: wp(1),
     marginTop: wp(2),
     marginBottom: wp(1)
+  },
+  dropDown: {
+    borderRadius: wp(3),
+    borderColor: COLORS.TextBoxBorderGrey,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    padding: wp(3),
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    columnGap: wp(3)
   },
   nextStep: {
      fontFamily: FONTS.POPPINS_REGULAR,
@@ -303,6 +365,9 @@ const styles = StyleSheet.create({
   },
   btnBox: {
     marginVertical: wp(10)
+},
+dropBox: {
+  marginBottom: wp(5)
 },
   textLinkStyle: {
     fontFamily: FONTS.POPPINS_REGULAR,
@@ -330,12 +395,13 @@ const styles = StyleSheet.create({
     marginBottom: wp(3)
   },
     titleDesc: {
-        marginTop: wp(3),
+      marginLeft: wp(3),
         fontFamily: FONTS.POPPINS_REGULAR,
         fontSize: wp(3),
         width: wp(70),
         lineHeight: wp(5),
-        color: COLORS.disablePrimaryBlue,
+        marginBottom: wp(3),
+        color: COLORS.primaryRed,
     },
     mainTitle: {
         fontFamily: FONTS.POPPINS_SEMIBOLD,
@@ -348,7 +414,7 @@ const styles = StyleSheet.create({
       whiteBG: {
         backgroundColor: COLORS.White,
         padding: wp(4),
-        borderRadius: wp(5),
+        borderRadius: wp(8),
         marginHorizontal: wp(2.9),
         marginTop: hp(3),
         paddingBottom: wp(9)

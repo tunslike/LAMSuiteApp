@@ -12,82 +12,26 @@ import {
   ScrollView,
   Dimensions} from 'react-native';
   import axios from 'axios';
-  import { useIsFocused } from "@react-navigation/native";
-  import { useSelector, useDispatch } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
   import {LoanPaymentTypeCard, Loader, InnerHeader } from '../../components';
-  import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const LoanRepaymentScreen = ({navigation}) => {
+const BankTransferRepayment = ({navigation, route}) => {
 
-  const isFocused = useIsFocused();
 
-  const dispatch = useDispatch();
-
-  // CUSTOMER STORE
-  const customerID = useSelector((state) => state.customer.customerData.customer_ENTRY_ID);
-  const loanData = useSelector((state) => state.customer.loanData);
-  const accountNumberID = useSelector((state) => state.customer.bankAccountID);
-  const loanAmount = useSelector((state) => state.customer.approvedLoanAmount);
-
+  const {payment_amount} = route.params;
 
   // STATES
   const [isLoading, setIsLoading] = useState(false)
-
-  const [defaultAmount, setDefaultAmount] = useState(20000)
-  const [requestAmount, setRequestAmount] = useState(0)
-  const [updatedLoanData, setUpdatedLoanData] = useState('');
-  const [loanBalance, setLoanBalance] = useState(0);
-  const [toggle, setToggle] = useState(1);
-
-  
-  const formatCurrencyText = (value) => {
-    return value;
-  }
-
-  const toggleButton = (value) => {
-    setToggle(value)
-  }
-
-   //function to increase loan value
-   const increaseLoanValue = (type) => {
-
-    let newAmount = defaultAmount;
-
-      if(type == 1){
-
-          if(requestAmount > defaultAmount) {
-
-            newAmount = requestAmount - 5000;
-            setRequestAmount(newAmount);
-          }
-
-      }else if(type == 2) {
-
-          if(requestAmount < loanAmount) {
-
-            newAmount = requestAmount + 5000;
-
-            if(newAmount < loanAmount) {
-              setRequestAmount(newAmount);
-            } 
-          }
-      }
-  }
-  //end of function
+  const [bankDetails, setBankDetails] = useState('');
 
     // function to verify data
-    const validateCustomerLoan = () => {
+    const fetchBankTransferDetails = () => {
 
-      //data
-      const data = {
-        "customerID" : customerID,
-      }
   
       setIsLoading(true);
   
-        axios.post(APIBaseUrl.developmentUrl + 'loanService/confirmCustomerLoan',data,{
+        axios.get(APIBaseUrl.developmentUrl + 'loanService/fetchBankTransferDetails',{},{
           headers: {
             'Content-Type' : 'application/json',
             'Access-Control-Allow-Origin': 'http://localhost:8082'
@@ -98,11 +42,8 @@ const LoanRepaymentScreen = ({navigation}) => {
           setIsLoading(false)
   
           console.log(response.data)
-          setUpdatedLoanData(response.data)
-          setLoanBalance(response.data.total_REPAYMENT - response.data.loan_TOTAL_REPAYMENT);
-
-          setRequestAmount(updatedLoanData.monthly_REPAYMENT)
-
+          setBankDetails(response.data);
+      
 
         })
         .catch(error => {
@@ -111,12 +52,11 @@ const LoanRepaymentScreen = ({navigation}) => {
   
     }// end of function 
 
+
       //USE EFFECT
   useEffect(() => {
 
-    console.log(isFocused)
-
-    validateCustomerLoan();
+    fetchBankTransferDetails();
 
   }, []);
 
@@ -131,73 +71,34 @@ const LoanRepaymentScreen = ({navigation}) => {
         <Loader title="Processing your request, please wait..." />
       }
 
-      <InnerHeader onPress={() => navigation.goBack()} title="Loan Repayment" />
+      <InnerHeader onPress={() => navigation.goBack()} title="Bank Transfer Repayment" />
 
       <View style={styles.midBody}>
-      <Text style={styles.preTitle}>Your outstanding loan balance</Text>
+      <Text style={styles.preTitle}>Please transfer the amount below</Text>
     
       <View style={styles.amountCounter}>
-          <Text style={styles.textAprAmount}>₦{loanBalance.toLocaleString('en-US', {maximumFractionDigits:2})}</Text>
+          <Text style={styles.textAprAmount}>₦{payment_amount.toLocaleString('en-US', {maximumFractionDigits:2})}</Text>
       </View>
-
-      <View style={styles.loanArea}>
 
   
 
-      <View style={styles.toggleBox}>
-      <TouchableOpacity onPress={() => toggleButton(1)} style={(toggle == 1) ? styles.toggleBtn_active : styles.toggleBtn}>
-          <Text style={(toggle == 1) ? styles.toggleTxt_active : styles.toggleTxt}>Part Payment</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() =>  toggleButton(0)} style={(toggle == 0) ? styles.toggleBtn_active : styles.toggleBtn}>
-          <Text style={(toggle == 0) ? styles.toggleTxt_active : styles.toggleTxt}>Full Payment</Text>
-      </TouchableOpacity>
-    </View>
+   <Text style={styles.paymentTitle}>Bank Account Details</Text>
 
-      <Text style={styles.loanTitle}>How much do you want to pay?</Text>
+  <View style={styles.bank_details}>
+      <Text style={styles.bank_name}>Bank Name</Text>
+      <Text>{bankDetails.bank_name}</Text>
+  </View>
 
-      <View style={styles.amountLoanCounter}>
-     
-      <TouchableOpacity 
-       onPress={() => increaseLoanValue(1)}
-      style={styles.btnBG}>
-         <Image source={icons.minus} 
-         style={{
-           height: wp(4), width: wp(4), resizeMode: 'contain', tintColor: COLORS.primaryBlue
-         }}
-         />
-      </TouchableOpacity>
+  <View style={styles.bank_details}>
+  <Text style={styles.bank_name}>Account Name</Text>
+  <Text>{bankDetails.account_name}</Text>
+</View>
 
-      <Text style={styles.textAprAmount}>{updatedLoanData.monthly_REPAYMENT}</Text>
 
-       <TouchableOpacity 
-       onPress={() => increaseLoanValue(2)}
-       style={styles.btnBG}>
-       <Image source={icons.add} 
-       style={{
-         height: wp(4), width: wp(4), resizeMode: 'contain', tintColor: COLORS.primaryBlue
-       }}
-       />
-     </TouchableOpacity>
-   </View>
-
-   </View>
-
-   <Text style={styles.paymentTitle}>How do you want to pay?</Text>
-
-   <LoanPaymentTypeCard 
-   onPress={() => navigation.navigate("BankTransfer",{payment_amount:updatedLoanData.monthly_REPAYMENT})}
-   icon={icons.bank_transfer}
-   channelName="Bank Transfer"
-/>
-   <LoanPaymentTypeCard 
-       icon={icons.account_icon}
-       channelName="Online Card Payment"
-   />
-
-   <LoanPaymentTypeCard 
-      icon={icons.phone_transfer}
-      channelName="USSD Transfer payment"
-   />
+<View style={styles.bank_details}>
+<Text style={styles.bank_name}>Account Number</Text>
+<Text>{bankDetails.account_number}</Text>
+</View>
 
 
    </View>
@@ -209,6 +110,26 @@ const LoanRepaymentScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+
+  bank_name: {
+    color: COLORS.ButtonBorderBlue,
+    fontFamily: FONTS.POPPINS_MEDIUM,
+    fontSize: wp(3.1)
+  },
+  bank_details: {
+    borderColor: COLORS.TextBoxBorderGrey,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: wp(4),
+    columnGap: wp(8),
+    marginHorizontal: wp(6),
+    paddingHorizontal: wp(3),
+    paddingVertical: wp(3.9),
+    marginBottom: wp(3.3)
+},
 
   toggleTxt_active: {
     color: COLORS.White,
@@ -438,7 +359,7 @@ const styles = StyleSheet.create({
     fontSize: wp(3.2),
     color: COLORS.accountTypeDesc,
     marginTop: wp(8),
-    alignSelf: 'center',
+    marginHorizontal: wp(7),
     marginBottom: wp(5)
   },
 
@@ -465,4 +386,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default LoanRepaymentScreen;
+export default BankTransferRepayment;

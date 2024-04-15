@@ -26,8 +26,8 @@ const CreateAccountSchema = Yup.object().shape({
       .email('Please enter a valid email')
       .required('Please enter your email address'),
     pinNumber: Yup.string()
-      .min(6, 'Invalid PIN number')
-      .max(6, 'Invalid PIN number')
+      .min(5, 'Invalid PIN number')
+      .max(5, 'Invalid PIN number')
       .matches(/^[0-9]+$/, 'Invalid PIN number')
       .required('Please enter your PIN Number')
 })
@@ -59,7 +59,7 @@ const LoginScreen = ({route, navigation}) => {
       <StatusBar barStyle="dark-content" />
 
       {isLoading &&
-        <Loader title="Processing your request, please wait..." />
+        <Loader/>
       }
 
       <View style={styles.logo}>
@@ -139,7 +139,7 @@ onSubmit={values => AuthenticateUser(values)}
 const styles = StyleSheet.create({
 
   forgotTxt: {
-      fontFamily: FONTS.POPPINS_SEMIBOLD,
+      fontFamily: FONTS.POPPINS_REGULAR,
       fontSize: wp(3),
       color: COLORS.primaryRed
   },

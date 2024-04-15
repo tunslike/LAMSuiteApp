@@ -12,114 +12,74 @@ import {
   ScrollView,
   Dimensions} from 'react-native';
   import axios from 'axios';
-  import { useIsFocused } from "@react-navigation/native";
   import { useSelector, useDispatch } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import {LoanPaymentTypeCard, Loader, InnerHeader } from '../../components';
+  import {KYCStatusCardItem, Loader, InnerHeader } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const LoanRepaymentScreen = ({navigation}) => {
-
-  const isFocused = useIsFocused();
-
-  const dispatch = useDispatch();
+const KYCStatusScreen = ({navigation, route}) => {
 
   // CUSTOMER STORE
-  const customerID = useSelector((state) => state.customer.customerData.customer_ENTRY_ID);
-  const loanData = useSelector((state) => state.customer.loanData);
-  const accountNumberID = useSelector((state) => state.customer.bankAccountID);
-  const loanAmount = useSelector((state) => state.customer.approvedLoanAmount);
-
+  const customerData = useSelector((state) => state.customer.customerData);
+  const bioDataStatus = useSelector((state) => state.customer.biodata);
+  const empDataStatus = useSelector((state) => state.customer.empdata);
+  const nokDataStatus = useSelector((state) => state.customer.nokdata);
+  const docDataStatus = useSelector((state) => state.customer.docdata);
 
   // STATES
   const [isLoading, setIsLoading] = useState(false)
 
-  const [defaultAmount, setDefaultAmount] = useState(20000)
-  const [requestAmount, setRequestAmount] = useState(0)
-  const [updatedLoanData, setUpdatedLoanData] = useState('');
-  const [loanBalance, setLoanBalance] = useState(0);
-  const [toggle, setToggle] = useState(1);
-
-  
-  const formatCurrencyText = (value) => {
-    return value;
-  }
-
-  const toggleButton = (value) => {
-    setToggle(value)
-  }
-
-   //function to increase loan value
-   const increaseLoanValue = (type) => {
-
-    let newAmount = defaultAmount;
-
-      if(type == 1){
-
-          if(requestAmount > defaultAmount) {
-
-            newAmount = requestAmount - 5000;
-            setRequestAmount(newAmount);
-          }
-
-      }else if(type == 2) {
-
-          if(requestAmount < loanAmount) {
-
-            newAmount = requestAmount + 5000;
-
-            if(newAmount < loanAmount) {
-              setRequestAmount(newAmount);
-            } 
-          }
-      }
-  }
-  //end of function
-
-    // function to verify data
-    const validateCustomerLoan = () => {
+  // functiont to submit client loan request
+  const submitCustomerLoanRequest = () => {
 
       //data
-      const data = {
-        "customerID" : customerID,
-      }
+    const data = {
+      customerID : customerID,
+      loanAmount : loanAmt,
+      loanTenor : loanSetTenor,
+      loanPurpose : loanSetPurpose,
+      accountID : accountNumberID
+  }
+
+    console.log(data);
+
+    setIsLoading(true);
+
+      axios.post(APIBaseUrl.developmentUrl + 'loanService/submitCustomerLoanRequest',data,{
+        headers: {
+          'Content-Type' : 'application/json',
+          'Access-Control-Allow-Origin': 'http://localhost:8082'
+        }
+      })
+      .then(response => {
+
+        setIsLoading(false)
+        
+        if(response.data.responseCode == 200) {
   
-      setIsLoading(true);
-  
-        axios.post(APIBaseUrl.developmentUrl + 'loanService/confirmCustomerLoan',data,{
-          headers: {
-            'Content-Type' : 'application/json',
-            'Access-Control-Allow-Origin': 'http://localhost:8082'
-          }
-        })
-        .then(response => {
-  
-          setIsLoading(false)
-  
-          console.log(response.data)
-          setUpdatedLoanData(response.data)
-          setLoanBalance(response.data.total_REPAYMENT - response.data.loan_TOTAL_REPAYMENT);
+            // SHOW SUCCESS
+            navigation.navigate("LoanCompleted", {loanAmount:loanAmt, loanTenor:loanSetTenor});
+            return
+        
+        }else{
 
-          setRequestAmount(updatedLoanData.monthly_REPAYMENT)
+          Alert.alert('Oops! Unable to process your request, please try again')
+
+        }
+
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
+    // end of function
 
 
-        })
-        .catch(error => {
-          console.log(error);
-        });
-  
-    }// end of function 
-
-      //USE EFFECT
-  useEffect(() => {
-
-    console.log(isFocused)
-
-    validateCustomerLoan();
-
-  }, []);
-
+  //USE EFFECT
+   useEffect(() => {
+          console.log(customerData)
+   }, []);
 
   return (
     <ScrollView style={{
@@ -131,73 +91,40 @@ const LoanRepaymentScreen = ({navigation}) => {
         <Loader title="Processing your request, please wait..." />
       }
 
-      <InnerHeader onPress={() => navigation.goBack()} title="Loan Repayment" />
+      <InnerHeader onPress={() => navigation.goBack()} title="KYC Status" />
 
       <View style={styles.midBody}>
-      <Text style={styles.preTitle}>Your outstanding loan balance</Text>
-    
-      <View style={styles.amountCounter}>
-          <Text style={styles.textAprAmount}>₦{loanBalance.toLocaleString('en-US', {maximumFractionDigits:2})}</Text>
-      </View>
 
-      <View style={styles.loanArea}>
 
-  
+   <Text style={styles.paymentTitle}>Complete your KYC to be eligible for loan</Text>
 
-      <View style={styles.toggleBox}>
-      <TouchableOpacity onPress={() => toggleButton(1)} style={(toggle == 1) ? styles.toggleBtn_active : styles.toggleBtn}>
-          <Text style={(toggle == 1) ? styles.toggleTxt_active : styles.toggleTxt}>Part Payment</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() =>  toggleButton(0)} style={(toggle == 0) ? styles.toggleBtn_active : styles.toggleBtn}>
-          <Text style={(toggle == 0) ? styles.toggleTxt_active : styles.toggleTxt}>Full Payment</Text>
-      </TouchableOpacity>
-    </View>
+   <KYCStatusCardItem 
+       onPress={() => bioDataStatus == 0 ? navigation.navigate("PersonalDetails") : null}
+       icon={icons.kyc_user}
+       channelName="Bio-data"
+       active={bioDataStatus == 1 ? true : false}
+   />
+   
+   <KYCStatusCardItem 
+      onPress={() => empDataStatus == 0 ? navigation.navigate("EmployerDetails") : null}
+      icon={icons.kyc_employer}
+      channelName="Employment"
+      active={empDataStatus == 1 ? true : false}
+   />
 
-      <Text style={styles.loanTitle}>How much do you want to pay?</Text>
+   <KYCStatusCardItem 
+      onPress={() => nokDataStatus == 0 ? navigation.navigate("NOKDetails") : null}
+      icon={icons.kyc_nok}
+      channelName="Nex of Kin"
+      active={nokDataStatus == 1 ? true : false}
+   />
 
-      <View style={styles.amountLoanCounter}>
-     
-      <TouchableOpacity 
-       onPress={() => increaseLoanValue(1)}
-      style={styles.btnBG}>
-         <Image source={icons.minus} 
-         style={{
-           height: wp(4), width: wp(4), resizeMode: 'contain', tintColor: COLORS.primaryBlue
-         }}
-         />
-      </TouchableOpacity>
-
-      <Text style={styles.textAprAmount}>{updatedLoanData.monthly_REPAYMENT}</Text>
-
-       <TouchableOpacity 
-       onPress={() => increaseLoanValue(2)}
-       style={styles.btnBG}>
-       <Image source={icons.add} 
-       style={{
-         height: wp(4), width: wp(4), resizeMode: 'contain', tintColor: COLORS.primaryBlue
-       }}
-       />
-     </TouchableOpacity>
-   </View>
-
-   </View>
-
-   <Text style={styles.paymentTitle}>How do you want to pay?</Text>
-
-   <LoanPaymentTypeCard 
-   onPress={() => navigation.navigate("BankTransfer",{payment_amount:updatedLoanData.monthly_REPAYMENT})}
-   icon={icons.bank_transfer}
-   channelName="Bank Transfer"
+   <KYCStatusCardItem 
+   onPress={() => docDataStatus == 0 ? navigation.navigate("DocumentUpload") : null}
+   icon={icons.kyc_upload}
+   channelName="Upload Documents"
+   active={docDataStatus == 1 ? true : false}
 />
-   <LoanPaymentTypeCard 
-       icon={icons.account_icon}
-       channelName="Online Card Payment"
-   />
-
-   <LoanPaymentTypeCard 
-      icon={icons.phone_transfer}
-      channelName="USSD Transfer payment"
-   />
 
 
    </View>
@@ -436,10 +363,10 @@ const styles = StyleSheet.create({
   paymentTitle: {
     fontFamily: FONTS.POPPINS_SEMIBOLD,
     fontSize: wp(3.2),
-    color: COLORS.accountTypeDesc,
+    color: COLORS.primaryRed,
     marginTop: wp(8),
-    alignSelf: 'center',
-    marginBottom: wp(5)
+    marginLeft:wp(7),
+    marginBottom: wp(7)
   },
 
   tenorTitle: {
@@ -460,9 +387,10 @@ const styles = StyleSheet.create({
     borderRadius: wp(8),
     marginHorizontal: wp(2),
     backgroundColor: COLORS.White,
-    marginTop: wp(2.5),
-    paddingBottom: wp(4)
+    marginTop: hp(2),
+    paddingBottom: wp(4),
+    minHeight: wp(110)
   }
 })
 
-export default LoanRepaymentScreen;
+export default KYCStatusScreen;

@@ -62,6 +62,7 @@ const AccountSetupScreen = ({navigation}) => {
     }
     // end of function
 
+   
     // function to save create account 
     const submitCustomerAccount = () => {
 
@@ -176,12 +177,28 @@ const AccountSetupScreen = ({navigation}) => {
     }
 
 
-    <View style={styles.logo}>
-    <Image source={images.appLogo} 
-    style={{
-          height: wp(16), width: wp(16), borderRadius: wp(4), resizeMode: 'contain'
-    }} />
-    </View>
+    <View style={{flexDirection: 'row', 
+    justifyContent: 'space-between', 
+    alignItems: 'center',
+    paddingRight: wp(4)}}>
+<View style={styles.logo}>
+<Image source={images.appLogo} 
+style={{
+height: wp(16), width: wp(16), borderRadius: wp(4), resizeMode: 'contain'
+}} />
+</View>
+<View>
+<View style={styles.nextBody}>
+<Image source={icons.arrow_next} 
+style={{
+height: wp(4.1), width: wp(4.1), resizeMode: 'contain', tintColor: COLORS.primaryRed
+}}
+/>
+<Text style={styles.nextStep}>Employer Details</Text>
+</View>
+<Text style={styles.completeStatus}>Completed 1 of 3</Text>
+</View>
+</View>
 
     <View style={styles.whiteBG}> 
 

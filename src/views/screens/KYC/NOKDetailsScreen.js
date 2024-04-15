@@ -18,10 +18,10 @@ import {
   import { SafeAreaView } from 'react-native-safe-area-context';
   import { useDispatch } from 'react-redux';
   import { useSelector } from 'react-redux';
-  import {updateCompletedBioData} from '../../../store/accountSlice';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { Loader, DropdownTextBox, BiodataTextbox, FormButton } from '../../components';
+  import { Loader, DropdownTextBox, InnerHeader, BiodataTextbox, FormButton } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+  import { updateNOKdataStatus } from '../../../store/customerSlice';
 
   const CreateAccountSchema = Yup.object().shape({
     nok_lastname: Yup.string()
@@ -60,6 +60,7 @@ const relationshipList = ["Father", "Mother", "Son", "Daughter", "Brother", "Sis
 const NOKDetailsScreen = ({navigation}) => {
 
   const dispatch = useDispatch();
+  const customerData = useSelector((state) => state.customer.customerData);
 
   const [isLoading, setIsLoading] = useState(false);
   const customerID = useSelector((state) => state.account.customerEntryID);
@@ -92,7 +93,7 @@ const NOKDetailsScreen = ({navigation}) => {
 
     //data
     const data = {
-      customerID : customerID,
+      customer_id : customerData.customer_ENTRY_ID,
       nok_lastname : values.nok_lastname,
       nok_firstname : values.nok_firstname,
       nok_gender : nok_gender,
@@ -118,10 +119,10 @@ const NOKDetailsScreen = ({navigation}) => {
 
         if(response.data.response.responseCode == 200) {
 
-          dispatch(updateCompletedBioData('completed'));
-
-          Alert.alert(AppName.AppName, "You Bio-data details have been saved successfully!")
-          navigation.navigate("AccountSetup");
+          
+          dispatch(updateNOKdataStatus(1));          
+          Alert.alert('Finserve', 'Your NOK Details has been saved!')
+          navigation.navigate("KYCStatus");
 
         }else{
 
@@ -153,36 +154,12 @@ const NOKDetailsScreen = ({navigation}) => {
       backgroundColor: COLORS.BackgroundGrey
     }}
  > 
-    <SafeAreaView>
-      <StatusBar barStyle="dark-content" />
+      
+    <InnerHeader onPress={() => navigation.goBack()} title="NOK Details" />
 
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
-
-      <View style={{flexDirection: 'row', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center',
-                    paddingRight: wp(4)}}>
-      <View style={styles.logo}>
-      <Image source={images.appLogo} 
-      style={{
-            height: wp(16), width: wp(16), borderRadius: wp(4), resizeMode: 'contain'
-      }} />
-</View>
-<View>
-<View style={styles.nextBody}>
-<Image source={icons.arrow_next} 
-    style={{
-      height: wp(4.1), width: wp(4.1), resizeMode: 'contain', tintColor: COLORS.primaryRed
-    }}
-/>
-<Text style={styles.nextStep}>Almost Done!</Text>
-</View>
-<Text style={styles.completeStatus}>Completed 3 of 3</Text>
-</View>
-      </View>
-    
+    {isLoading &&
+      <Loader title="Processing your request, please wait..." />
+    }
 
   {/* FORM STARTS HERE */}
 <Formik
@@ -201,8 +178,7 @@ const NOKDetailsScreen = ({navigation}) => {
     <View>
                   <View style={styles.whiteBG}> 
                   <View style={styles.title}>
-                  <Text style={styles.mainTitle}>Next of kin Details</Text>
-                  <Text style={styles.titleDesc}>Complete the details below to update your next of kin details</Text>
+                  <Text style={styles.titleDesc}>Complete Next of Kin details below</Text>
               </View>
 
               <View style={styles.formBox}>
@@ -307,14 +283,13 @@ const NOKDetailsScreen = ({navigation}) => {
               </View>
 
               <View style={styles.btnBox}>
-              <FormButton onPress={handleSubmit} label="Complete Bio-data Update" />
+              <FormButton onPress={handleSubmit} label="Save and Continue" />
               </View>
     </View>
 )}
 </Formik>
  {/* FORM ENDS HERE */}
 
-    </SafeAreaView>
     </KeyboardAwareScrollView>
   )
 }
@@ -375,13 +350,13 @@ const styles = StyleSheet.create({
     marginBottom: wp(3)
   },
     titleDesc: {
-        marginTop: wp(3),
-        fontFamily: FONTS.POPPINS_REGULAR,
-        fontSize: wp(3),
-        width: wp(70),
-        lineHeight: wp(5),
-        marginBottom: wp(3),
-        color: COLORS.disablePrimaryBlue,
+      marginLeft: wp(3),
+      fontFamily: FONTS.POPPINS_REGULAR,
+      fontSize: wp(3),
+      width: wp(70),
+      lineHeight: wp(5),
+      marginBottom: wp(3),
+      color: COLORS.primaryRed,
     },
     mainTitle: {
         fontFamily: FONTS.POPPINS_SEMIBOLD,
@@ -394,7 +369,7 @@ const styles = StyleSheet.create({
       whiteBG: {
         backgroundColor: COLORS.White,
         padding: wp(3),
-        borderRadius: wp(5),
+        borderRadius: wp(8),
         marginHorizontal: wp(2.9),
         marginTop: hp(3),
         paddingBottom: wp(4)

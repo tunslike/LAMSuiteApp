@@ -58,7 +58,7 @@ const LoanDetailsScreen = ({route, navigation}) => {
 
         setIsLoading(false)
         
-        console.log(response.data.repayment_schedule)
+        console.log(response.data.breakdown.repayment_schedule)
         setLoanDetails(response.data.loanDetails)
         setLoanBreakdown(response.data.breakdown.repayment_schedule)
 
@@ -130,7 +130,7 @@ const LoanDetailsScreen = ({route, navigation}) => {
       </View>
       <View>
       <Text style={styles.hdr}>Status</Text>
-      <Text style={styles.desc}>{(loanDetails.loan_STATUS == 1) ? "Running" : "Not Active"}</Text>
+      <Text style={styles.desc}>{(loanDetails.loan_STATUS == 3) ? "Running" : "Not Active"}</Text>
     </View>
       </View>
 
@@ -140,7 +140,7 @@ const LoanDetailsScreen = ({route, navigation}) => {
       <View style={styles.midBody}>
       <Text style={styles.loanSummaryTxt}>Payment Schedule</Text>
 
-      {(loanBreakdown && loanBreakdown.length > 1) &&
+      {(loanBreakdown && loanBreakdown.length > 0) &&
         loanBreakdown.map((item) => {
           return (
             <PaymentScheduleCard key={item.month}

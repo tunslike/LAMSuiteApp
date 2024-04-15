@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { 
   Image,
   ImageBackground,
@@ -12,6 +12,7 @@ import {
   Dimensions} from 'react-native';
   import { Formik } from 'formik';
   import * as Yup from 'yup'
+  import axios from 'axios';
   import { OtpInput } from 'react-native-otp-entry';
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
   import { SafeAreaView } from 'react-native-safe-area-context';
@@ -27,11 +28,12 @@ const VerifyPhoneScreen = ({route, navigation}) => {
 
   const[otpValue, SetOtpValue] = useState('');
   const [activateButton, setActivateButton] = useState(true);
+  const [counter, setCounter] = useState(60);
 
   // function to enable verify button
   const VerifyOTPValue = (text) => {
   
-    if(text != '' && text.length == 4) {
+    if(text != '' && text.length == 5) {
       console.log('it is completed here');
       setActivateButton(false)
     }else{
@@ -40,6 +42,44 @@ const VerifyPhoneScreen = ({route, navigation}) => {
 
   }// end of function
 
+  const ResendValidateOTP = () => {
+
+    const data = {
+     
+    };
+
+    console.log(data)
+
+    return;
+
+    setIsLoading(true);
+
+    axios.post(APIBaseUrl.developmentUrl + 'customer/newCustomer',data,{
+      headers: {
+        'Content-Type' : 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:8082'
+      }
+    })
+    .then(response => {
+
+      setIsLoading(false)
+
+
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
+
+    //USE EFFECT
+    useEffect(() => {
+
+      counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+  
+    }, [counter]);
+
+  
   return (
     <KeyboardAwareScrollView 
     enableOnAndroid={true}
@@ -67,16 +107,19 @@ const VerifyPhoneScreen = ({route, navigation}) => {
     <View style={styles.title}>
       <Text style={styles.mainTitle}>Verify Phone Number</Text>
       <Text style={styles.titleDesc}>Please enter the 4-digit code we sent to your phone 
-      number to verify your account</Text>
+      number to complete verification</Text>
     </View>
 
     <View style={styles.otpBox}>
        <OtpInput 
-          numberOfDigits={4}
+          numberOfDigits={5}
           onTextChange={(text) => VerifyOTPValue(text)}
           focusColor={COLORS.primaryRed}
           focusStickBlinkingDuration={500}
           onFilled={(text) => VerifyOTPValue(text)}
+          TextInputProps={
+            keyboardType="numeric"
+          }
           theme={{
             pinCodeTextStyle: {
                color: COLORS.primaryRed,
@@ -98,9 +141,15 @@ const VerifyPhoneScreen = ({route, navigation}) => {
        />
     </View>
 
-    <Text style={styles.promptTxt}>Code is valid for 60 seconds</Text>
-    <TouchableOpacity style={styles.btnResend}>
-          <Text style={styles.txtResend}>Didn’t get code? Resend</Text>
+    <Text style={styles.promptTxt}>Code is valid for {counter} seconds</Text>
+    <TouchableOpacity 
+      onPress={(counter == 0) ? () => ResendValidateOTP() : null}
+      style={styles.btnResend}>
+      {
+        counter == 0 && 
+        <Text style={styles.txtResend}>Didn’t get code? Resend</Text>
+      }
+
     </TouchableOpacity>
  </View>
 
@@ -120,7 +169,13 @@ const styles = StyleSheet.create({
   txtResend: {
     fontFamily: FONTS.POPPINS_MEDIUM,
     fontSize: wp(3.1),
-    color: COLORS.TextColorGrey
+    color: COLORS.primaryBlue,
+    textDecorationLine: 'underline'
+  },
+  btnResend: {
+    marginTop: wp(3),
+    alignSelf: 'center',
+    marginBottom: hp(4),
   },
   btnResend: {
     marginTop: wp(3),

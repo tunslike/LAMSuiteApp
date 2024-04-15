@@ -15,7 +15,7 @@ import {
   import * as Yup from 'yup';
   import axios from 'axios';
   import { useSelector, useDispatch } from 'react-redux';
-  import { updateBankAccountID } from '../../../store/customerSlice';
+  import { updateBankAccountID, updateBankAccountDetails } from '../../../store/customerSlice';
   import SelectDropdown from 'react-native-select-dropdown';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
   import { InnerHeader, Loader, BiodataTextbox, BankAccountNumberCard } from '../../components';
@@ -40,14 +40,20 @@ const DisbursementAccount = ({navigation}) => {
   const [bankName, setBankName] = useState('');
   const [addAccount, setAddAccount] = useState(false);
   const [activeAccount, setActiveAccount] = useState(0);
-  const [accountList, setAccountList] = useState([]);
+  const [account, setAccount] = useState('');
   const [isLoading, setIsLoading] = useState(false)
   const [activeAccountID, setActiveAccountID] = useState('');
+  const [maskedAccountDetails, setMaskedAccountDetails] = useState('');
 
   // check selected account
-  const setUpdateAccountNumber = (accountID) => {
+  const setUpdateAccountNumber = (accountID, bankName) => {
   
       dispatch(updateBankAccountID(accountID))
+
+      let accountBankDetails = bankName + "|" + maskAccount(accountID, 2, 7)
+
+      setMaskedAccountDetails(accountBankDetails)
+
   }
 
     //validate account number
@@ -81,8 +87,6 @@ const DisbursementAccount = ({navigation}) => {
       "accountName": "Babatunde Jinadu"
     }
 
-    console.log(data);
-
     setIsLoading(true);
 
       axios.post(APIBaseUrl.developmentUrl + 'loanService/createAccountDetails',data,{
@@ -94,19 +98,27 @@ const DisbursementAccount = ({navigation}) => {
       .then(response => {
 
         setIsLoading(false)
-        
-        if(response.data.responseCode == 200) {
 
-          setBankName('')
-          Alert.alert(AppName.AppName, "Account details has been saved!")
-          
+        if(response.data) {
+
+            let accountBankDetails = response.data.bank_NAME + "|" + maskAccount(response.data.account_NUMBER, 2, 7)
+
+            dispatch(updateBankAccountID(response.data.bank_ACCOUNT_ID))
+            dispatch(updateBankAccountDetails(accountBankDetails))
+
+            console.log(response.data)
+
+            setAccount(response.data)
+
+            setAddAccount(false);
+
+            Alert.alert(AppName.AppName, "Account details has been saved!")      
 
         }else{
 
           Alert.alert('Oops! Unable to process your request, please try again')
-
         }
-
+    
       })
       .catch(error => {
         console.log(error);
@@ -115,7 +127,7 @@ const DisbursementAccount = ({navigation}) => {
   }
   // end of function 
 
-// function to get the masking the given string
+//function to get the masking the given string
 function maskAccount(str, start, end) {
   if (!str || start < 0 || start >= str.length || end < 0 || end > str.length || start >= end) {
      return str;
@@ -130,7 +142,7 @@ function maskAccount(str, start, end) {
 
     //data
     const data = {
-      "CustomerID" : "f1f694e7-6f21-466d-a108-6a1b63cb8061"
+      "customerID" : customerID
     }
 
     setIsLoading(true);
@@ -145,7 +157,9 @@ function maskAccount(str, start, end) {
 
         setIsLoading(false)
 
-        setAccountList(response.data)
+        console.log(response.data)
+
+        setAccount(response.data)
 
       })
       .catch(error => {
@@ -191,44 +205,47 @@ function maskAccount(str, start, end) {
     <View style={styles.midBody}>
     <View style={{paddingHorizontal: wp(4), paddingVertical: wp(7)}}>
     <Text style={styles.loanSummaryTxt}>Available Accounts</Text>
-    {(accountList == '') &&
+
+    {(account == '') &&
         <Text style={styles.infotxt}>You do not have any disbursement account setup, create one below</Text>
     }
 
-    {(accountList != '') &&
-        <Text style={styles.infotxt}>Select your preferred destination account below</Text>
+    {(account != '') &&
+        <Text style={styles.infotxt}>Funds will be disbursed into the account details below</Text>
     }
     
     </View>
 
     <View style={styles.accountList}>
 
-    {accountList.map((account) => {
-      return (
-        <BankAccountNumberCard key={account.bank_ACCOUNT_ID}
-        onPress={() => setUpdateAccountNumber(account.bank_ACCOUNT_ID)} 
+    {(account != '') &&
+      <BankAccountNumberCard key={account.bank_ACCOUNT_ID}
+        onPress={() => setUpdateAccountNumber(account.bank_ACCOUNT_ID, account.bankName)} 
         bankName={account.bank_NAME}
         accountNo={maskAccount(account.account_NUMBER, 2, 7)}
         active={(activeAccount == 1) ? true : null}
-    />
-      )
-    })
-
+      />
     }
   
     </View> 
 
+    {
+      (account == '') &&
+
+      <TouchableOpacity style={styles.addAccountButton}
+      onPress={() => showAddAccount()}
+    >
+        <Text style={styles.addAcctxt}>Add Bank Account</Text>
+        <Image source={icons.add} 
+          style={{
+            height: wp(2.5), width: wp(2.5), resizeMode: 'contain', tintColor: COLORS.TextColorGrey
+          }}
+        />
+    </TouchableOpacity>
+
+    }
   
-        <TouchableOpacity style={styles.addAccountButton}
-          onPress={() => showAddAccount()}
-        >
-            <Text style={styles.addAcctxt}>Add Bank Account</Text>
-            <Image source={icons.add} 
-              style={{
-                height: wp(2.5), width: wp(2.5), resizeMode: 'contain', tintColor: COLORS.TextColorGrey
-              }}
-            />
-        </TouchableOpacity>
+      
 
 
         {(addAccount) && 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { 
     Image,
     ImageBackground,
@@ -10,10 +10,42 @@ import {
     View } from 'react-native';
     import { COLORS, images, FONTS, icons } from '../../../constants';
     import { FeatureLabel, Button } from '../../components';
+    import AsyncStorage from '@react-native-async-storage/async-storage';
     import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 const WelcomeScreen = ({navigation}) => {
+
+  const [isUserValid, setIsUserValid] = useState(null);
+
+   // FUNCTION TO CHECK LOGGED USER
+   const ValidatedAuthenticatedUser = async () => {
+    try {
+        
+        let userData = await AsyncStorage.getItem('userLogged');
+
+        if(userData) {
+          console.log('user has logged in before')
+          setIsUserValid(userData);
+        }else{
+          console.log('New User found')
+        }
+        
+        
+    } catch (e) {
+      console.log(`isLogged in error ${e}`);
+    }
+ }
+// END OF FUNCTION
+
+//USE EFFECT
+useEffect(() => {
+
+  ValidatedAuthenticatedUser();
+
+}, []);
+
+
   return (
     <View style={{ flex: 1 }}>
       <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
@@ -43,10 +75,17 @@ const WelcomeScreen = ({navigation}) => {
             label="Payments"/>
       </View>
 
-      <View style={{marginTop: wp(9)}}>
+      <View style={{marginTop: wp(6)}}>
         <Button 
         onPress={() => navigation.navigate('Slider')} 
         label="Get Started" />
+
+        {isUserValid &&
+          <TouchableOpacity onPress={() => navigation.replace("Login")} style={styles.btnLogin}>
+            <Text style={styles.labelTxt}>Login</Text>
+          </TouchableOpacity>
+        }
+
       </View>
 </View>
 <View style={styles.footer}>
@@ -59,6 +98,23 @@ const WelcomeScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
 
+  labelTxt: {
+    fontFamily: FONTS.POPPINS_SEMIBOLD,
+    fontSize: wp(3.8),
+    color: COLORS.White,
+    fontWeight: '400',
+  },
+
+  btnLogin: {
+    backgroundColor: COLORS.primaryRed,
+    alignSelf: 'center',
+    borderRadius: wp(5),
+    borderWidth: 1,
+    borderStyle: 'solid',
+    paddingHorizontal: wp(17),
+    paddingVertical: Platform.OS === 'ios' ? wp(3.5) : wp(2.7),
+    marginTop: wp(3)
+  },
     footerTxt: {
       fontFamily: FONTS.POPPINS_LIGHT,
       fontSize: wp(3),

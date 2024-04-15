@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { 
   Image,
   ImageBackground,
@@ -19,10 +19,10 @@ import {
   import { useDispatch } from 'react-redux';
   import { useSelector } from 'react-redux';
   import DateTimePickerModal from "react-native-modal-datetime-picker";
-  import { updateCustomerEntryID } from '../../../store/accountSlice';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { Loader, DropdownTextBox, BiodataTextbox, FormButton } from '../../components';
+  import { Loader, DropdownTextBox, BiodataTextbox, FormButton, InnerHeader } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { updateBiodataStatus } from '../../../store/customerSlice';
 
   const CreateAccountSchema = Yup.object().shape({
     lastname: Yup.string()
@@ -67,6 +67,7 @@ const statesList = ["Abuja", "Abia", "Adamawa", "Akwa Ibom","Anambra", "Bauchi",
 const PersonalDetailsScreen = ({navigation}) => {
 
   const dispatch = useDispatch();
+  const customerData = useSelector((state) => state.customer.customerData);
 
   const [isLoading, setIsLoading] = useState(false)
   const [gender, setGender] = useState('');
@@ -100,6 +101,7 @@ const PersonalDetailsScreen = ({navigation}) => {
 
     //data
     const data = {
+      customer_id: customerData.customer_ENTRY_ID,
       lastname : values.lastname,
       firstname : values.firstname,
       other_name : values.othername,
@@ -115,6 +117,8 @@ const PersonalDetailsScreen = ({navigation}) => {
       state : state
     };
 
+    console.log(data)
+
     setIsLoading(true);
 
       axios.post(APIBaseUrl.developmentUrl + 'customer/updatePersonalData',data,{
@@ -127,13 +131,11 @@ const PersonalDetailsScreen = ({navigation}) => {
 
         setIsLoading(false)
 
-        if(response.data.response.responseCode == 200) {
+        if(response.data.response.responseCode == 200) {          
 
-          //update customer entry ID
-          console.log('Customer Entry ID:- ' + response.data.customer_ENTRY_ID)
-          dispatch(updateCustomerEntryID(response.data.customer_ENTRY_ID));
-
-          navigation.navigate("EmployerDetails");
+          dispatch(updateBiodataStatus(1));          
+          Alert.alert('Finserve', 'Your Bio-data has been saved!')
+          navigation.navigate("KYCStatus");
 
         }else{
 
@@ -194,6 +196,11 @@ const PersonalDetailsScreen = ({navigation}) => {
   )
 }
 
+  //USE EFFECT
+  useEffect(() => {
+    console.log(customerData.customer_ENTRY_ID);
+}, []);
+
   return (
     <KeyboardAwareScrollView 
     enableOnAndroid={true}
@@ -204,35 +211,11 @@ const PersonalDetailsScreen = ({navigation}) => {
       backgroundColor: COLORS.BackgroundGrey
     }}
  > 
-    <SafeAreaView>
-      <StatusBar barStyle="dark-content" />
+    <InnerHeader onPress={() => navigation.goBack()} title="Personal Details" />
 
       {isLoading &&
         <Loader title="Processing your request, please wait..." />
       }
-
-      <View style={{flexDirection: 'row', 
-                    justifyContent: 'space-between', 
-                    alignItems: 'center',
-                    paddingRight: wp(4)}}>
-      <View style={styles.logo}>
-      <Image source={images.appLogo} 
-      style={{
-            height: wp(16), width: wp(16), borderRadius: wp(4), resizeMode: 'contain'
-      }} />
-</View>
-<View>
-<View style={styles.nextBody}>
-<Image source={icons.arrow_next} 
-    style={{
-      height: wp(4.1), width: wp(4.1), resizeMode: 'contain', tintColor: COLORS.primaryRed
-    }}
-/>
-<Text style={styles.nextStep}>Employer Details</Text>
-</View>
-<Text style={styles.completeStatus}>Completed 1 of 3</Text>
-</View>
-      </View>
     
 
   {/* FORM STARTS HERE */}
@@ -255,8 +238,7 @@ const PersonalDetailsScreen = ({navigation}) => {
     <View>
                   <View style={styles.whiteBG}> 
                   <View style={styles.title}>
-                  <Text style={styles.mainTitle}>Personal Details</Text>
-                  <Text style={styles.titleDesc}>Complete the details below to update your bio-data</Text>
+                  <Text style={styles.titleDesc}>Complete your bio-data details below</Text>
               </View>
 
               <View style={styles.formBox}>
@@ -411,8 +393,6 @@ const PersonalDetailsScreen = ({navigation}) => {
 )}
 </Formik>
  {/* FORM ENDS HERE */}
-
-    </SafeAreaView>
     </KeyboardAwareScrollView>
   )
 }
@@ -473,12 +453,13 @@ const styles = StyleSheet.create({
     marginBottom: wp(3)
   },
     titleDesc: {
-        marginTop: wp(3),
+      marginLeft: wp(3),
         fontFamily: FONTS.POPPINS_REGULAR,
         fontSize: wp(3),
         width: wp(70),
         lineHeight: wp(5),
-        color: COLORS.disablePrimaryBlue,
+        marginBottom: wp(3),
+        color: COLORS.primaryRed,
     },
     mainTitle: {
         fontFamily: FONTS.POPPINS_SEMIBOLD,
@@ -491,9 +472,9 @@ const styles = StyleSheet.create({
       whiteBG: {
         backgroundColor: COLORS.White,
         padding: wp(3),
-        borderRadius: wp(5),
+        borderRadius: wp(8),
         marginHorizontal: wp(2.9),
-        marginTop: hp(3),
+        marginTop: hp(2),
         paddingBottom: wp(3)
       },
       logo: {
