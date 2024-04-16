@@ -1,6 +1,6 @@
 export const APIBaseUrl = {
-    developmentUrl: "http://localhost:8082/api/v1/",
-    productionUrl: "https://mpp.stanbicibtcpension.com:5443/",
+    developmentUrl: "https://lamsuite.finserveinvestment.com/services/api/v1/",
+    productionUrl: "http://localhost:8082/api/v1/",
 }
 
 export const AppName = {

@@ -126,19 +126,19 @@ const styles = StyleSheet.create({
     borderRadius: wp(7)
   },
   headerTitle: {
-    marginTop: wp(4),
+    marginTop: Platform.OS === 'android' ? wp(3) : wp(4),
     fontFamily: FONTS.POPPINS_REGULAR,
     color: COLORS.TextColorGrey,
     fontSize: wp(3),
     marginLeft: wp(10)
   },
   midBody: {
-    paddingTop: wp(8),
+    paddingTop: Platform.OS === 'android' ? wp(7) : wp(8),
     borderRadius: wp(8),
     marginHorizontal: wp(2),
     backgroundColor: COLORS.White,
     marginTop: wp(1.5),
-    paddingBottom: wp(4),
+    paddingBottom: Platform.OS === 'android' ? wp(3) : wp(4),
     padding: wp(3),
     marginTop: wp(2),
   },

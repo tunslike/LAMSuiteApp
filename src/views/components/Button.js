@@ -2,7 +2,8 @@ import React from 'react'
 import { StyleSheet, 
          Text, 
          Image, 
-        TouchableOpacity } from 'react-native'
+        TouchableOpacity, 
+        Platform} from 'react-native'
          import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { FONTS, COLORS, icons } from '../../constants'
 
@@ -24,8 +25,8 @@ const Button = ({label, onPress}) => {
 
 const styles = StyleSheet.create({
   labelTxt: {
-    fontFamily: FONTS.POPPINS_SEMIBOLD,
-    fontSize: wp(3.8),
+    fontFamily: FONTS.POPPINS_MEDIUM,
+    fontSize: Platform.OS === 'android' ? wp(3.5) : wp(3.8),
     color: COLORS.primaryRed,
     fontWeight: '400',
     marginRight: wp(3),

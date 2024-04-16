@@ -99,8 +99,8 @@ useEffect(() => {
 const styles = StyleSheet.create({
 
   labelTxt: {
-    fontFamily: FONTS.POPPINS_SEMIBOLD,
-    fontSize: wp(3.8),
+    fontFamily: FONTS.POPPINS_MEDIUM,
+    fontSize: Platform.OS === 'android' ? wp(3.5) : wp(3.8),
     color: COLORS.White,
     fontWeight: '400',
   },
