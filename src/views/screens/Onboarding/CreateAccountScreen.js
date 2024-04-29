@@ -167,7 +167,7 @@ const CreateAccountScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   textLinkStyle: {
     fontFamily: FONTS.POPPINS_REGULAR,
-    fontSize: wp(3),
+    fontSize: wp(2.9),
     color: COLORS.sliderDescText,
     lineHeight: wp(4)
   },
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.White,
     padding: wp(4),
     borderRadius: wp(5),
-    marginHorizontal: wp(2.9),
+    marginHorizontal: wp(3.2),
     marginTop: hp(5),
     paddingBottom: wp(10)
   },

@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
       borderStyle: 'solid',
       borderColor: COLORS.TextBoxBorderGrey,
       paddingHorizontal: wp(3.5),
-      paddingVertical: Platform.OS === 'ios' ? wp(2.8) : wp(0.1),
+      paddingVertical: Platform.OS === 'ios' ? wp(2.8) : wp(2),
       marginTop: wp(1),
       marginHorizontal: wp(1)
   },
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: COLORS.TextBoxBorderGrey,
     paddingHorizontal: wp(4),
-    paddingVertical: Platform.OS === 'ios' ? wp(4) : wp(0.2),
+    paddingVertical: Platform.OS === 'ios' ? wp(4) : wp(5),
     marginTop: wp(3.5),
     marginHorizontal: wp(1)
 

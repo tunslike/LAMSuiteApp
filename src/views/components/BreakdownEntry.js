@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, 
+import { Platform, StyleSheet, 
          Text, 
         View } from 'react-native'
          import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      marginBottom: wp(6)
+      marginBottom: Platform.OS === 'android' ? wp(3.5) : wp(6)
   },
 })
 

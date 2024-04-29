@@ -28,7 +28,8 @@ const styles = StyleSheet.create({
   creditStatus: {
       borderWidth: 1,
       borderStyle: 'solid',
-      padding: wp(1.5),
+      padding: wp(0.7),
+      paddingHorizontal:wp(2),
       borderColor: COLORS.BackgroundGrey,
       flexDirection: 'row',
       justifyContent: 'flex-start',

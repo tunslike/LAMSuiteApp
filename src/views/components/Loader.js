@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       zIndex: 9999,
       alignSelf: 'center',
-      top: '40%',
+      top: hp(45),
       backgroundColor: COLORS.darkGrayTransparent,
       height: wp(30),
       width: wp(30),

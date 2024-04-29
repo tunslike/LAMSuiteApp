@@ -25,6 +25,7 @@ const LoanConfirmationScreen = ({route, navigation}) => {
   const accountNumberID = useSelector((state) => state.customer.bankAccountID);
   const accountBankDetails = useSelector((state) => state.customer.bankAccountDetails);
 
+
   // ROUTE VALUE
   const {loanAmt, monthlyRepay, totalRepay, loanSetTenor, loanSetPurpose, repaySetDate, interestRate} = route.params;
 
@@ -136,7 +137,7 @@ const LoanConfirmationScreen = ({route, navigation}) => {
           <Text style={styles.textAprAmount}>{formatCurrencyText(loanAmt)}</Text>
       </View>
 
-
+{/**
       <TouchableOpacity style={styles.offerLetter}>
             <Image source={icons.sign} 
                 style={{
@@ -145,6 +146,7 @@ const LoanConfirmationScreen = ({route, navigation}) => {
             />
             <Text style={styles.txtOffer}>View Offer Letter</Text>
       </TouchableOpacity>
+*/}
 
       <View style={styles.loanBreakdown}>
       
@@ -244,8 +246,8 @@ const styles = StyleSheet.create({
      fontSize: wp(3),
     },
     continueBtnTxt: {
-        fontFamily: FONTS.POPPINS_SEMIBOLD,
-        fontSize: wp(3.5),
+        fontFamily: FONTS.POPPINS_REGULAR,
+        fontSize: wp(3),
         color: COLORS.White,
       },
       continueBtn: {
@@ -313,13 +315,13 @@ const styles = StyleSheet.create({
       },
     midBody: {
         borderRadius: wp(8),
-        marginHorizontal: wp(2),
+        marginHorizontal: wp(3.2),
         backgroundColor: COLORS.White,
-        paddingBottom: wp(9),
+        paddingBottom: Platform.OS === 'android' ? wp(5) : wp(9),
       },
     infoText: {
         fontFamily: FONTS.POPPINS_SEMIBOLD,
-        fontSize: wp(3.2),
+        fontSize: wp(3),
         color: COLORS.accountTypeDesc,
         textAlign: 'center',
         width: wp(50)

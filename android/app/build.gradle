@@ -74,9 +74,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.lamsuiteapp"
+    namespace "com.innovetsolutionstech.finserve"
     defaultConfig {
-        applicationId "com.lamsuiteapp"
+        applicationId "com.innovetsolutionstech.finserve"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

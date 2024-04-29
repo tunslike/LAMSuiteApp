@@ -18,6 +18,7 @@ import {
   import { LoanHistoryCard, Loader, InnerHeader } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+  import { useFocusEffect } from '@react-navigation/native';
 
 const LoansScreen = ({navigation}) => {
 
@@ -64,10 +65,17 @@ const LoansScreen = ({navigation}) => {
     // end of function
 
 
+    useFocusEffect(
+      React.useCallback(() => {
+        fetchCustomerLoanDetails();
+      }, [])
+    );
+    
+
+
       //USE EFFECT
   useEffect(() => {
 
-    fetchCustomerLoanDetails();
 
   }, []);
 

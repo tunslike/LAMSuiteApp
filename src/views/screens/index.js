@@ -28,8 +28,14 @@ import BuyAirtimeScreen from "./Utility/BuyAirtimeScreen";
 import BuyDataScreen from "./Utility/BuyDataScreen";
 import KYCStatusScreen from "./KYC/KYCStatusScreen";
 import BankTransferRepayment from "./Loan/BankTransferRepayment";
+import BillCompletionScreen from "./Utility/BillCompletionScreen";
+import ViewProfileScreen from "./Profile/ViewProfileScreen";
+import NotificationScreen from "./Profile/NotificationScreen";
 
 export {
+    NotificationScreen,
+    ViewProfileScreen,
+    BillCompletionScreen,
     BankTransferRepayment,
     KYCStatusScreen,
     BuyAirtimeScreen,

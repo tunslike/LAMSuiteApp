@@ -3,6 +3,9 @@ export const APIBaseUrl = {
     productionUrl: "http://localhost:8082/api/v1/",
 }
 
+//http://localhost:8082/api/v1/
+//https://lamsuite.finserveinvestment.com/services/api/v1/
+
 export const AppName = {
     AppName: "Finserve",
 }

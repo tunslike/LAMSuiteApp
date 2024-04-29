@@ -16,9 +16,11 @@ import {
   import { AccountCard, AccountCardNoLoan, ServiceCard, GreenCheckBox, TransactionCard, Loader, CreditRating, KYCStatusCard } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import { SafeAreaView } from 'react-native-safe-area-context';
+  import moment from 'moment';
   import { useSelector, useDispatch } from 'react-redux';
   import { updateApprovedloanAmount } from '../../../store/customerSlice';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+  import { useFocusEffect } from '@react-navigation/native';
 
 const DashboardScreen = ({navigation}) => {
 
@@ -44,6 +46,7 @@ const DashboardScreen = ({navigation}) => {
   const [loanAmount, setLoanAmount] = useState(0);
   const [KYStatus, setKYCStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
+  const [transactions, setTransactions] = useState('');
 
   // check if pre-approved amount is there
   const checkPreApprovedAmount = () => {
@@ -61,6 +64,28 @@ const DashboardScreen = ({navigation}) => {
     }
   }
   // end of function
+
+   // function to verify data
+   const fetchTransactionDetails = () => {
+
+      axios.get(APIBaseUrl.developmentUrl + 'customer/fetchTransaction?CustomerID=' +customerData.customer_ENTRY_ID,{},{
+        headers: {
+          'Content-Type' : 'application/json',
+          'Access-Control-Allow-Origin': 'http://localhost:8082'
+        }
+      })
+      .then(response => {
+
+        console.log(response.data)
+
+        setTransactions(response.data)
+
+      })
+      .catch(error => {
+        console.log(error + "1");
+      });
+
+  }// end of function 
 
   // function to verify data
   const validateCustomerLoan = () => {
@@ -114,14 +139,19 @@ const DashboardScreen = ({navigation}) => {
     }
 }
 
+useFocusEffect(
+  React.useCallback(() => {
+    validateCustomerLoan();
+   // fetchTransactionDetails();
+  }, [])
+);
+
   //USE EFFECT
   useEffect(() => {
 
     if(biodata == 1 && nokdata == 1 && empdata == 1) {
       setKYCStatus(true);
     }
-
-    validateCustomerLoan();
 
     //check preapproved amount
     checkPreApprovedAmount();
@@ -155,7 +185,9 @@ const DashboardScreen = ({navigation}) => {
           </View>
           <View style={styles.tabAreas}>
                <CreditRating rating={1} />
-                <TouchableOpacity style={styles.bellBG}>
+                <TouchableOpacity 
+                  onPress={() => navigation.navigate("NotificationScreen")}
+                style={styles.bellBG}>
                     <Image source={icons.notification} 
                       style={{
                         height: wp(4.5), width: wp(4.5), resizeMode: 'contain', tintColor: COLORS.primaryBlue
@@ -223,7 +255,7 @@ const DashboardScreen = ({navigation}) => {
                 />
 
                 <ServiceCard 
-                  onPress={() => (loanAccount.loan_ID && loanAccount.loan_STATUS == 3) ? navigation.navigate("RepayLoan") : Alert.alert("Finserve", "Sorry, you do not have a running loan!")}
+                  onPress={() => (loanAccount.loan_ID && loanAccount.loan_STATUS == 3) ? navigation.navigate("RepayLoan") : Alert.alert("Finserve", "Sorry, you do not have an active loan!")}
                   image={images.repay_loan_bg}
                   label="Repayment"
                   icon={icons.repayment}
@@ -268,23 +300,50 @@ const DashboardScreen = ({navigation}) => {
 
                   <View style={styles.transHdr}>
                     <Text style={styles.hdrTxt}>Recent Transactions</Text>
-                    <TouchableOpacity style={styles.viewAllbtn}>
+                    <TouchableOpacity 
+                    onPress={() => navigation.navigate("History")}
+                    style={styles.viewAllbtn}>
                       <Text style={styles.viewTxt}>View All</Text>
                     </TouchableOpacity>
                   </View>
                 <View style={styles.transactionList}>
 
-                <Text style={styles.noTransTxt}>No transaction found!</Text>
+                {
+                  transactions == '' &&
+                  <Text style={styles.noTransTxt}>No transaction found!</Text>
+                }
+           
+                {transactions != '' &&
+                
+                 transactions.length > 0 &&
+
+                 transactions.map((item) => {
+                    return (
+                      <TransactionCard key={item.transaction_id}
+                        icon={icons.airtime}
+                        amount={Intl.NumberFormat('en-US').format(item.amount)}
+                        type={1}
+                        date={moment(item.date_created).format('DD-MMM-YYYY')}
+                        narration={item.narration}
+                      />
+  
+                    )
+                 })
+
+                }
 
                 {/**
-                      <TransactionCard
-                        icon={icons.airtime}
-                        amount="10,000"
-                        type={1}
-                        date="01-Jan-2024"
-                        narration="Airtime MTN Recharge"
-                      />
 
+                 loanBreakdown.map((item) => {
+            return (
+              <PaymentScheduleCard key={item.month}
+                  month={item.month}
+                  principal={item.principal}
+                  interest={item.interest}
+                  balance={item.balance}
+              />
+            )
+          })
                       <TransactionCard
                       icon={icons.data}
                       amount="10,000"
@@ -308,7 +367,8 @@ const DashboardScreen = ({navigation}) => {
                   date="01-Jan-2024"
                   narration="Airtime MTN Recharge"
                 />
-                */}
+                 */}
+            
                 </View>
         </View>
 
@@ -327,20 +387,21 @@ const styles = StyleSheet.create({
   },
   transactionList: {
     marginVertical: wp(5),
-    paddingBottom: wp(5)
+    paddingBottom: wp(15)
   },
   viewTxt: {
     fontFamily: FONTS.POPPINS_REGULAR,
     color: COLORS.primaryRed,
-    fontSize: wp(2.7)
+    fontSize: wp(2.5)
   },
   viewAllbtn: {
       borderColor: COLORS.primaryRed,
       borderWidth: 1,
       borderStyle: 'solid',
-      padding: wp(1),
       paddingHorizontal: wp(2),
-      borderRadius: wp(5)
+      paddingVertical: Platform.OS === 'ios' ? wp(1) : null,
+      borderRadius: wp(5),
+      marginRight: wp(1)
   },
   hdrTxt: {
     fontFamily: FONTS.POPPINS_SEMIBOLD,
@@ -357,7 +418,7 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'android' ? wp(1) : wp(3),
     borderTopRightRadius: wp(8),
     borderTopLeftRadius: wp(8),
-    padding: wp(6),
+    padding: wp(4),
     paddingBottom: wp(8)
   },
   serviceList: {
@@ -377,14 +438,15 @@ const styles = StyleSheet.create({
   },
   loanAmount: {
     fontFamily: FONTS.POPPINS_SEMIBOLD,
-    fontSize: wp(5),
+    fontSize: wp(4.5),
     color: COLORS.primaryRed
   },
   txtApprove: {
     flex: 1,
     fontFamily: FONTS.POPPINS_MEDIUM,
     fontSize: wp(2.8),
-    marginHorizontal: wp(3)
+    marginHorizontal: wp(2),
+    color: COLORS.accountTypeDesc
   },
   checkedGreen: {
       backgroundColor: COLORS.checkedColorGreen,
@@ -399,7 +461,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: wp(5),
-    padding: wp(3),
+    paddingHorizontal: wp(4),
+    paddingVertical: Platform.OS === 'ios' ? wp(3) : wp(2),
     marginHorizontal: wp(3)
   },
   services: {
@@ -447,7 +510,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: wp(8),
     borderBottomRightRadius: wp(8),
     paddingTop:Platform.OS === 'android' ? wp(5) : wp(17),
-    paddingBottom: wp(5),
+    paddingBottom: Platform.OS === 'android' ? wp(4) : wp(5),
     paddingHorizontal: wp(3)
   }
 })

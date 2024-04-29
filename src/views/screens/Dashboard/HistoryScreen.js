@@ -12,68 +12,51 @@ import {
   ScrollView,
   Dimensions} from 'react-native';
   import axios from 'axios';
+  import moment from 'moment';
   import { useSelector, useDispatch } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { GreenCheckBox, BreakdownEntry, Loader, InnerHeader } from '../../components';
-  import { AuthContext } from '../../../context/AuthContext';
+  import { TransactionCarButton, Loader, InnerHeader } from '../../components';
+  import { useFocusEffect } from '@react-navigation/native';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const HistoryScreen = ({navigation}) => {
 
   // CUSTOMER STORE
   const customerID = useSelector((state) => state.customer.customerData.customer_ENTRY_ID);
-  const accountNumberID = useSelector((state) => state.customer.bankAccountID);
+
 
   // STATES
   const [isLoading, setIsLoading] = useState(false)
+  const [transactions, setTransactions] = useState('');
 
-  
+  // function to verify data
+  const fetchTransactionDetails = () => {
 
-    // functiont to submit client loan request
-    const submitCustomerLoanRequest = () => {
+    axios.get(APIBaseUrl.developmentUrl + 'customer/fetchTransaction?CustomerID=' +customerID,{},{
+      headers: {
+        'Content-Type' : 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:8082'
+      }
+    })
+    .then(response => {
 
-      //data
-    const data = {
-      customerID : customerID,
-      loanAmount : loanAmt,
-      loanTenor : loanSetTenor,
-      loanPurpose : loanSetPurpose,
-      accountID : accountNumberID
-  }
+      console.log(response.data)
 
-    console.log(data);
+      setTransactions(response.data)
 
-    setIsLoading(true);
+    })
+    .catch(error => {
+      console.log(error + "1");
+    });
 
-      axios.post(APIBaseUrl.developmentUrl + 'loanService/submitCustomerLoanRequest',data,{
-        headers: {
-          'Content-Type' : 'application/json',
-          'Access-Control-Allow-Origin': 'http://localhost:8082'
-        }
-      })
-      .then(response => {
+}// end of function 
 
-        setIsLoading(false)
-        
-        if(response.data.responseCode == 200) {
-  
-            // SHOW SUCCESS
-            navigation.navigate("LoanCompleted", {loanAmount:loanAmt, loanTenor:loanSetTenor});
-            return
-        
-        }else{
 
-          Alert.alert('Oops! Unable to process your request, please try again')
-
-        }
-
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    }
-    // end of function
-
+useFocusEffect(
+  React.useCallback(() => {
+    fetchTransactionDetails();
+  }, [])
+);
 
 
   return (
@@ -88,6 +71,40 @@ const HistoryScreen = ({navigation}) => {
 
       <InnerHeader onPress={() => navigation.goBack()} title="Transaction History" />
 
+
+
+      <View style={styles.info}>
+      <Text style={styles.infoText}>View all transaction history</Text>
+    </View>
+
+
+      <View style={[styles.midBody, {justifyContent: (transactions.length == 0) ? 'center' : null}]}>
+
+      {
+        transactions.length == 0 &&
+        <View style={styles.loanHistoryBody}>
+            <Text style={styles.textHistory}>Your transaction history will show here</Text>
+        </View>
+      }
+
+      {
+        transactions.length > 0 &&
+        transactions.map((item) => {
+          return (
+            <TransactionCarButton key={item.transaction_id}
+              icon={icons.airtime}
+              amount={Intl.NumberFormat('en-US').format(item.amount)}
+              type={1}
+              date={moment(item.date_created).format('DD-MMM-YYYY')}
+              narration={item.narration}
+            />
+
+          )
+       })
+      }
+  
+
+      </View>
     
 
     </ScrollView>
@@ -96,6 +113,44 @@ const HistoryScreen = ({navigation}) => {
 
 const styles = StyleSheet.create({
 
+  loanHistoryBody: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  textHistory: {
+    fontFamily: FONTS.POPPINS_REGULAR,
+    fontSize: wp(3),
+    color: COLORS.primaryRed
+  },
+
+  loanSummaryTxt: {
+    fontFamily: FONTS.POPPINS_MEDIUM,
+    fontSize: wp(3),
+    color: COLORS.sliderDescText,
+    marginBottom: wp(3),
+    marginLeft: wp(2)
+  },
+  midBody: {
+    borderRadius: wp(8),
+        marginHorizontal: wp(3),
+        backgroundColor: COLORS.White,
+        paddingBottom: wp(9),
+        marginTop: wp(1),
+        minHeight: wp(80),
+        paddingTop: wp(4)
+  },
+  infoText: {
+    fontFamily: FONTS.POPPINS_SEMIBOLD,
+    fontSize: wp(3),
+    color: COLORS.accountTypeDesc,
+    textAlign: 'center',
+    width: wp(50)
+},
+  info: {
+    marginTop: wp(7),
+    marginBottom: wp(1),
+    marginLeft: wp(4)
+  }
 })
 
 export default HistoryScreen;

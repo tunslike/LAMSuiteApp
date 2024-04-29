@@ -7,7 +7,7 @@ import { StyleSheet,
          import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { FONTS, COLORS, icons } from '../../constants'
 
-const InnerHeader = ({title, onPress}) => {
+const InnerHeader = ({title, onPress, notificationPress}) => {
   return (
    <View style={styles.header}>
         <TouchableOpacity onPress={onPress} style={styles.bellBG}>
@@ -19,7 +19,9 @@ const InnerHeader = ({title, onPress}) => {
         </TouchableOpacity>
         <Text style={styles.title}>{title}</Text>
         <View style={styles.tabAreas}>
-         <TouchableOpacity style={styles.bellBG}>
+         <TouchableOpacity 
+         onPress={notificationPress}
+         style={styles.bellBG}>
              <Image source={icons.notification} 
                style={{
                  height: wp(4.5), width: wp(4.5), resizeMode: 'contain', tintColor: COLORS.primaryBlue

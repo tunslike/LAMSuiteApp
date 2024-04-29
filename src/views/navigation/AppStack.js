@@ -16,7 +16,10 @@ import {    DashboardScreen,
             NOKDetailsScreen,
             DocumentUploadScreen,
             KYCCompleteScreen,
-            BankTransferRepayment
+            BankTransferRepayment,
+            BillCompletionScreen,
+            ViewProfileScreen,
+            NotificationScreen
         } from '../screens';
 import TabNavigator from './TabNavigator';
 
@@ -31,6 +34,8 @@ const AppStack = () => {
             <Stack.Screen name='Dashboard' component={DashboardScreen} />
             <Stack.Screen name='NewLoan' component={NewLoanScreen} options={{animation: 'slide_from_right'}} />
             <Stack.Screen name='ManageLoan' component={NewLoanScreen} options={{animation: 'slide_from_right'}} />
+            <Stack.Screen name='ViewProfile' component={ViewProfileScreen} options={{animation: 'slide_from_right'}} />
+            <Stack.Screen name='NotificationScreen' component={NotificationScreen} options={{animation: 'slide_from_right'}} />
             <Stack.Screen name='KYCStatus' component={KYCStatusScreen} options={{animation: 'slide_from_right'}} />
             <Stack.Screen name='RepayLoan' component={LoanRepaymentScreen} options={{animation: 'slide_from_right'}} />
             <Stack.Screen name='BuyAirtime' component={BuyAirtimeScreen} options={{animation: 'slide_from_right'}} />
@@ -39,7 +44,8 @@ const AppStack = () => {
             <Stack.Screen name='AddDisburseAccount' component={DisbursementAccount} options={{animation: 'slide_from_bottom'}} />
             <Stack.Screen name='BankTransfer' component={BankTransferRepayment} options={{animation: 'slide_from_bottom'}} />
             <Stack.Screen name='ConfirmLoan' component={LoanConfirmationScreen} options={{animation: 'slide_from_right'}} />
-            <Stack.Screen name='LoanCompleted' component={LoanCompleted} options={{animation: 'slide_from_down'}} />
+            <Stack.Screen name='LoanCompleted' component={LoanCompleted} options={{animation: 'slide_from_bottom'}} />
+            <Stack.Screen name='BillCompleted' component={BillCompletionScreen} options={{animation: 'slide_from_bottom'}} />
             <Stack.Screen name='PersonalDetails' component={PersonalDetailsScreen} options={{animation: 'slide_from_right'}} />
             <Stack.Screen name='EmployerDetails' component={EmployerDetailsScreen} options={{animation: 'slide_from_right'}} />
             <Stack.Screen name='NOKDetails' component={NOKDetailsScreen} options={{animation: 'slide_from_right'}} />

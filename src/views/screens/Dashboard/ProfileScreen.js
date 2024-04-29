@@ -50,10 +50,12 @@ const ProfileScreen = ({navigation}) => {
       <Text style={styles.headerTitle}>Account</Text>
       <View style={styles.midBody}>
           <ProfileLinks 
+            onPress={() => navigation.navigate("ViewProfile")}
             icon={icons.profile_person}
             linkName="View Profile"
           />
           <ProfileLinks 
+          onPress={() => navigation.navigate("NotificationScreen")}
           icon={icons.profile_notification}
           linkName="Notification"
           />
@@ -112,12 +114,12 @@ const styles = StyleSheet.create({
     color: COLORS.White,
     textAlign: 'center',
     fontFamily: FONTS.POPPINS_MEDIUM,
-    fontSize: wp(3.5)
+    fontSize: wp(3)
   },
   logoutbtn: {
     backgroundColor: COLORS.primaryRed,
     marginTop: wp(5),
-    width: wp(53),
+    width: wp(50),
     alignSelf: 'center',
     paddingHorizontal: wp(4),
     paddingVertical: wp(3),
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
   },
   midBody: {
     paddingTop: Platform.OS === 'android' ? wp(7) : wp(8),
-    borderRadius: wp(8),
+    borderRadius: wp(6),
     marginHorizontal: wp(2),
     backgroundColor: COLORS.White,
     marginTop: wp(1.5),

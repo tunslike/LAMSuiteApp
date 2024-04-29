@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.White,
     padding: wp(4),
     borderRadius: wp(5),
-    marginHorizontal: wp(2.9),
+    marginHorizontal: wp(3.2),
     marginTop: hp(6),
     paddingBottom: wp(8)
   },

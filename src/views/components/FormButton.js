@@ -27,7 +27,7 @@ const FormButton = ({label, onPress, disable, type, signup}) => {
 const styles = StyleSheet.create({
   labelTxt_bold: {
     fontFamily: FONTS.POPPINS_MEDIUM,
-    fontSize: wp(3.5),
+    fontSize: wp(3),
     color: COLORS.White,
     fontWeight: '400',
     marginRight: wp(3),

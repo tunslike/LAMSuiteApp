@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: wp(5),
-    paddingVertical: wp(4.3),
+    paddingVertical: Platform.OS === 'android' ? wp(3) : wp(4.3),
     paddingHorizontal: wp(3),
     width: wp(60),
     alignSelf: 'center',

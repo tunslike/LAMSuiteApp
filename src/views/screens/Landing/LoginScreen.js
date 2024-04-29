@@ -101,6 +101,8 @@ onSubmit={values => AuthenticateUser(values)}
                   placeholder="Enter your PIN"
                   value={values.pinNumber}
                   setSecureText={true}
+                  phone={1}
+                  maxLength={5}
                   onChange={handleChange('pinNumber')}
                 />
                 {errors.pinNumber && 
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.White,
     padding: wp(4),
     borderRadius: wp(5),
-    marginHorizontal: wp(2.9),
+    marginHorizontal: wp(3),
     marginTop: hp(6),
     paddingBottom: wp(8)
   },

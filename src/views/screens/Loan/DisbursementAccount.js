@@ -46,11 +46,13 @@ const DisbursementAccount = ({navigation}) => {
   const [maskedAccountDetails, setMaskedAccountDetails] = useState('');
 
   // check selected account
-  const setUpdateAccountNumber = (accountID, bankName) => {
+  const setUpdateAccountNumber = (accountID, accountNo, bankName) => {
   
       dispatch(updateBankAccountID(accountID))
 
-      let accountBankDetails = bankName + "|" + maskAccount(accountID, 2, 7)
+      let accountBankDetails = bankName + " | " + maskAccount(accountNo, 2, 7)
+
+      dispatch(updateBankAccountDetails(accountBankDetails))
 
       setMaskedAccountDetails(accountBankDetails)
 
@@ -220,7 +222,7 @@ function maskAccount(str, start, end) {
 
     {(account != '') &&
       <BankAccountNumberCard key={account.bank_ACCOUNT_ID}
-        onPress={() => setUpdateAccountNumber(account.bank_ACCOUNT_ID, account.bankName)} 
+        onPress={() => setUpdateAccountNumber(account.bank_ACCOUNT_ID, account.account_NUMBER, account.bank_NAME)} 
         bankName={account.bank_NAME}
         accountNo={maskAccount(account.account_NUMBER, 2, 7)}
         active={(activeAccount == 1) ? true : null}

@@ -8,8 +8,17 @@ const new_loan_bg = require("../assets/images/new_loan_bg.png")
 const repay_loan_bg = require("../assets/images/repay_loan_bg.png")
 const buy_data_bg = require("../assets/images/buy_data_bg.png")
 const buy_airtime_bg = require("../assets/images/buy_airtime_bg.png")
+const mtn_logo = require("../assets/images/mtn_logo.jpg")
+const airtel_logo = require("../assets/images/airtel_logo.png")
+const n_mobile_logo = require("../assets/images/n_mobile_logo.png")
+const glo_logo = require("../assets/images/glo_logo.png")
+
 
 export default {
+    airtel_logo,
+    n_mobile_logo,
+    glo_logo,
+    mtn_logo,
     new_loan_bg,
     repay_loan_bg, 
     buy_data_bg,

@@ -51,7 +51,7 @@ console.log(activateDotIndex)
           <View style={styles.sliderBody}>
             <Image source={item.image} 
               style={{
-                height: wp(60), width: wp(60), 
+                height: Platform.OS === 'android' ? wp(50) : wp(50), width: Platform.OS === 'android' ? wp(50) : wp(50), 
                 resizeMode: 'contain', borderRadius: wp(5)
               }}
             />
@@ -110,10 +110,17 @@ console.log(activateDotIndex)
               <SliderButton onPress={() => {
               _carouselRef.current.snapToItem(activateDotIndex + 1)
               }} type={1} label="Continue" />
-              <SliderButton 
-                onPress={() => setActiveDotIndex(2)}
-                type={2} 
-                label="Skip" />
+          
+                <TouchableOpacity
+                  onPress={() => setActiveDotIndex(2)}
+                  style={styles.button_border}
+                >
+                    <Text style={styles.labelTxt_border}>Skip</Text>
+                    <Image source={icons.arrow_thick} 
+                    style={{
+                        height:wp(4), width: wp(4), resizeMode: 'contain', tintColor: COLORS.primaryRed
+                    }} />
+                </TouchableOpacity>
         </View>
       }
 
@@ -122,6 +129,25 @@ console.log(activateDotIndex)
 }
 
 const styles = StyleSheet.create({
+  labelTxt_border: {
+    fontFamily: FONTS.POPPINS_MEDIUM,
+    fontSize:  wp(3.5),
+    color: COLORS.primaryRed,
+    fontWeight: '400',
+    marginRight: wp(3),
+  },
+  button_border : {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    alignSelf: 'center',
+    borderRadius: wp(3.5),
+    borderStyle: 'solid',
+    borderColor: COLORS.primaryRed,
+    borderWidth: 1,
+    paddingHorizontal: wp(19.7),
+    paddingVertical: Platform.OS === 'ios' ? wp(2.9) : wp(2.3),
+   },
   loginTxt: {
     fontFamily: FONTS.POPPINS_MEDIUM,
     fontSize:  wp(3.3),
@@ -138,7 +164,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderColor: COLORS.primaryRed,
     borderWidth: 1,
-    paddingHorizontal: wp(7.5),
+    paddingHorizontal: wp(7.2),
     paddingVertical: Platform.OS === 'ios' ? wp(3.2) :  wp(2.8),
   },
   slideBtns: {
@@ -146,11 +172,11 @@ const styles = StyleSheet.create({
   },
   sliderTitle: {
     fontFamily: FONTS.POPPINS_SEMIBOLD,
-    fontSize: wp(4.8),
+    fontSize: Platform.OS === 'android' ? wp(4.5) : wp(4.8),
     width: wp(50),
     textAlign: 'center',
     color: COLORS.primaryRed,
-    marginTop: wp(3)
+    marginTop: Platform.OS === 'android' ? wp(7) : wp(3)
   },
   sliderDesc: {
       marginTop: wp(3),

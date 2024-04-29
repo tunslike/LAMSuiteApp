@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
 
   loginTxtbutton: {
     fontFamily: FONTS.POPPINS_SEMIBOLD,
-    fontSize: wp(3.5),
+    fontSize: wp(3),
     color: COLORS.White,
     marginRight: wp(3),
   },
@@ -142,13 +142,13 @@ const styles = StyleSheet.create({
   headerTxt: {
       fontFamily: FONTS.POPPINS_SEMIBOLD,
       color: COLORS.White,
-      fontSize: wp(5),
+      fontSize: wp(4),
       marginTop: wp(13),
       
   },
   header: {
     backgroundColor: COLORS.successHeader,
-    padding: wp(6),
+    paddingBottom: wp(4),
     alignItems: 'center',
     borderBottomLeftRadius: wp(8),
     borderBottomRightRadius: wp(8)
