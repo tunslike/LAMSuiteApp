@@ -37,6 +37,7 @@ const LoanRepaymentScreen = ({navigation}) => {
 
   const [defaultAmount, setDefaultAmount] = useState(20000)
   const [requestAmount, setRequestAmount] = useState(0)
+  const [partPayment, setPartPayment] = useState(0)
   const [updatedLoanData, setUpdatedLoanData] = useState('');
   const [loanBalance, setLoanBalance] = useState(0);
   const [toggle, setToggle] = useState(1);
@@ -47,6 +48,13 @@ const LoanRepaymentScreen = ({navigation}) => {
   }
 
   const toggleButton = (value) => {
+
+    if(value == '0') {
+      setRequestAmount(loanBalance)
+    }else if(value == '1') {
+      setRequestAmount(partPayment)
+    }
+
     setToggle(value)
   }
 
@@ -101,7 +109,9 @@ const LoanRepaymentScreen = ({navigation}) => {
           setUpdatedLoanData(response.data)
           setLoanBalance(response.data.total_REPAYMENT - response.data.loan_TOTAL_REPAYMENT);
 
-          setRequestAmount(updatedLoanData.monthly_REPAYMENT)
+          setPartPayment(response.data.monthly_REPAYMENT)
+          console.log(partPayment)
+          setRequestAmount(partPayment)
 
 
         })
@@ -167,7 +177,7 @@ const LoanRepaymentScreen = ({navigation}) => {
          />
       </TouchableOpacity>
 
-      <Text style={styles.textAprAmount}>{updatedLoanData.monthly_REPAYMENT}</Text>
+      <Text style={styles.textAprAmount}>{requestAmount.toLocaleString('en-US', {maximumFractionDigits:2})}</Text>
 
        <TouchableOpacity 
        onPress={() => increaseLoanValue(2)}
@@ -185,7 +195,7 @@ const LoanRepaymentScreen = ({navigation}) => {
    <Text style={styles.paymentTitle}>How do you want to pay?</Text>
 
    <LoanPaymentTypeCard 
-   onPress={() => navigation.navigate("BankTransfer",{payment_amount:updatedLoanData.monthly_REPAYMENT})}
+   onPress={() => navigation.navigate("BankTransfer",{payment_amount:requestAmount})}
    icon={icons.bank_transfer}
    channelName="Bank Transfer"
 />
@@ -395,7 +405,7 @@ const styles = StyleSheet.create({
   textAprAmount: {
     fontFamily: FONTS.POPPINS_SEMIBOLD,
     color: COLORS.textLoanAmount,
-    fontSize: wp(6),
+    fontSize: wp(5),
     flex: 1,
     textAlign: 'center',
   },
@@ -419,7 +429,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: wp(5),
-    paddingVertical: wp(4.3),
+    paddingVertical: wp(3),
     paddingHorizontal: wp(3),
     width: wp(60),
     alignSelf: 'center',

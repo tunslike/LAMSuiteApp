@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
       fontFamily: FONTS.POPPINS_SEMIBOLD,
       color: COLORS.White,
       fontSize: wp(4),
-      marginTop: wp(13),
+      marginTop: wp(10),
       
   },
   header: {

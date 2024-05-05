@@ -86,18 +86,18 @@ const BankTransferRepayment = ({navigation, route}) => {
 
   <View style={styles.bank_details}>
       <Text style={styles.bank_name}>Bank Name</Text>
-      <Text>{bankDetails.bank_name}</Text>
+      <Text style={styles.bank_value}>{bankDetails.bank_name}</Text>
   </View>
 
   <View style={styles.bank_details}>
   <Text style={styles.bank_name}>Account Name</Text>
-  <Text>{bankDetails.account_name}</Text>
+  <Text style={styles.bank_value}>{bankDetails.account_name}</Text>
 </View>
 
 
 <View style={styles.bank_details}>
 <Text style={styles.bank_name}>Account Number</Text>
-<Text>{bankDetails.account_number}</Text>
+<Text style={styles.bank_value}>{bankDetails.account_number}</Text>
 </View>
 
 
@@ -110,6 +110,12 @@ const BankTransferRepayment = ({navigation, route}) => {
 }
 
 const styles = StyleSheet.create({
+
+  bank_value: {
+    color: COLORS.primaryBlue,
+    fontFamily: FONTS.POPPINS_MEDIUM,
+    fontSize: wp(3.1)
+  },
 
   bank_name: {
     color: COLORS.ButtonBorderBlue,
@@ -316,7 +322,7 @@ const styles = StyleSheet.create({
   textAprAmount: {
     fontFamily: FONTS.POPPINS_SEMIBOLD,
     color: COLORS.textLoanAmount,
-    fontSize: wp(6),
+    fontSize: wp(5),
     flex: 1,
     textAlign: 'center',
   },

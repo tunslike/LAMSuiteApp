@@ -78,7 +78,7 @@ const DashboardScreen = ({navigation}) => {
 
         console.log(response.data)
 
-        setTransactions(response.data)
+        setTransactions(response.data.slice(0,4))
 
       })
       .catch(error => {
@@ -142,7 +142,7 @@ const DashboardScreen = ({navigation}) => {
 useFocusEffect(
   React.useCallback(() => {
     validateCustomerLoan();
-   // fetchTransactionDetails();
+    fetchTransactionDetails();
   }, [])
 );
 

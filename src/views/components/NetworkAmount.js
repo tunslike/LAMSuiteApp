@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: COLORS.tabColorActive,
       borderStyle: 'solid',
-      paddingVertical: wp(1.8),
-      paddingHorizontal: wp(4.5),
+      paddingVertical: wp(1),
+      paddingHorizontal: wp(4),
       borderColor: COLORS.BackgroundGrey,
       borderWidth: 1,
       flexDirection: 'row',
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   container_active: {
     backgroundColor: COLORS.tabColorActive,
     borderStyle: 'solid',
-    paddingVertical: wp(1),
+    paddingVertical: wp(1.5),
     paddingRight:wp(1.8),
     borderColor: COLORS.primaryRed,
     flexDirection: 'row',

@@ -133,7 +133,8 @@ const styles = StyleSheet.create({
     columnGap: wp(2),
   },
   coyDetails: {
-    padding: wp(4)
+    paddingHorizontal: wp(4),
+    paddingVertical: wp(2)
   },
   bottomData: {
     flexDirection: 'row',

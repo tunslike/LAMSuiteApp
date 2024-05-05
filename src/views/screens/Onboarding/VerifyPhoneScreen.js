@@ -18,13 +18,15 @@ import {
   import { SafeAreaView } from 'react-native-safe-area-context';
   import { useSelector } from 'react-redux';
   import { useDispatch } from 'react-redux';
-  import { COLORS, images, FONTS, icons } from '../../../constants';
+  import { COLORS, images, FONTS, icons, SendChampAPI } from '../../../constants';
   import { OnboardingTextBox, FormButton } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const VerifyPhoneScreen = ({route, navigation}) => {
 
   //const {full_name, email_address, phone_number} = route.params;
+
+  const phone = useSelector((state) => state.account.phone);
 
   const[otpValue, SetOtpValue] = useState('');
   const [activateButton, setActivateButton] = useState(true);
@@ -42,28 +44,28 @@ const VerifyPhoneScreen = ({route, navigation}) => {
 
   }// end of function
 
-  const ResendValidateOTP = () => {
+  const sendVerifyPhoneOTP = () => {
 
     const data = {
-     
+     to: '2348023429574',
+     message: 'This is a test SMS to verify phone number, please enter OTP 039393',
+     sender_name: 'Finserve',
+     route: 'non_dnd'
     };
 
     console.log(data)
+    console.log('Sending Request out!');
 
-    return;
-
-    setIsLoading(true);
-
-    axios.post(APIBaseUrl.developmentUrl + 'customer/newCustomer',data,{
+    axios.post(SendChampAPI.live_base_url + 'sms/send',data,{
       headers: {
         'Content-Type' : 'application/json',
-        'Access-Control-Allow-Origin': 'http://localhost:8082'
+        'Accept' : 'application/json',
+        'Authorization' : 'Bearer ' + SendChampAPI.access_key
       }
     })
     .then(response => {
 
-      setIsLoading(false)
-
+      console.log(response.data)
 
     })
     .catch(error => {
@@ -74,6 +76,8 @@ const VerifyPhoneScreen = ({route, navigation}) => {
 
     //USE EFFECT
     useEffect(() => {
+
+      sendVerifyPhoneOTP();
 
       counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
   

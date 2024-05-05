@@ -175,7 +175,7 @@ const BuyAirtimeScreen = ({navigation}) => {
             onChangeText={(mobileNumber) => setMobileNumber(mobileNumber)}
             value={mobileNumber}
             style={styles.mobileBox}
-            placeholderTextColor={COLORS.darkGray}
+            placeholderTextColor="#bfbfbf"
             keyboardType={"phone-pad"}
             autoCapitalize='none'
             onSubmitEditing={Keyboard.dismiss}
@@ -202,7 +202,7 @@ const BuyAirtimeScreen = ({navigation}) => {
             onChangeText={(airtimeValue) => setAirtimeValue(airtimeValue)}
             value={(airtimeValue) ? "₦ " + airtimeValue + ".00" : null}
             style={styles.manuelAmt}
-            placeholderTextColor={COLORS.darkGray}
+            placeholderTextColor="#bfbfbf"
             keyboardType={"phone-pad"}
             autoCapitalize='none'
             onSubmitEditing={Keyboard.dismiss}
@@ -280,13 +280,12 @@ const styles = StyleSheet.create({
     borderColor: COLORS.companySetupBorder,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderRadius: wp(8),
     fontFamily: FONTS.POPPINS_SEMIBOLD,
     fontSize: wp(4.5),
     color: COLORS.primaryBlue,
-    borderRadius: wp(5),
+    borderRadius: wp(4),
     paddingHorizontal: wp(3.5),
-    paddingVertical: Platform.OS === 'ios' ? wp(3.5) : wp(2),
+    paddingVertical: Platform.OS === 'ios' ? wp(3.5) : wp(3.5),
     marginTop: wp(3),
     marginHorizontal: wp(1),
     marginHorizontal: wp(13),
@@ -317,13 +316,12 @@ const styles = StyleSheet.create({
     borderColor: COLORS.companySetupBorder,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderRadius: wp(8),
     fontFamily: FONTS.POPPINS_SEMIBOLD,
     fontSize: wp(4.5),
     color: COLORS.primaryBlue,
-    borderRadius: wp(5),
+    borderRadius: wp(4),
     paddingHorizontal: wp(3.5),
-    paddingVertical: Platform.OS === 'ios' ? wp(4) : wp(2),
+    paddingVertical: Platform.OS === 'ios' ? wp(4) : wp(3.5),
     marginTop: wp(3),
     marginHorizontal: wp(1),
     marginHorizontal: wp(13),

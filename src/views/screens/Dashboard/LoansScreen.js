@@ -271,9 +271,10 @@ textHistory: {
     borderColor: COLORS.successGreen,
       borderWidth: 1,
       borderStyle: 'solid',
-      padding: wp(0.6),
+      paddingVertical: wp(0.6),
+      paddingHorizontal: wp(1.5),
       borderRadius: wp(5),
-      width:'25%',
+      width:'30%',
       alignItems: 'center',
       marginLeft: wp(2)
   },

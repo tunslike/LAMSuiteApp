@@ -84,9 +84,9 @@ const DisbursementAccount = ({navigation}) => {
     const data = {
       customerID : customerID,
       bankName: bankName,
-      "bankID" : "051",
+      bankID : "051",
       accountNumber : values.accountNumber,
-      "accountName": "Babatunde Jinadu"
+      accountName: "Babatunde Jinadu"
     }
 
     setIsLoading(true);
