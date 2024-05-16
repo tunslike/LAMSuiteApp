@@ -19,7 +19,8 @@ import {    DashboardScreen,
             BankTransferRepayment,
             BillCompletionScreen,
             ViewProfileScreen,
-            NotificationScreen
+            NotificationScreen,
+            KYCDocumentsScreen
         } from '../screens';
 import TabNavigator from './TabNavigator';
 
@@ -51,6 +52,7 @@ const AppStack = () => {
             <Stack.Screen name='NOKDetails' component={NOKDetailsScreen} options={{animation: 'slide_from_right'}} />
             <Stack.Screen name='KYCDataCompleted' component={KYCCompleteScreen} options={{animation: 'slide_from_bottom'}} />
             <Stack.Screen name='DocumentUpload' component={DocumentUploadScreen} options={{animation: 'slide_from_right'}} />
+            <Stack.Screen name='KYCDocuments' component={KYCDocumentsScreen} options={{animation: 'slide_from_right'}} />
         </Stack.Navigator>
     )
 }

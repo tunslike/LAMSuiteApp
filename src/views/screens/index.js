@@ -31,8 +31,10 @@ import BankTransferRepayment from "./Loan/BankTransferRepayment";
 import BillCompletionScreen from "./Utility/BillCompletionScreen";
 import ViewProfileScreen from "./Profile/ViewProfileScreen";
 import NotificationScreen from "./Profile/NotificationScreen";
+import KYCDocumentsScreen from "./KYC/KYCDocumentsScreen";
 
 export {
+    KYCDocumentsScreen,
     NotificationScreen,
     ViewProfileScreen,
     BillCompletionScreen,

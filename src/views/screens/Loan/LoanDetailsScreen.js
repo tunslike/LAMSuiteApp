@@ -14,7 +14,7 @@ import {
   import axios from 'axios';
   import { useSelector, useDispatch } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { BreakdownEntry, Loader, InnerHeader, PaymentScheduleCard } from '../../components';
+  import { BreakdownEntry, LoaderWindow, InnerHeader, PaymentScheduleCard } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -84,9 +84,7 @@ const LoanDetailsScreen = ({route, navigation}) => {
         backgroundColor: COLORS.BackgroundGrey
       }}>
 
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
+      <LoaderWindow loading={isLoading} />
 
       <InnerHeader onPress={() => navigation.goBack()} title="Loan Details" />
 

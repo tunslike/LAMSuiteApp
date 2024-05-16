@@ -14,7 +14,7 @@ import {
   import axios from 'axios';
   import { useSelector} from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import {LoanPaymentTypeCard, Loader, InnerHeader } from '../../components';
+  import {LoanPaymentTypeCard, LoaderWindow, InnerHeader } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const ViewProfileScreen = ({navigation}) => {
@@ -63,10 +63,7 @@ const ViewProfileScreen = ({navigation}) => {
         flexGrow: 1,
         backgroundColor: COLORS.BackgroundGrey
       }}>
-
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
+      <LoaderWindow loading={isLoading} />
 
       <InnerHeader onPress={() => navigation.goBack()} title="View Profile" />
 

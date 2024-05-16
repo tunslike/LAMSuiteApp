@@ -77,7 +77,7 @@ const VerifyPhoneScreen = ({route, navigation}) => {
     //USE EFFECT
     useEffect(() => {
 
-      sendVerifyPhoneOTP();
+      //sendVerifyPhoneOTP();
 
       counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
   

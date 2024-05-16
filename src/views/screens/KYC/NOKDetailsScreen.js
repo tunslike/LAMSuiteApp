@@ -19,7 +19,7 @@ import {
   import { useDispatch } from 'react-redux';
   import { useSelector } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { Loader, DropdownTextBox, InnerHeader, BiodataTextbox, FormButton } from '../../components';
+  import { LoaderWindow, DropdownTextBox, InnerHeader, BiodataTextbox, FormButton } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
   import { updateNOKdataStatus } from '../../../store/customerSlice';
 
@@ -157,9 +157,7 @@ const NOKDetailsScreen = ({navigation}) => {
       
     <InnerHeader onPress={() => navigation.goBack()} title="NOK Details" />
 
-    {isLoading &&
-      <Loader title="Processing your request, please wait..." />
-    }
+    <LoaderWindow loading={isLoading} />
 
   {/* FORM STARTS HERE */}
 <Formik

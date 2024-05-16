@@ -15,7 +15,7 @@ import {
   import { useIsFocused } from "@react-navigation/native";
   import { useSelector, useDispatch } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import {LoanPaymentTypeCard, Loader, InnerHeader } from '../../components';
+  import {LoanPaymentTypeCard, LoaderWindow, InnerHeader } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -137,9 +137,7 @@ const LoanRepaymentScreen = ({navigation}) => {
         backgroundColor: COLORS.BackgroundGrey
       }}>
 
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
+      <LoaderWindow loading={isLoading} />
 
       <InnerHeader onPress={() => navigation.goBack()} title="Loan Repayment" />
 

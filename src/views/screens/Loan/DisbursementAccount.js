@@ -18,7 +18,7 @@ import {
   import { updateBankAccountID, updateBankAccountDetails } from '../../../store/customerSlice';
   import SelectDropdown from 'react-native-select-dropdown';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { InnerHeader, Loader, BiodataTextbox, BankAccountNumberCard } from '../../components';
+  import { InnerHeader, LoaderWindow, BiodataTextbox, BankAccountNumberCard } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
   const bankList = ["Stanbic IBTC Bank", "GTBank", "First Bank"];
@@ -197,10 +197,7 @@ function maskAccount(str, start, end) {
       backgroundColor: COLORS.BackgroundGrey
     }}>
 
-
-    {isLoading &&
-      <Loader title="Processing your request, please wait..." />
-    }
+    <LoaderWindow loading={isLoading} />
 
     <InnerHeader onPress={() => navigation.goBack()} title="Disbursement Account" />
 

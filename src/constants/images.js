@@ -12,9 +12,11 @@ const mtn_logo = require("../assets/images/mtn_logo.jpg")
 const airtel_logo = require("../assets/images/airtel_logo.png")
 const n_mobile_logo = require("../assets/images/n_mobile_logo.png")
 const glo_logo = require("../assets/images/glo_logo.png")
+const file_upload_pic = require("../assets/images/file_upload_pic.png")
 
 
 export default {
+    file_upload_pic,
     airtel_logo,
     n_mobile_logo,
     glo_logo,

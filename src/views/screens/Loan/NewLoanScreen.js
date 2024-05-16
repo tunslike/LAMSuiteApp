@@ -35,7 +35,7 @@ const NewLoanScreen = ({navigation}) => {
   const [defaultAmount, setDefaultAmount] = useState(20000)
   const [loadingSummary, setLoadingSummary] = useState(false);
   const [loanPurpose, setLoanPurpose] = useState('');
-  const [requestAmount, setRequestAmount] = useState(0)
+  const [requestAmount, setRequestAmount] = useState(defaultAmount)
   const [monthlyRepayment, setMonthlyRepayment] = useState(0);
   const [totalRepayment, setTotalRepayment] = useState(0);
   const [tenor, setTenor] = useState(1);
@@ -50,6 +50,7 @@ const NewLoanScreen = ({navigation}) => {
 
   // function to toggle button
     const toggleSkipButton = () => {
+  
       if(toggleBtn == 0) {
         setRequestAmount(loanAmount)
         setToggleBtn(1)
@@ -57,6 +58,7 @@ const NewLoanScreen = ({navigation}) => {
         setRequestAmount(defaultAmount)
         setToggleBtn(0)
       }
+      
   }
   // end of function
 
@@ -165,11 +167,11 @@ const NewLoanScreen = ({navigation}) => {
 
       calculateLoanSummary(tenor)
 
-      setToggleBtn(0)
+      //setToggleBtn(0)
       //set default amount
-      setRequestAmount(defaultAmount)
+      //setRequestAmount(defaultAmount)
   
-    }, []);
+    }, [requestAmount]);
 
 
   return (
@@ -223,7 +225,9 @@ const NewLoanScreen = ({navigation}) => {
                 <View style={(toggleBtn == 1) ? styles.checkBox_checked : styles.checkBox_notchecked}>
                 <Image source={icons.check} 
                   style={{
-                    height: (toggleBtn == 1) ? wp(4.5) : wp(4), width: (toggleBtn == 1) ? wp(4.5) : wp(4), resizeMode: 'contain', tintColor: COLORS.White
+                    height: (toggleBtn == 1) ? wp(5) : wp(4), 
+                    width: (toggleBtn == 1) ? wp(4.5) : wp(4), 
+                    resizeMode: 'contain', tintColor: COLORS.White
                   }}
                 />
             </View>

@@ -12,10 +12,26 @@ const BiodataTextbox = ({ label, full, placeholder,maxlength, phone, onFocus, on
   return (
     <View style={styles.container}>
 
-        <Text style={styles.textLabel}>{label}</Text>
+       <View style={styles.row}>
+          <Text style={styles.textLabel}>{label}</Text>
+          {icon &&
+
+            <Image 
+              source={icon}
+              style={{
+                width: wp(4), height: wp(4), resizeMode: 'contain', 
+                tintColor: COLORS.sliderDescText
+              }}
+            />
+          }
+
+       </View>
+        
+
         <TextInput
             value={value}
             onChangeText={onChange}
+            placeholder={placeholder}
             style={[styles.inputStyle, {width: (full) ? '100%' : wp(41)}]}
             placeholderTextColor={COLORS.darkGray}
             keyboardType={(phone == 1) ? "phone-pad" : "default"}
@@ -34,6 +50,12 @@ const BiodataTextbox = ({ label, full, placeholder,maxlength, phone, onFocus, on
 
 const styles = StyleSheet.create({
 
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'center',
+      columnGap: wp(3)
+    },
     textLabel: {
       fontFamily: FONTS.POPPINS_REGULAR,
       fontSize: wp(3.2),

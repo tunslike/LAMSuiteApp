@@ -15,7 +15,7 @@ import {
   import DocumentPicker from "react-native-document-picker"
   import { SelectList } from 'react-native-dropdown-select-list'
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { AccountSetupButton, Loader, FormButton,InnerHeader } from '../../components';
+  import { AccountSetupButton, Loader, LoaderWindow, FormButton,InnerHeader } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import NativeUploady, {
   UploadyContext,
@@ -23,11 +23,29 @@ import NativeUploady, {
   useItemStartListener,
   useItemErrorListener
 } from '@rpldy/native-uploady';
+import { updatePassportStatus, updateEmpLetterStatus, updateMeansidStatus } from '../../../store/customerSlice';
 
-const DocumentUploadScreen = ({navigation}) => {
+const DocumentUploadScreen = ({navigation, route}) => {
 
-  const [isLoading, setIsLoading] = useState(false)
+  const dispatch = useDispatch();
+  const customerData = useSelector((state) => state.customer.customerData);
+  const [loading, setLoading] = useState(false)
+  const {doctype, header_desc} = route.params;
 
+  const updateDocumentStatus = (doctype) => {
+
+    switch(doctype) {
+      case 'PASSPORT':
+        dispatch(updatePassportStatus(1));
+      break;
+      case 'MEANS_OF_ID':
+        dispatch(updateMeansidStatus(1));
+      break;
+      case 'EMPLOYMENT_LETTER':
+        dispatch(updateEmpLetterStatus(1));
+      break;
+    }
+  }
 
   const Upload = () => {
     
@@ -35,17 +53,33 @@ const DocumentUploadScreen = ({navigation}) => {
     const uploadyContext = useContext(UploadyContext);
   
     useItemFinishListener((item) => {
-      const response = JSON.parse(item.uploadResponse.data);
-      console.log(`item ${item.id} finished uploading, response was: `, response);
-      setUploadUrl(response.url);
+      
+        setLoading(false)
+        console.log(`item ${item.id} finished uploading, response was: `, item);
+
+        if(item.uploadResponse.data.responseCode == 200) {
+
+          updateDocumentStatus(doctype);
+        
+          Alert.alert("Finserve", "Document was uploaded successfully!")
+          navigation.goBack();
+
+        }else{
+          Alert.alert("Finserve", "Unable to process your request, please retry!")
+        }
+
+      //setUploadUrl(response.url);
     });
   
     useItemErrorListener((item) => {
-      console.log(`item ${item.id} upload error !!!! `, item);
+      setLoading(false)
+      console.log(`item ${item.id} upload error !!!! `, item.uploadResponse);
+      Alert.alert("Finserve", "Unable to upload document! " + item.uploadResponse.data.message)
     });
   
     useItemStartListener((item) => {
       console.log(`item ${item.id} starting to upload,name = ${item.file.name}`);
+      setLoading(true)
     });
   
     const pickFile = useCallback(async () => {
@@ -66,76 +100,37 @@ const DocumentUploadScreen = ({navigation}) => {
     }, [uploadyContext]);
   
     return (
-      <View>
-        <Button title="Choose File" onPress={pickFile} />
+      <TouchableOpacity
+        onPress={pickFile}
+      >
+        <Image 
+          source={images.file_upload_pic} 
+          style={{
+            height: wp(50), width: wp(50), resizeMode: 'contain', borderRadius: wp(10),
+            alignSelf: 'center'
+          }}
+        />
+        <Text style={styles.bottonTxt}>Choose File</Text>
         {uploadUrl && <Image source={{ uri: uploadUrl }} style={styles.uploadedImage} />}
-      </View>
+      </TouchableOpacity>
     );
   };
 
-
-  //USE EFFECT
-  useEffect(() => {
-     
-  }, []);
-
   return (
     <NativeUploady
-        destination={{ url: "http://localhost:8082/api/v1/customer/uploadDocuments" }}
+        sendWithFormData={true}
+        destination={{ url: "https://lamsuite.finserveinvestment.com/services/api/v1/customer/uploadDocuments", params: {"customerID" : customerData.customer_ENTRY_ID}, headers: { "x-doctype": doctype }}}
     >
     <ScrollView style={styles.container}>
 
-    <InnerHeader onPress={() => navigation.goBack()} title="Upload Documents" />
+    <InnerHeader onPress={() => navigation.goBack()} title={header_desc} />
 
-    {isLoading &&
-      <Loader title="Processing your request, please wait..." />
-    }
+    <LoaderWindow loading={loading} />
 
       <View style={styles.whiteBG}> 
-
-      <View style={styles.title}>
-      <Text style={styles.titleDesc}>Tap below to upload each of the documents</Text>
-    </View>
-
-
-  <AccountSetupButton 
-    label="Proof of Address"
-    icon={icons.docUpload}
-  />
-
-  <Upload />
-
-  {/**
-<AccountSetupButton 
-    label="Means of Identification"
-    onPress={() => handlePicker(1)}
-    icon={icons.docUpload}
-/>
-
-<AccountSetupButton 
-    label="Work ID Card"
-    onPress={() => handlePicker(1)}
-    icon={icons.docUpload}
-/>
-
-<AccountSetupButton 
-    label="Employment Letter"
-    onPress={() => handlePicker(1)}
-    icon={icons.docUpload}
-/>
-
-<AccountSetupButton 
-    label="Passport photograph"
-    onPress={() => handlePicker(1)}
-    icon={icons.docUpload}
-/>
- */}
-
-    </View>
-
-    <View style={styles.btnBox}>
-    <FormButton label="Save and Continue" />
-    </View>
+        <Text style={styles.titleDesc}>Uploaded file must not be more than 1MB</Text>
+        <Upload />
+      </View>
 
     </ScrollView>
     </NativeUploady>
@@ -143,22 +138,24 @@ const DocumentUploadScreen = ({navigation}) => {
 }
 
 const styles = StyleSheet.create({
+  bottonTxt: {
+      fontFamily: FONTS.POPPINS_MEDIUM,
+      fontSize: wp(3.5),
+      color: COLORS.primaryBlue,
+      textAlign: 'center'
+  },
   titleDesc: {
     marginLeft: wp(3),
       fontFamily: FONTS.POPPINS_REGULAR,
       fontSize: wp(3),
-      width: wp(70),
       lineHeight: wp(5),
-      marginBottom: wp(3),
       color: COLORS.primaryRed,
+      textAlign: 'center'
   },
 mainTitle: {
     fontFamily: FONTS.POPPINS_SEMIBOLD,
     fontSize: wp(4.3),
     color: COLORS.primaryBlue,
-  },
-  title: {
-    marginVertical: hp(2)
   },
   btnBox: {
     marginVertical: wp(10)

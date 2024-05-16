@@ -17,7 +17,7 @@ import {
   import axios from 'axios';
   import { SelectList } from 'react-native-dropdown-select-list'
   import { COLORS, images, FONTS, icons, APIBaseUrl, AppName } from '../../../constants';
-  import { AccountSetupButton, Loader, FormButton } from '../../components';
+  import { AccountSetupButton, LoaderWindow, FormButton } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const AccountSetupScreen = ({navigation}) => {
@@ -171,11 +171,8 @@ const AccountSetupScreen = ({navigation}) => {
     
     <ScrollView style={styles.container}>
     <StatusBar barStyle="dark-content" />
-
-    {isLoading &&
-      <Loader title="Processing your request, please wait..." />
-    }
-
+    
+    <LoaderWindow loading={isLoading} />
 
     <View style={{flexDirection: 'row', 
     justifyContent: 'space-between', 

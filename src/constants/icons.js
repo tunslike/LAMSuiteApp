@@ -51,8 +51,10 @@ const faq = require("../assets/icons/faq.png")
 const change_password = require("../assets/icons/change_password.png")
 const feedback = require("../assets/icons/feedback.png")
 const agreement = require("../assets/icons/agreement.png")
+const uploaded_check = require("../assets/icons/upload_check.png")
 
 export default {
+    uploaded_check,
     agreement,
     feedback,
     change_password,

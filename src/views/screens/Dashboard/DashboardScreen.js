@@ -13,7 +13,7 @@ import {
   Dimensions} from 'react-native';
   import axios from 'axios';
   import { COLORS, images, FONTS, icons, APIBaseUrl } from '../../../constants';
-  import { AccountCard, AccountCardNoLoan, ServiceCard, GreenCheckBox, TransactionCard, Loader, CreditRating, KYCStatusCard } from '../../components';
+  import { AccountCard, AccountCardNoLoan, ServiceCard, GreenCheckBox, TransactionCard, LoaderWindow, CreditRating, KYCStatusCard } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import { SafeAreaView } from 'react-native-safe-area-context';
   import moment from 'moment';
@@ -167,9 +167,7 @@ useFocusEffect(
       backgroundColor: COLORS.BackgroundGrey
     }}>
 
-    {isLoading &&
-      <Loader />
-    }
+    <LoaderWindow loading={isLoading} />
 
     <View style={styles.header}>
           <View style={styles.logoArea}>

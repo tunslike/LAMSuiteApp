@@ -15,7 +15,7 @@ import {
   import moment from 'moment';
   import { useSelector, useDispatch } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { TransactionCarButton, Loader, InnerHeader } from '../../components';
+  import { TransactionCarButton, LoaderWindow, InnerHeader } from '../../components';
   import { useFocusEffect } from '@react-navigation/native';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -65,9 +65,7 @@ useFocusEffect(
         backgroundColor: COLORS.BackgroundGrey
       }}>
 
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
+      <LoaderWindow loading={isLoading} />
 
       <InnerHeader onPress={() => navigation.goBack()} title="Transaction History" />
 

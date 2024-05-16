@@ -31,8 +31,10 @@ import ProfileLinks from "./ProfileLinks";
 import NetworkIcon from "./NetworkIcon";
 import NetworkAmount from "./NetworkAmount";
 import TransactionCarButton from "./TransactionCarButton";
+import LoaderWindow from "./LoaderWindow";
 
 export {
+    LoaderWindow,
     TransactionCarButton,
     NetworkAmount,
     NetworkIcon,

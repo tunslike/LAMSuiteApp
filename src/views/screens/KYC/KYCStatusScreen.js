@@ -120,7 +120,7 @@ const KYCStatusScreen = ({navigation, route}) => {
    />
 
    <KYCStatusCardItem 
-   onPress={() => docDataStatus == 0 ? navigation.navigate("DocumentUpload") : null}
+   onPress={() => docDataStatus == 0 ? navigation.navigate("KYCDocuments") : null}
    icon={icons.kyc_upload}
    channelName="Upload Documents"
    active={docDataStatus == 1 ? true : false}

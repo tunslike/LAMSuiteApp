@@ -13,12 +13,12 @@ const AccountSetupButton = ({type, label, completed, icon, description, onPress}
             <Image source={icon} 
                 style={{
                     height: wp(4), width: wp(4), resizeMode: 'contain', 
-                    tintColor: (completed) ? COLORS.primaryBlue :COLORS.primaryRed
+                    tintColor: COLORS.ButtonBorderBlue
                 }}
             />
         </View>
         <View style={{flex: 1, marginLeft: wp(5)}}>
-                <Text style={[styles.header, {color: (completed) ? COLORS.primaryBlue : COLORS.primaryRed}]}>{label}</Text>
+                <Text style={styles.header}>{label}</Text>
         </View>
 
         {(completed) &&
@@ -53,9 +53,9 @@ const styles = StyleSheet.create({
         fontSize: wp(3)
     },
     header: {
-        fontFamily: FONTS.POPPINS_SEMIBOLD,
+        fontFamily: FONTS.POPPINS_REGULAR,
         fontSize: wp(3.1),
-        color: COLORS.primaryRed
+        color: COLORS.primaryBlue
     },
     iconBox: {
         backgroundColor: COLORS.White,

@@ -16,7 +16,7 @@ import {
   import axios from 'axios';
   import { useSelector, useDispatch } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { NetworkIcon, NetworkAmount, Loader, InnerHeader } from '../../components';
+  import { NetworkIcon, NetworkAmount, LoaderWindow, InnerHeader } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -99,9 +99,7 @@ const BuyDataScreen = ({navigation}) => {
         backgroundColor: COLORS.BackgroundGrey
       }}>
 
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
+      <LoaderWindow loading={isLoading} />
 
       <InnerHeader onPress={() => navigation.goBack()} title="Buy Data" />
 

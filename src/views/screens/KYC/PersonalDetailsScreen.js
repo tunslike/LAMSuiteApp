@@ -14,13 +14,14 @@ import {
   import { Formik } from 'formik';
   import * as Yup from 'yup';
   import axios from 'axios';
+  import moment from 'moment';
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
   import { SafeAreaView } from 'react-native-safe-area-context';
   import { useDispatch } from 'react-redux';
   import { useSelector } from 'react-redux';
   import DateTimePickerModal from "react-native-modal-datetime-picker";
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { Loader, DropdownTextBox, BiodataTextbox, FormButton, InnerHeader } from '../../components';
+  import { LoaderWindow, DropdownTextBox, BiodataTextbox, FormButton, InnerHeader } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { updateBiodataStatus } from '../../../store/customerSlice';
 
@@ -212,10 +213,7 @@ const PersonalDetailsScreen = ({navigation}) => {
     }}
  > 
     <InnerHeader onPress={() => navigation.goBack()} title="Personal Details" />
-
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
+    <LoaderWindow loading={isLoading} />
     
 
   {/* FORM STARTS HERE */}
@@ -229,7 +227,6 @@ const PersonalDetailsScreen = ({navigation}) => {
       emailaddress: '',
       streetAddress: '',
       areaLocality: '',
-      
     }}
     validationSchema={CreateAccountSchema}
     onSubmit={values => confirmValidateAccountData(values)}
@@ -290,8 +287,10 @@ const PersonalDetailsScreen = ({navigation}) => {
             <View style={styles.formRow}>
             <Pressable onPress={() => showDatePicker("date")}>
               <BiodataTextbox 
-                label="Date of Birth(Tap here)"
+                label="Date of Birth"
+                placeholder="Tap icon"
                 value={dob}
+                icon={icons.calender}
                 onChange={(text) => setDOB(text)}
               /> 
             </Pressable>
@@ -393,6 +392,10 @@ const PersonalDetailsScreen = ({navigation}) => {
 )}
 </Formik>
  {/* FORM ENDS HERE */}
+
+       {/* Include Date Components */}
+       {IncludeDateComponent()}
+
     </KeyboardAwareScrollView>
   )
 }

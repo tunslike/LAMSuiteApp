@@ -13,7 +13,7 @@ import {
   Dimensions} from 'react-native';
   import axios from 'axios';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import {LoanPaymentTypeCard, Loader, InnerHeader } from '../../components';
+  import {LoanPaymentTypeCard, LoaderWindow, InnerHeader } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const BankTransferRepayment = ({navigation, route}) => {
@@ -67,9 +67,7 @@ const BankTransferRepayment = ({navigation, route}) => {
         backgroundColor: COLORS.BackgroundGrey
       }}>
 
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
+      <LoaderWindow loading={isLoading} />
 
       <InnerHeader onPress={() => navigation.goBack()} title="Bank Transfer Repayment" />
 

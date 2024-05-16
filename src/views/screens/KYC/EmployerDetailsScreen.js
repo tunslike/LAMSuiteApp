@@ -21,7 +21,7 @@ import {
   import { SelectList } from 'react-native-dropdown-select-list'
   import DateTimePickerModal from "react-native-modal-datetime-picker";
   import { COLORS, images, FONTS, AppName, APIBaseUrl, icons } from '../../../constants';
-  import { Loader, DropdownTextBox, BiodataTextbox, FormButton, InnerHeader } from '../../components';
+  import { LoaderWindow, DropdownTextBox, BiodataTextbox, FormButton, InnerHeader } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
   import { updateEmpdataStatus } from '../../../store/customerSlice';
 
@@ -175,10 +175,7 @@ const EmployerDetailsScreen = ({navigation}) => {
       backgroundColor: COLORS.BackgroundGrey
     }}
  > 
-
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
+ <LoaderWindow loading={isLoading} />
 
       <InnerHeader onPress={() => navigation.goBack()} title="Employer Details" />
 

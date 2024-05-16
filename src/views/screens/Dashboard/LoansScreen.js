@@ -15,7 +15,7 @@ import {
   import moment from 'moment';
   import { useSelector, useDispatch } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { LoanHistoryCard, Loader, InnerHeader } from '../../components';
+  import { LoanHistoryCard, LoaderWindow, InnerHeader } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
   import { useFocusEffect } from '@react-navigation/native';
@@ -87,9 +87,7 @@ const LoansScreen = ({navigation}) => {
         backgroundColor: COLORS.BackgroundGrey
       }}>
 
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
+      <LoaderWindow loading={isLoading} />
 
       <InnerHeader onPress={() => navigation.goBack()} title="Manage Loan" />
 

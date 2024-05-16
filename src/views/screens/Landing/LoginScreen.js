@@ -15,7 +15,7 @@ import {
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
   import { SafeAreaView } from 'react-native-safe-area-context';
   import { COLORS, images, FONTS, icons } from '../../../constants';
-  import { OnboardingTextBox, Loader } from '../../components';
+  import { OnboardingTextBox, LoaderWindow } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -58,9 +58,7 @@ const LoginScreen = ({route, navigation}) => {
       <SafeAreaView>
       <StatusBar barStyle="dark-content" />
 
-      {isLoading &&
-        <Loader/>
-      }
+      <LoaderWindow loading={isLoading} />
 
       <View style={styles.logo}>
             <Image source={images.appLogo} 
