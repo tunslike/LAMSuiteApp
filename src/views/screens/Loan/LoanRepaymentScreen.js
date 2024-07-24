@@ -111,7 +111,7 @@ const LoanRepaymentScreen = ({navigation}) => {
 
           setPartPayment(response.data.monthly_REPAYMENT)
           console.log(partPayment)
-          setRequestAmount(partPayment)
+          setRequestAmount(response.data.monthly_REPAYMENT)
 
 
         })
@@ -196,7 +196,9 @@ const LoanRepaymentScreen = ({navigation}) => {
    onPress={() => navigation.navigate("BankTransfer",{payment_amount:requestAmount})}
    icon={icons.bank_transfer}
    channelName="Bank Transfer"
+   ready={true}
 />
+{/*
    <LoanPaymentTypeCard 
        icon={icons.account_icon}
        channelName="Online Card Payment"
@@ -206,6 +208,7 @@ const LoanRepaymentScreen = ({navigation}) => {
       icon={icons.phone_transfer}
       channelName="USSD Transfer payment"
    />
+    */}
 
 
    </View>

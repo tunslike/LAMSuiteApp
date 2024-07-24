@@ -12,9 +12,10 @@ import {
   ScrollView,
   Dimensions} from 'react-native';
   import axios from 'axios';
+  import moment from 'moment';
   import { useSelector, useDispatch } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import { BreakdownEntry, LoaderWindow, InnerHeader, PaymentScheduleCard } from '../../components';
+  import { BreakdownEntry, LoaderWindow, InnerHeader, PaymentScheduleCard, RepaymentCard } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -31,6 +32,7 @@ const LoanDetailsScreen = ({route, navigation}) => {
   const [isLoading, setIsLoading] = useState(false)
   const [toggle, setToggle] = useState(1);
   const [loanBreakdown, setLoanBreakdown] = useState([]);
+  const [loanRepayment, setLoanRepayment] = useState([]);
   const [loanDetails, setLoanDetails] = useState('');
 
   const toggleButton = (value) => {
@@ -61,6 +63,7 @@ const LoanDetailsScreen = ({route, navigation}) => {
         console.log(response.data.breakdown.repayment_schedule)
         setLoanDetails(response.data.loanDetails)
         setLoanBreakdown(response.data.breakdown.repayment_schedule)
+        setLoanRepayment(response.data.repayment);
 
       })
       .catch(error => {
@@ -150,22 +153,30 @@ const LoanDetailsScreen = ({route, navigation}) => {
           )
         })
       }
-    </View>
+      </View>
     }
   
     {toggle == 0 &&
         <View style={styles.midBody}>
         <Text style={styles.loanSummaryTxt}>Loan Repayment</Text>
+
+
+        {(loanRepayment.length == 0) &&
+
+          <View style={styles.nodatabox}>
+            <Text style={styles.nodataTxt}>No repayment has been made!</Text>
+          </View>
+        }
     
-        {(loanBreakdown && loanBreakdown.length > 1) &&
-          loanBreakdown.map((item) => {
+        {(loanRepayment && loanRepayment.length > 1) &&
+          loanRepayment.map((item) => {
             return (
-              <PaymentScheduleCard key={item.month}
-                  month={item.month}
-                  principal={item.principal}
-                  interest={item.interest}
-                  balance={item.balance}
-              />
+             <RepaymentCard key={item.repayment_id}
+                narration={item.narration}
+                date={moment(item.payment_date).format('DD-MMM-YYYY')}
+                channel={item.payment_channel}
+                amount={item.repayment_amount}
+             />
             )
           })
         }
@@ -178,6 +189,16 @@ const LoanDetailsScreen = ({route, navigation}) => {
 
 const styles = StyleSheet.create({
 
+  nodatabox: {
+    flex: 1, 
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
+  nodataTxt: {
+    fontFamily: FONTS.POPPINS_REGULAR,
+    fontSize: wp(3),
+    color: COLORS.primaryRed
+  },
   loanSummaryTxt: {
     fontFamily: FONTS.POPPINS_SEMIBOLD,
     fontSize: wp(3.3),
@@ -265,7 +286,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.White,
         paddingBottom: wp(9),
         marginTop: wp(6),
-        minHeight: wp(80),
+        minHeight: wp(90),
         padding: wp(4)
       },
       midBodySummary: {

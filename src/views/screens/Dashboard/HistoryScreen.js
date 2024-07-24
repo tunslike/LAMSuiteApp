@@ -32,6 +32,9 @@ const HistoryScreen = ({navigation}) => {
   // function to verify data
   const fetchTransactionDetails = () => {
 
+
+    setIsLoading(true)
+
     axios.get(APIBaseUrl.developmentUrl + 'customer/fetchTransaction?CustomerID=' +customerID,{},{
       headers: {
         'Content-Type' : 'application/json',
@@ -39,6 +42,8 @@ const HistoryScreen = ({navigation}) => {
       }
     })
     .then(response => {
+
+      setIsLoading(false)
 
       console.log(response.data)
 

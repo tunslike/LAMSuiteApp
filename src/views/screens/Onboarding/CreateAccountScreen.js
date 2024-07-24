@@ -12,13 +12,14 @@ import {
   Dimensions} from 'react-native';
   import { Formik } from 'formik';
   import * as Yup from 'yup'
+  import axios from 'axios';
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
   import { SafeAreaView } from 'react-native-safe-area-context';
   import { useDispatch } from 'react-redux';
   import { useSelector } from 'react-redux';
   import TextLink from 'react-native-text-link';
-  import { COLORS, images, FONTS, icons } from '../../../constants';
-  import { OnboardingTextBox, FormButton, RedCheckBox } from '../../components';
+  import { COLORS, images, FONTS, icons, APIBaseUrl, AppName } from '../../../constants';
+  import { OnboardingTextBox, FormButton, LoaderWindow } from '../../components';
   import { updateFullname, updateEmail, updatePhone, updatePinNumber } from '../../../store/accountSlice';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -39,16 +40,51 @@ import {
 const CreateAccountScreen = ({navigation}) => {
 
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false)
 
   // function to verify data
   const validateAccountData = (values) => {
 
-    //send data
-    dispatch(updateFullname(values.fullname));
-    dispatch(updateEmail(values.email));
-    dispatch(updatePhone(values.phone));
+    const data = {
+      full_name : values.fullname,
+      phoneNumber: values.phone,
+      emailAddress : values.email
+    };
 
-    navigation.navigate("VerifyPhone");
+    setIsLoading(true);
+
+    axios.post(APIBaseUrl.developmentUrl + 'customer/validateEntryRecord',data,{
+      headers: {
+        'Content-Type' : 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:8082'
+      }
+    })
+    .then(response => {
+
+      setIsLoading(false)
+
+      console.log(response)
+
+      if(response.data.responseCode == 200) {
+
+          //send data
+          dispatch(updateFullname(values.fullname));
+          dispatch(updateEmail(values.email));
+          dispatch(updatePhone(values.phone));
+
+          navigation.navigate("VerifyPhone");
+
+      }else{
+
+        Alert.alert('Finserve','Sorry! Duplicate records found. Please try again')
+
+      }
+
+    })
+    .catch(error => {
+      setIsLoading(false)
+      console.log(error);
+    });
 
     //navigation.navigate("VerifyPhone", {full_name:values.fullname, email_address: values.email, phone_number:values.phone});
 
@@ -65,6 +101,7 @@ const CreateAccountScreen = ({navigation}) => {
       backgroundColor: COLORS.BackgroundGrey
     }}
  > 
+ <LoaderWindow loading={isLoading} />
     <SafeAreaView>
       <StatusBar barStyle="dark-content" />
       <View style={styles.logo}>

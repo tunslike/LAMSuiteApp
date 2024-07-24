@@ -76,7 +76,7 @@ const NewLoanScreen = ({navigation}) => {
 
   setLoadingSummary(true);
 
-    axios.post(APIBaseUrl.developmentUrl + 'loanService/calculateLoanRequestSummary',data,{
+    axios.post(APIBaseUrl.developmentUrl + 'loanService/CalculateSimpleInterestLoanSchedule',data,{
       headers: {
         'Content-Type' : 'application/json',
         'Access-Control-Allow-Origin': 'http://localhost:8082'
@@ -88,10 +88,10 @@ const NewLoanScreen = ({navigation}) => {
     
           // SHOW SUCCESS
           console.log('Tenor: [' + tenor + "]");
-          console.log('Monthly Repayment: [' + response.data.monthly_repayment+ "]");
-          console.log('Total Repayment: [' + response.data.total_repayment + "]");
-          setMonthlyRepayment(response.data.monthly_repayment);
-          setTotalRepayment(response.data.total_repayment);
+          console.log('Monthly Repayment: [' + response.data.monthlyRepayment+ "]");
+          console.log('Total Repayment: [' + response.data.totalLoanPayment + "]");
+          setMonthlyRepayment(response.data.monthlyRepayment);
+          setTotalRepayment(response.data.totalLoanPayment);
           setLoanSummaryDetails(response.data);
     
     })
@@ -322,9 +322,9 @@ const NewLoanScreen = ({navigation}) => {
 
             {!loadingSummary &&
               <View>
-                  <SummaryLine title="Monthly Repayment" narration={"₦ " + Intl.NumberFormat('en-US').format(loanSummaryDetails.monthly_repayment)} />
+                  <SummaryLine title="Monthly Repayment" narration={"₦ " + Intl.NumberFormat('en-US').format(loanSummaryDetails.monthlyRepayment)} />
                   <SummaryLine title="First Repayment Date" narration={repaymentDate} />
-                  <SummaryLine title="Total Repayment" narration={"₦ " + Intl.NumberFormat('en-US').format(loanSummaryDetails.total_repayment)} />
+                  <SummaryLine title="Total Repayment" narration={"₦ " + Intl.NumberFormat('en-US').format(loanSummaryDetails.totalLoanPayment)} />
                   <SummaryLine title="Loan Interest" narration={employerLoanProfile.loan_INTEREST_RATE + "%"} />
               </View>
           }

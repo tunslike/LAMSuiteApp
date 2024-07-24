@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderRadius: wp(4),
+    borderRadius: wp(3),
     columnGap: wp(8),
     marginHorizontal: wp(6),
     paddingHorizontal: wp(3),

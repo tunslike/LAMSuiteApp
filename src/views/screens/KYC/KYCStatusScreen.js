@@ -27,55 +27,6 @@ const KYCStatusScreen = ({navigation, route}) => {
   const nokDataStatus = useSelector((state) => state.customer.nokdata);
   const docDataStatus = useSelector((state) => state.customer.docdata);
 
-  // STATES
-  const [isLoading, setIsLoading] = useState(false)
-
-  // functiont to submit client loan request
-  const submitCustomerLoanRequest = () => {
-
-      //data
-    const data = {
-      customerID : customerID,
-      loanAmount : loanAmt,
-      loanTenor : loanSetTenor,
-      loanPurpose : loanSetPurpose,
-      accountID : accountNumberID
-  }
-
-    console.log(data);
-
-    setIsLoading(true);
-
-      axios.post(APIBaseUrl.developmentUrl + 'loanService/submitCustomerLoanRequest',data,{
-        headers: {
-          'Content-Type' : 'application/json',
-          'Access-Control-Allow-Origin': 'http://localhost:8082'
-        }
-      })
-      .then(response => {
-
-        setIsLoading(false)
-        
-        if(response.data.responseCode == 200) {
-  
-            // SHOW SUCCESS
-            navigation.navigate("LoanCompleted", {loanAmount:loanAmt, loanTenor:loanSetTenor});
-            return
-        
-        }else{
-
-          Alert.alert('Oops! Unable to process your request, please try again')
-
-        }
-
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    }
-    // end of function
-
-
   //USE EFFECT
    useEffect(() => {
           console.log(customerData)
@@ -87,16 +38,10 @@ const KYCStatusScreen = ({navigation, route}) => {
         backgroundColor: COLORS.BackgroundGrey
       }}>
 
-      {isLoading &&
-        <Loader title="Processing your request, please wait..." />
-      }
-
       <InnerHeader onPress={() => navigation.goBack()} title="KYC Status" />
 
       <View style={styles.midBody}>
-
-
-   <Text style={styles.paymentTitle}>Complete your KYC to be eligible for loan</Text>
+      <Text style={styles.paymentTitle}>Complete your KYC to be eligible for loan</Text>
 
    <KYCStatusCardItem 
        onPress={() => bioDataStatus == 0 ? navigation.navigate("PersonalDetails") : null}

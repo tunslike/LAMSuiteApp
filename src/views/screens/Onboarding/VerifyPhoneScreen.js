@@ -109,9 +109,9 @@ const VerifyPhoneScreen = ({route, navigation}) => {
 
 
     <View style={styles.title}>
-      <Text style={styles.mainTitle}>Verify Phone Number</Text>
+      <Text style={styles.mainTitle}>Account Verification</Text>
       <Text style={styles.titleDesc}>Please enter the 4-digit code we sent to your phone 
-      number to complete verification</Text>
+      number and email to complete verification</Text>
     </View>
 
     <View style={styles.otpBox}>
@@ -161,7 +161,7 @@ const VerifyPhoneScreen = ({route, navigation}) => {
  <FormButton 
     onPress={() => navigation.navigate("CreatePIN")} 
     disable={activateButton}
-    label="Verify Phone Number" />
+    label="Verify Code" />
  </View>
 
  </SafeAreaView>

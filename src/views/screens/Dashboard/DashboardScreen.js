@@ -32,6 +32,7 @@ const DashboardScreen = ({navigation}) => {
   const biodata = useSelector((state) => state.customer.biodata);
   const empdata = useSelector((state) => state.customer.empdata);
   const nokdata = useSelector((state) => state.customer.nokdata);
+  const docdata = useSelector((state) => state.customer.docdata);
 
   const customerEmployerDetails = useSelector((state) => state.customer.customerEmployerDetails);
   const employerLoanProfile = useSelector((state) => state.customer.employerLoanProfile);
@@ -143,18 +144,17 @@ useFocusEffect(
   React.useCallback(() => {
     validateCustomerLoan();
     fetchTransactionDetails();
-  }, [])
-);
-
-  //USE EFFECT
-  useEffect(() => {
-
-    if(biodata == 1 && nokdata == 1 && empdata == 1) {
+    if(biodata == 1 && nokdata == 1 && empdata == 1 && docdata == 1) {
       setKYCStatus(true);
     }
 
     //check preapproved amount
     checkPreApprovedAmount();
+  }, [])
+);
+
+  //USE EFFECT
+  useEffect(() => {
 
     //return greetings
     this.checkTimeGreetings();
@@ -166,8 +166,6 @@ useFocusEffect(
       flexGrow: 1,
       backgroundColor: COLORS.BackgroundGrey
     }}>
-
-    <LoaderWindow loading={isLoading} />
 
     <View style={styles.header}>
           <View style={styles.logoArea}>
@@ -214,7 +212,7 @@ useFocusEffect(
         {(loanAccount.loan_STATUS == 3) &&
           <AccountCard 
             loanNumber = {loanAccount.loan_NUMBER}
-            loanBalance = {loanAccount.loan_AMOUNT}
+            loanBalance = {(loanAccount.total_REPAYMENT - loanAccount.loan_TOTAL_REPAYMENT)}
             nextPayment = {loanAccount.monthly_REPAYMENT}
             employer = {loanAccount.employer_NAME}
             status = {loanAccount.loan_STATUS}
@@ -223,7 +221,7 @@ useFocusEffect(
 
         </View>
 
-        {(approvedLoan && loanAccount.loan_STATUS == null) && 
+        {(approvedLoan && loanAccount.loan_STATUS == null && KYStatus) && 
                 <TouchableOpacity 
                     onPress={() => navigation.navigate("NewLoan")}
                     style={styles.apprvLoan}>
@@ -241,6 +239,7 @@ useFocusEffect(
         <View style={styles.serviceList}>
 
                 <ServiceCard 
+                  onPress={() => (loanAccount.loan_STATUS) ? Alert.alert("Finserve", "Sorry, you have an active loan!") : navigation.navigate("NewLoan")}
                   image={images.new_loan_bg}
                   label="New Loan"
                   icon={icons.loan}

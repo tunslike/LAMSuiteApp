@@ -15,7 +15,7 @@ import {
   import axios from 'axios';
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
   import { SafeAreaView } from 'react-native-safe-area-context';
-  import { COLORS, images, FONTS, icons, APIBaseUrl, AppName } from '../../../constants';
+  import { COLORS, images, FONTS, icons } from '../../../constants';
   import { OnboardingTextBox, LoaderWindow } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -28,63 +28,16 @@ const CreateAccountSchema = Yup.object().shape({
       .required('Please enter your email address'),
 })
 
-const ForgotPassword = ({route, navigation}) => {
+const ChangePinNumber = ({route, navigation}) => {
 
-  const {ValidateCustomerLogin} = useContext(AuthContext);
-  const [isLoading, setIsLoading] = useState(false)
+  const {ValidateCustomerLogin, isLoading} = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [pwd, setPwd] = useState('');
-  const [disableBtn, setDisableBtn] = useState(null);
-
-      //validate account number
-      const processClientReset = (values) => {
-      
-        Alert.alert(AppName.AppName, 'Do you want to reset your pin number?', [
-          {
-            text: 'No',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {text: 'Yes', onPress: () => ResetClientPassword(values)},
-        ]);
-    
-      }// end function
-  
 
 
    //Function to login
-   const ResetClientPassword = async (values) => {
-
-    const data = {
-      username : values.username,
-      pinNumber : "123456"
-    }
-  
-    console.log(data)
-  
-    setIsLoading(true);
-  
-      axios.post(APIBaseUrl.developmentUrl + 'customer/resetPin',data,{
-        headers: {
-          'Content-Type' : 'application/json',
-          'Access-Control-Allow-Origin': 'http://localhost:8082'
-        }
-      })
-      .then(response => {
-  
-        setIsLoading(false)
-        
-        if(response.data.responseCode == '200') {
-          setDisableBtn(true);
-          Alert.alert('Finserve', 'Pin Number reset succesfully! Please check your email')
-          return false;
-        }
-
-      
-      })
-      .catch(error => {
-        console.log(error);
-      });
+   const AuthenticateUser = async (values) => {
+    ValidateCustomerLogin(values.username, values.pinNumber);
   }
   // end of function
 
@@ -117,7 +70,7 @@ initialValues={{
   username: '',
 }}
 validationSchema={CreateAccountSchema}
-onSubmit={values => processClientReset(values)}
+onSubmit={values => AuthenticateUser(values)}
 >
 {({values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit}) => (
 <View>
@@ -143,9 +96,8 @@ onSubmit={values => processClientReset(values)}
           <View style={styles.btnBox}>
 
           <TouchableOpacity
-          disabled={disableBtn}
           onPress={handleSubmit}
-          style={[styles.signInBox, {backgroundColor: (disableBtn) ? COLORS.disablePrimaryBlue : COLORS.primaryBlue}]}>
+          style={styles.signInBox}>
                <Text style={styles.signInTxt}>Reset PIN</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -192,6 +144,7 @@ const styles = StyleSheet.create({
   },
   signInBox: {
     alignSelf: 'center',
+    backgroundColor: COLORS.primaryBlue,
     paddingHorizontal: wp(31.3),
     paddingVertical: Platform.OS === 'ios' ? wp(3.9) : wp(3.2),
     borderRadius: wp(4),
@@ -248,4 +201,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ForgotPassword;
+export default ChangePinNumber;

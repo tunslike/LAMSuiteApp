@@ -144,7 +144,10 @@ const AccountTypeScreen = ({navigation}) => {
       </View>
 
       <View style={styles.btnBox}>
-      <FormButton onPress={() => submitCustomerAccount()} label="Create Account" />
+      <FormButton 
+        disable={(coyAccount == 1) ? false : true}
+        onPress={() => submitCustomerAccount()} 
+        label="Create Account" />
       </View>
 
 

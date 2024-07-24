@@ -75,10 +75,6 @@ const AccountSetupScreen = ({navigation}) => {
         employer_profile_id: selected
       };
 
-      console.log(data)
-
-      return;
-
       setIsLoading(true);
 
       axios.post(APIBaseUrl.developmentUrl + 'customer/newCustomer',data,{

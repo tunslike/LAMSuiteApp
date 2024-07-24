@@ -32,8 +32,10 @@ import NetworkIcon from "./NetworkIcon";
 import NetworkAmount from "./NetworkAmount";
 import TransactionCarButton from "./TransactionCarButton";
 import LoaderWindow from "./LoaderWindow";
+import RepaymentCard from "./RepaymentCard";
 
 export {
+    RepaymentCard,
     LoaderWindow,
     TransactionCarButton,
     NetworkAmount,

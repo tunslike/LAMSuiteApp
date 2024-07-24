@@ -180,7 +180,7 @@ const EmployerDetailsScreen = ({navigation}) => {
       <InnerHeader onPress={() => navigation.goBack()} title="Employer Details" />
 
       {isLoading &&
-        <Loader title="Processing your request, please wait..." />
+        <LoaderWindow title="Processing your request, please wait..." />
       }
     
     

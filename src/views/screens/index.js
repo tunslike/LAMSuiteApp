@@ -32,8 +32,10 @@ import BillCompletionScreen from "./Utility/BillCompletionScreen";
 import ViewProfileScreen from "./Profile/ViewProfileScreen";
 import NotificationScreen from "./Profile/NotificationScreen";
 import KYCDocumentsScreen from "./KYC/KYCDocumentsScreen";
+import ChangePinNumber from "./Landing/ChangePinNumber";
 
 export {
+    ChangePinNumber,
     KYCDocumentsScreen,
     NotificationScreen,
     ViewProfileScreen,

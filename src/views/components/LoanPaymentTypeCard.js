@@ -6,7 +6,7 @@ import { StyleSheet,
          import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { FONTS, COLORS, icons } from '../../constants'
 
-const LoanPaymentTypeCard = ({channelName, icon, active, accountNo, onPress}) => {
+const LoanPaymentTypeCard = ({channelName, icon, active, ready, onPress}) => {
   return (
     <TouchableOpacity 
     onPress={onPress}
@@ -31,7 +31,13 @@ const LoanPaymentTypeCard = ({channelName, icon, active, accountNo, onPress}) =>
 
                   {(!active) && 
                     <TouchableOpacity style={styles.rmvBody}>
+                    {ready &&
                       <Text style={styles.removetxt}>Pay now</Text>
+                    }
+                    {!ready &&
+                      <Text style={styles.removetxt}>Disabled</Text>
+                    }
+                     
                     </TouchableOpacity>
                   }                  
     </TouchableOpacity>
