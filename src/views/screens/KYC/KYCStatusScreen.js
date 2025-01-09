@@ -14,11 +14,14 @@ import {
   import axios from 'axios';
   import { useSelector, useDispatch } from 'react-redux';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
-  import {KYCStatusCardItem, Loader, InnerHeader } from '../../components';
+  import {KYCStatusCardItem, Loader, InnerHeader, FormButton } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
+  import { updateCompleteKYCStatus } from '../../../store/customerSlice';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const KYCStatusScreen = ({navigation, route}) => {
+
+  const dispatch = useDispatch();
 
   // CUSTOMER STORE
   const customerData = useSelector((state) => state.customer.customerData);
@@ -27,9 +30,14 @@ const KYCStatusScreen = ({navigation, route}) => {
   const nokDataStatus = useSelector((state) => state.customer.nokdata);
   const docDataStatus = useSelector((state) => state.customer.docdata);
 
+  const completeKYCStatus = () => {
+    dispatch(updateCompleteKYCStatus(1))
+    navigation.navigate('Tab');
+  }
+
   //USE EFFECT
    useEffect(() => {
-          console.log(customerData)
+         // console.log(customerData)
    }, []);
 
   return (
@@ -72,6 +80,18 @@ const KYCStatusScreen = ({navigation, route}) => {
 />
 
 
+{
+  (bioDataStatus == 1 && empDataStatus == 1 && nokDataStatus == 1 && docDataStatus == 1) &&
+
+  <View style={styles.btnBox}>
+    <FormButton 
+      onPress={() => completeKYCStatus()}
+      label="Complete KYC" />
+  </View>
+
+}
+
+
    </View>
 
     
@@ -82,6 +102,9 @@ const KYCStatusScreen = ({navigation, route}) => {
 
 const styles = StyleSheet.create({
 
+  btnBox: {
+    marginVertical: wp(6)
+},
   toggleTxt_active: {
     color: COLORS.White,
     fontFamily: FONTS.POPPINS_SEMIBOLD,

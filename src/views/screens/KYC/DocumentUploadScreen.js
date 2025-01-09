@@ -73,8 +73,14 @@ const DocumentUploadScreen = ({navigation, route}) => {
   
     useItemErrorListener((item) => {
       setLoading(false)
-      console.log(`item ${item.id} upload error !!!! `, item.uploadResponse);
-      Alert.alert("Finserve", "Unable to upload document! " + item.uploadResponse.data.message)
+      console.log(`item ${item.id} upload error !!!! `, item);
+
+      if(item.file.size > 1048576) {
+        Alert.alert("Finserve", "Error: Image or document is too large, please retry!")
+      }else{
+        Alert.alert("Finserve", "Error: Unable to proceess your request, please try again!")
+      }
+     
     });
   
     useItemStartListener((item) => {
@@ -86,7 +92,7 @@ const DocumentUploadScreen = ({navigation, route}) => {
       try {
         const res = await DocumentPicker.pick({
           type: [DocumentPicker.types.images],
-        });
+        }); //3022484699 POLARIS BANK
   
         uploadyContext.upload(res);
         
@@ -94,7 +100,7 @@ const DocumentUploadScreen = ({navigation, route}) => {
         if (DocumentPicker.isCancel(err)) {
           console.log("User cancelled the picker, exit any dialogs or menus and move on");
         } else {
-          throw err;
+          throw "Unable to upload! File size must be less than 1 MB" + err;
         }
       }
     }, [uploadyContext]);
@@ -119,7 +125,7 @@ const DocumentUploadScreen = ({navigation, route}) => {
   return (
     <NativeUploady
         sendWithFormData={true}
-        destination={{ url: "https://lamsuite.finserveinvestment.com/services/api/v1/customer/uploadDocuments", params: {"customerID" : customerData.customer_ENTRY_ID}, headers: { "x-doctype": doctype }}}
+        destination={{ url: APIBaseUrl.developmentUrl + "/customer/uploadDocuments", params: {"customerID" : customerData.customer_ENTRY_ID}, headers: { "x-doctype": doctype }}}
     >
     <ScrollView style={styles.container}>
 
@@ -128,7 +134,7 @@ const DocumentUploadScreen = ({navigation, route}) => {
     <LoaderWindow loading={loading} />
 
       <View style={styles.whiteBG}> 
-        <Text style={styles.titleDesc}>Uploaded file must not be more than 1MB</Text>
+        <Text style={styles.titleDesc}>Uploaded file must not be more than 1 MB</Text>
         <Upload />
       </View>
 

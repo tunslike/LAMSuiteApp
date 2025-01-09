@@ -52,8 +52,12 @@ const change_password = require("../assets/icons/change_password.png")
 const feedback = require("../assets/icons/feedback.png")
 const agreement = require("../assets/icons/agreement.png")
 const uploaded_check = require("../assets/icons/upload_check.png")
+const showPassword = require("../assets/icons/show_password.png")
+const hidePassword = require("../assets/icons/hide_password.png")
 
 export default {
+    showPassword,
+    hidePassword,
     uploaded_check,
     agreement,
     feedback,

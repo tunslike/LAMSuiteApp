@@ -32,7 +32,6 @@ const HistoryScreen = ({navigation}) => {
   // function to verify data
   const fetchTransactionDetails = () => {
 
-
     setIsLoading(true)
 
     axios.get(APIBaseUrl.developmentUrl + 'customer/fetchTransaction?CustomerID=' +customerID,{},{

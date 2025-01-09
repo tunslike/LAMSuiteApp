@@ -70,6 +70,8 @@ const PersonalDetailsScreen = ({navigation}) => {
   const dispatch = useDispatch();
   const customerData = useSelector((state) => state.customer.customerData);
 
+  console.log(customerData)
+
   const [isLoading, setIsLoading] = useState(false)
   const [gender, setGender] = useState('');
   const [dob, setDOB] = useState('');
@@ -224,10 +226,11 @@ const PersonalDetailsScreen = ({navigation}) => {
       othername: '',
       placebirth: '',
       phonenumber: '',
-      emailaddress: '',
+      emailaddress: customerData.email_ADDRESS,
       streetAddress: '',
       areaLocality: '',
     }}
+    enableReinitialize={true}
     validationSchema={CreateAccountSchema}
     onSubmit={values => confirmValidateAccountData(values)}
     >

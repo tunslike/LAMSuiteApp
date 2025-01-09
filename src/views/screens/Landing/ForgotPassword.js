@@ -51,7 +51,6 @@ const ForgotPassword = ({route, navigation}) => {
       }// end function
   
 
-
    //Function to login
    const ResetClientPassword = async (values) => {
 

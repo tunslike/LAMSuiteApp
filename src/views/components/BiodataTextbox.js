@@ -8,7 +8,7 @@ import { StyleSheet,
          import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { FONTS, COLORS, icons } from '../../constants'
 
-const BiodataTextbox = ({ label, full, placeholder,maxlength, phone, onFocus, onChange, value, icon, setSecureText}) => {
+const BiodataTextbox = ({ label, full, disable, placeholder,maxlength, phone, onFocus, onChange, value, icon, setSecureText}) => {
   return (
     <View style={styles.container}>
 
@@ -42,6 +42,8 @@ const BiodataTextbox = ({ label, full, placeholder,maxlength, phone, onFocus, on
             returnKeyType='next'
             maxLength={maxlength}
             onFocus={onFocus}
+            editable={disable}
+            selectTextOnFocus={disable}
         />
         
     </View>

@@ -15,29 +15,87 @@ import {
   import axios from 'axios';
   import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
   import { SafeAreaView } from 'react-native-safe-area-context';
-  import { COLORS, images, FONTS, icons } from '../../../constants';
+  import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
   import { OnboardingTextBox, LoaderWindow } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
+  import { useSelector } from 'react-redux';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 const CreateAccountSchema = Yup.object().shape({
 
-    username: Yup.string()
-      .email('Please enter a valid email')
-      .required('Please enter your email address'),
+      pinNumber: Yup.string()
+      .min(5, 'Invalid PIN number')
+      .max(5, 'Invalid PIN number')
+      .matches(/^[0-9]+$/, 'Invalid PIN number!')
+      .required('Enter new PIN Number!'),
+
+      confirmPin: Yup.string()
+      .required('Confirm new PIN Number!')
+      .oneOf([Yup.ref('pinNumber'), null], 'PIN number must match!')
 })
 
 const ChangePinNumber = ({route, navigation}) => {
 
-  const {ValidateCustomerLogin, isLoading} = useContext(AuthContext);
-  const [username, setUsername] = useState('');
-  const [pwd, setPwd] = useState('');
+  const customerData = useSelector((state) => state.customer.customerData);
+  
+  const [isLoading, setIsLoading] = useState(false)
+  const [isVisible, setIsVisible] = useState(true);
+  const [isVisibleCon, setIsVisibleCon] = useState(true);
+  const [disableBtn, setDisableBtn] = useState(false);
+
+
+    //validate account number
+    const processChangePIN = (values) => {
+      
+        Alert.alert(AppName.AppName, 'Do you want to change your pin number?', [
+          {
+            text: 'No',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {text: 'Yes', onPress: () => ChangeClientPIN(values)},
+        ]);
+    
+      }// end function
 
 
    //Function to login
-   const AuthenticateUser = async (values) => {
-    ValidateCustomerLogin(values.username, values.pinNumber);
+   const ChangeClientPIN = async (values) => {
+
+    const data = {
+      username : customerData.email_ADDRESS,
+      pinNumber : values.pinNumber
+    }
+  
+    console.log(data)
+  
+    setIsLoading(true);
+  
+      axios.post(APIBaseUrl.developmentUrl + 'customer/changePinNumber',data,{
+        headers: {
+          'Content-Type' : 'application/json',
+          'Access-Control-Allow-Origin': 'http://localhost:8082'
+        }
+      })
+      .then(response => {
+  
+        setIsLoading(false)
+        
+        if(response.data.responseCode == 200) {
+
+          setDisableBtn(true);
+          Alert.alert('Finserve', 'Pin Number has been changed succesfully! Please login again')
+          navigation.navigate("Login");
+          return false;
+
+        }
+
+      
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }
   // end of function
 
@@ -67,29 +125,52 @@ const ChangePinNumber = ({route, navigation}) => {
             {/* FORM STARTS HERE */}
 <Formik
 initialValues={{
-  username: '',
+  pinNumber: '',
+  confirmPin: ''
 }}
 validationSchema={CreateAccountSchema}
-onSubmit={values => AuthenticateUser(values)}
+onSubmit={values => processChangePIN(values)}
 >
 {({values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit}) => (
 <View>
               <View style={styles.whiteBG}> 
               <View style={styles.title}>
-                  <Text style={styles.mainTitle}>Reset your PIN</Text>
-                  <Text style={styles.titleDesc}>Provide your email address to reset your PIN</Text>
+                  <Text style={styles.mainTitle}>Change your PIN</Text>
+                  <Text style={styles.titleDesc}>Enter your new PIN Number below to change your pin number</Text>
               </View>
 
               <View style={styles.formBox}>
+         
                 <OnboardingTextBox 
-                  icon={icons.user}
-                  placeholder="Enter your Email"
-                  value={values.username}
-                  onChange={handleChange('username')}
+                  icon={icons.change_password}
+                  placeholder="Enter new PIN"
+                  value={values.pinNumber}
+                  setSecureText={isVisible}
+                  phone={1}
+                  length={5}
+                  eye_type={isVisible == true ? icons.hidePassword : icons.showPassword}
+                  visibleOnPress={() => setIsVisible(!isVisible)}
+                  pwd={true}
+                  onChange={handleChange('pinNumber')}
                 />
-                {errors.username && 
-                  <Text style={styles.formErrortext}>{errors.username}</Text>
-                }     
+                {errors.pinNumber && 
+                  <Text style={styles.formErrortext}>{errors.pinNumber}</Text>
+                } 
+                <OnboardingTextBox 
+                icon={icons.change_password}
+                placeholder="Confirm new PIN"
+                value={values.confirmPin}
+                setSecureText={isVisibleCon}
+                phone={1}
+                length={5}
+                eye_type={isVisibleCon == true ? icons.hidePassword : icons.showPassword}
+                visibleOnPress={() => setIsVisibleCon(!isVisibleCon)}
+                pwd={true}
+                onChange={handleChange('confirmPin')}
+              />
+              {errors.confirmPin && 
+                <Text style={styles.formErrortext}>{errors.confirmPin}</Text>
+              }      
               </View>
           </View>
 
@@ -97,14 +178,16 @@ onSubmit={values => AuthenticateUser(values)}
 
           <TouchableOpacity
           onPress={handleSubmit}
-          style={styles.signInBox}>
-               <Text style={styles.signInTxt}>Reset PIN</Text>
+          style={styles.signInBox}
+          disabled={disableBtn}>
+               <Text style={styles.signInTxt}>Change PIN</Text>
           </TouchableOpacity>
+   
           <TouchableOpacity
           onPress={() => navigation.navigate("Login")}
           style={styles.signBox}>
           <Text style={styles.signTxt}>Login</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> 
           </View>
 </View>
 )}

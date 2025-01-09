@@ -63,22 +63,18 @@ const CreateAccountScreen = ({navigation}) => {
 
       setIsLoading(false)
 
-      console.log(response)
-
-      if(response.data.responseCode == 200) {
-
-          //send data
-          dispatch(updateFullname(values.fullname));
-          dispatch(updateEmail(values.email));
-          dispatch(updatePhone(values.phone));
-
-          navigation.navigate("VerifyPhone");
-
-      }else{
+      if(response.data.responseCode == 404) {
 
         Alert.alert('Finserve','Sorry! Duplicate records found. Please try again')
-
+        return;
       }
+
+        //send data
+        dispatch(updateFullname(values.fullname));
+        dispatch(updateEmail(values.email));
+        dispatch(updatePhone(values.phone));
+
+        navigation.navigate("VerifyPhone", {otpValue: response.data.otp_value, verification_Id: response.data.verificationId, phoneNumber:values.phone});
 
     })
     .catch(error => {
@@ -87,7 +83,6 @@ const CreateAccountScreen = ({navigation}) => {
     });
 
     //navigation.navigate("VerifyPhone", {full_name:values.fullname, email_address: values.email, phone_number:values.phone});
-
   }
   // end of function 
 

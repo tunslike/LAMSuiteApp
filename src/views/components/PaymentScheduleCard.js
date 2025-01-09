@@ -18,7 +18,7 @@ const PaymentScheduleCard = ({month, principal, interest, balance}) => {
           height: wp(4), width: wp(4), tintColor: COLORS.primaryRed, resizeMode: 'contain'
         }}
       />
-      <Text style={styles.monthTxt}>Month {month}</Text>
+      <Text style={styles.monthTxt}>{month}</Text>
     </View>
     <View>
     </View>

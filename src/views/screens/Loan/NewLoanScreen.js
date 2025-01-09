@@ -20,6 +20,7 @@ import {
   import { GreenCheckBox, RedCheckBox, BlueButton, SummaryLine, TenorCard, InnerHeader } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import App from '../../../../App';
+import { TextInput } from 'react-native-gesture-handler';
 
 
   const loadType = ["House Rent", "School Fees", "Borrowing", "Personal"];
@@ -27,8 +28,12 @@ import App from '../../../../App';
 const NewLoanScreen = ({navigation}) => {
 
   const dispatch = useDispatch();
-  const loanAmount = useSelector((state) => state.customer.approvedLoanAmount);
+
   const employerLoanProfile = useSelector((state) => state.customer.employerLoanProfile);
+
+  console.log(employerLoanProfile.loan_TENOR)
+
+  const customerEmployerDetails = useSelector((state) => state.customer.customerEmployerDetails);
   const accountNumberID = useSelector((state) => state.customer.bankAccountID);
   const customerID = useSelector((state) => state.customer.customerData.customer_ENTRY_ID);
 
@@ -42,6 +47,8 @@ const NewLoanScreen = ({navigation}) => {
   const [toggleBtn, setToggleBtn] = useState(0);
   const [loanSummaryDetails, setLoanSummaryDetails] = useState('data');
 
+  const [preApprove, setPreApproved] = useState(useSelector((state) => state.customer.approvedLoanAmount));
+
   const repaymentDate = moment().add(29, 'day').format('ll');
 
   const formatCurrencyText = (value) => {
@@ -52,7 +59,7 @@ const NewLoanScreen = ({navigation}) => {
     const toggleSkipButton = () => {
   
       if(toggleBtn == 0) {
-        setRequestAmount(loanAmount)
+        setRequestAmount(preApprove)
         setToggleBtn(1)
       }else if(toggleBtn == 1) {
         setRequestAmount(defaultAmount)
@@ -69,8 +76,11 @@ const NewLoanScreen = ({navigation}) => {
     customerID : customerID,
     loanAmount: (requestAmount == 0) ? defaultAmount : requestAmount,
     loanTenor : tenor,
-    loanInterest : employerLoanProfile.loan_INTEREST_RATE
+    loanInterest : employerLoanProfile.loan_INTEREST_RATE,
+    annualSalary: customerEmployerDetails.annual_SALARY,
+    loanPercentLimited: employerLoanProfile.loan_LIMIT_PERCENT
   }
+
 
   console.log(data)
 
@@ -84,7 +94,7 @@ const NewLoanScreen = ({navigation}) => {
     })
     .then(response => {
 
-      setLoadingSummary(false)
+          setLoadingSummary(false)
     
           // SHOW SUCCESS
           console.log('Tenor: [' + tenor + "]");
@@ -92,8 +102,14 @@ const NewLoanScreen = ({navigation}) => {
           console.log('Total Repayment: [' + response.data.totalLoanPayment + "]");
           setMonthlyRepayment(response.data.monthlyRepayment);
           setTotalRepayment(response.data.totalLoanPayment);
+          setPreApproved(response.data.preApprovedAmount)
           setLoanSummaryDetails(response.data);
-    
+
+          if(requestAmount > preApprove) {
+            setRequestAmount(20000)
+          }
+          
+          
     })
     .catch(error => {
       console.log(error);
@@ -112,7 +128,7 @@ const NewLoanScreen = ({navigation}) => {
   //function to increase loan value
   const increaseLoanValue = (type) => {
 
-    console.log(requestAmount + '/' + loanAmount)
+    console.log(requestAmount + '/' + preApprove)
 
     let newAmount = defaultAmount;
 
@@ -126,11 +142,11 @@ const NewLoanScreen = ({navigation}) => {
 
       }else if(type == 2) {
 
-          if(requestAmount < loanAmount) {
+          if(requestAmount < preApprove) {
 
             newAmount = requestAmount + 5000;
 
-            if(newAmount < loanAmount) {
+            if(newAmount < preApprove) {
               setRequestAmount(newAmount);
             } 
           }
@@ -158,7 +174,7 @@ const NewLoanScreen = ({navigation}) => {
                                        totalRepay: totalRepayment,
                                        loanSetPurpose: loanPurpose, 
                                        repaySetDate: repaymentDate,
-                                        interestRate: employerLoanProfile.loan_INTEREST_RATE});
+                                       interestRate: employerLoanProfile.loan_INTEREST_RATE});
   }
   // end of function
 
@@ -187,13 +203,15 @@ const NewLoanScreen = ({navigation}) => {
 
             <View style={styles.amountCounter}>
                 <GreenCheckBox />
-                <Text style={styles.textAprAmount}>{loanAmount.toLocaleString('en-US', {maximumFractionDigits:2})}</Text>
+                <Text style={styles.textAprAmount}>{Intl.NumberFormat('en-US').format(preApprove)}</Text>
             </View>
 
 
             <View style={styles.loanArea}>
              <Text style={styles.loanTitle}>How much do you want to take?</Text>
 
+             {/**
+               */}
              <View style={styles.amountLoanCounter}>
             
              <TouchableOpacity 
@@ -219,6 +237,7 @@ const NewLoanScreen = ({navigation}) => {
             </TouchableOpacity>
           </View>
 
+     
           <TouchableOpacity 
           onPress={() => toggleSkipButton()}
           style={styles.amountPrev}>
@@ -236,12 +255,43 @@ const NewLoanScreen = ({navigation}) => {
   
           <Text style={styles.tenorTitle}>How long do you want to take it for?</Text>
 
-          <View style={styles.tenor}>
-              <TenorCard onPress={() => changeLoanTenor(1)} active={(tenor == 1) ? true : null} title="1 Month" />
-              <TenorCard onPress={() => changeLoanTenor(2)} active={(tenor == 2) ? true : null}  title="2 Months" />
-              <TenorCard onPress={() => changeLoanTenor(3)} active={(tenor == 3) ? true : null} title="3 Months" />
-              <TenorCard onPress={() => changeLoanTenor(6)} active={(tenor == 6) ? true : null} title="6 Months" />
-          </View>
+         
+
+                {
+                  (employerLoanProfile.loan_TENOR == '1') &&
+                  <View style={styles.tenor}>
+                    <TenorCard onPress={() => changeLoanTenor(1)} active={(tenor == 1) ? true : null} title="1 Month" />
+                  </View>
+                }
+
+
+                {
+                  (employerLoanProfile.loan_TENOR == 2) &&
+                  <View style={styles.tenor}>
+                    <TenorCard onPress={() => changeLoanTenor(1)} active={(tenor == 1) ? true : null} title="1 Month" />
+                    <TenorCard onPress={() => changeLoanTenor(2)} active={(tenor == 2) ? true : null}  title="2 Months" />
+                  </View>
+                }
+
+                {
+                  (employerLoanProfile.loan_TENOR == 3) &&
+                  <View style={styles.tenor}>
+                    <TenorCard onPress={() => changeLoanTenor(1)} active={(tenor == 1) ? true : null} title="1 Month" />
+                    <TenorCard onPress={() => changeLoanTenor(2)} active={(tenor == 2) ? true : null}  title="2 Months" />
+                    <TenorCard onPress={() => changeLoanTenor(3)} active={(tenor == 3) ? true : null} title="3 Months" />
+                  </View>
+                }
+
+
+                {
+                  (employerLoanProfile.loan_TENOR == 6) &&
+                  <View style={styles.tenor}>
+                    <TenorCard onPress={() => changeLoanTenor(1)} active={(tenor == 1) ? true : null} title="1 Month" />
+                    <TenorCard onPress={() => changeLoanTenor(2)} active={(tenor == 2) ? true : null}  title="2 Months" />
+                    <TenorCard onPress={() => changeLoanTenor(3)} active={(tenor == 3) ? true : null} title="3 Months" />
+                    <TenorCard onPress={() => changeLoanTenor(6)} active={(tenor == 6) ? true : null} title="6 Months" />
+                  </View>
+                }
         </View>
         <View style={styles.loanOptions}>
               <Text style={styles.txtDisburse}>Disbursement Account</Text>
@@ -271,7 +321,7 @@ const NewLoanScreen = ({navigation}) => {
         onSelect={(selectedItem, index) => {
           setLoanPurpose(selectedItem);
         }}
-        defaultButtonText="Search here"
+        defaultButtonText="Select here"
         dropdownStyle={{
           borderRadius: wp(3),
           
@@ -286,7 +336,7 @@ const NewLoanScreen = ({navigation}) => {
           borderColor: '#a7c0eb',
           borderWidth: 1,
           borderStyle: 'solid',
-          height: wp(6.3),
+          height: wp(6.4),
           width: wp(30)
           
         }}
@@ -476,8 +526,9 @@ const styles = StyleSheet.create({
   },
   tenor: {
     flexDirection: 'row',
-    justifyContent: 'space-evenly',
+    justifyContent: 'center',
     alignItems: 'center',
+    columnGap:wp(2),
     marginHorizontal: wp(3),
     marginTop: wp(4),
     marginBottom: wp(1)
@@ -518,6 +569,21 @@ const styles = StyleSheet.create({
     marginTop: wp(3)
   },
   amountLoanCounter: {
+    borderColor: COLORS.companySetupBorder,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    borderRadius: wp(5),
+    paddingVertical: Platform.OS === 'android' ? wp(3) : wp(4.3),
+    paddingHorizontal: wp(3),
+    width: wp(60),
+    alignSelf: 'center',
+    marginTop: wp(3)
+  },
+
+  amountLoanCounterTxtBox: {
     borderColor: COLORS.companySetupBorder,
     borderWidth: 1,
     borderStyle: 'solid',

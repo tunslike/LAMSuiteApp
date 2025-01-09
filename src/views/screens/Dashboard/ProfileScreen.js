@@ -9,7 +9,7 @@ import {
   Text, 
   View, 
   Alert,
-  ScrollView,
+  ScrollView, Linking,
   Dimensions} from 'react-native';
   import axios from 'axios';
   import { useSelector, useDispatch } from 'react-redux';
@@ -59,10 +59,11 @@ const ProfileScreen = ({navigation}) => {
           icon={icons.profile_notification}
           linkName="Notification"
           />
+          {/*
           <ProfileLinks 
           icon={icons.change_password}
-          linkName="Change Password"
-          />
+          linkName="Change Password"            />*/}
+
       </View>
 
       <Text style={styles.headerTitle}>Support</Text>
@@ -70,10 +71,12 @@ const ProfileScreen = ({navigation}) => {
           <ProfileLinks 
             icon={icons.send_email}
             linkName="Need Help? Send Email"
+            onPress={() =>Linking.openURL('https://finserveinvestment.com/pages/contact') }
           />
           <ProfileLinks 
           icon={icons.faq}
           linkName="Frequently Asked Questions"
+          onPress={() =>Linking.openURL('https://finserveinvestment.com/pages/faq') }
           />
       </View>
 
@@ -82,18 +85,22 @@ const ProfileScreen = ({navigation}) => {
           <ProfileLinks 
             icon={icons.profile_about}
             linkName="About Finserve"
+            onPress={() =>Linking.openURL('https://finserveinvestment.com/pages/aboutUs') }
           />
           <ProfileLinks 
           icon={icons.profile_privacy}
           linkName="Privacy Policy"
+          onPress={() =>Linking.openURL('https://finserveinvestment.com/pages/privacyPolicy') }
           />
           <ProfileLinks 
           icon={icons.agreement}
           linkName="Terms of agreement"
+          onPress={() =>Linking.openURL('https://finserveinvestment.com/pages/termsAgreement') }
           />
           <ProfileLinks 
           icon={icons.feedback}
           linkName="Give us Feedback"
+          onPress={() =>Linking.openURL('https://finserveinvestment.com/pages/contact') }
           />
       </View>
 
@@ -128,7 +135,7 @@ const styles = StyleSheet.create({
     borderRadius: wp(7)
   },
   headerTitle: {
-    marginTop: Platform.OS === 'android' ? wp(3) : wp(4),
+    marginTop: Platform.OS === 'android' ? wp(5) : wp(4),
     fontFamily: FONTS.POPPINS_REGULAR,
     color: COLORS.TextColorGrey,
     fontSize: wp(3),
@@ -139,10 +146,9 @@ const styles = StyleSheet.create({
     borderRadius: wp(6),
     marginHorizontal: wp(2),
     backgroundColor: COLORS.White,
-    marginTop: wp(1.5),
+    marginTop: wp(0.7),
     paddingBottom: Platform.OS === 'android' ? wp(3) : wp(4),
     padding: wp(3),
-    marginTop: wp(2),
   },
 })
 

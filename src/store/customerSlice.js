@@ -13,6 +13,7 @@ const initialState = {
     empdata: 0,
     nokdata: 0,
     docdata: 0,
+    completeKyc: 0,
     passport_data: 0,
     meansid_data: 0,
     empletter_data: 0
@@ -23,6 +24,9 @@ export const customerSlice = createSlice({
     name: 'customer',
     initialState: initialState,
     reducers: {
+        updateCompleteKYCStatus: (state, action) => {
+            state.completeKyc = action.payload
+        },
         updatePassportStatus: (state, action) => {
             state.passport_data = action.payload
         },
@@ -80,7 +84,8 @@ export const {updateCustomerData,
               updateEmpLetterStatus,
               updateMeansidStatus,
               updatePassportStatus,
-              updateBankAccountDetails
+              updateBankAccountDetails,
+              updateCompleteKYCStatus,
             } = customerSlice.actions;
 
 export default customerSlice.reducer;

@@ -15,13 +15,12 @@ import {
   import * as Yup from 'yup';
   import axios from 'axios';
   import { useSelector, useDispatch } from 'react-redux';
+  import { SelectList } from 'react-native-dropdown-select-list'
   import { updateBankAccountID, updateBankAccountDetails } from '../../../store/customerSlice';
   import SelectDropdown from 'react-native-select-dropdown';
   import { COLORS, images, FONTS, icons, AppName, APIBaseUrl } from '../../../constants';
   import { InnerHeader, LoaderWindow, BiodataTextbox, BankAccountNumberCard } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
-
-  const bankList = ["Stanbic IBTC Bank", "GTBank", "First Bank"];
 
   const AccountNumberScheme = Yup.object().shape({
     accountNumber: Yup.string()
@@ -38,12 +37,16 @@ const DisbursementAccount = ({navigation}) => {
   const customerID = useSelector((state) => state.customer.customerData.customer_ENTRY_ID);
 
   const [bankName, setBankName] = useState('');
+  const [accountData, setAccountData] = useState('');
   const [addAccount, setAddAccount] = useState(false);
   const [activeAccount, setActiveAccount] = useState(0);
   const [account, setAccount] = useState('');
   const [isLoading, setIsLoading] = useState(false)
+  const [profileData, setProfileData] = useState('');
   const [activeAccountID, setActiveAccountID] = useState('');
   const [maskedAccountDetails, setMaskedAccountDetails] = useState('');
+  const [selected, setSelected] = React.useState(null);
+  const [validateError, setValidationError] = useState(false);
 
   // check selected account
   const setUpdateAccountNumber = (accountID, accountNo, bankName) => {
@@ -56,6 +59,69 @@ const DisbursementAccount = ({navigation}) => {
 
       setMaskedAccountDetails(accountBankDetails)
 
+  }
+
+  const BankAccountValidation = async (values) => {
+
+    setValidationError(false);
+
+    if(bankName == '') {
+      Alert.alert(AppName.AppName,"Please select bank name!")
+      return;
+    }
+
+    //console.log(bankName, values.accountNumber)
+    setIsLoading(true);
+
+    try {
+      
+      await fetch(`https://app.nuban.com.ng/api/NUBAN-FTDUCUBB2208?acc_no=${values.accountNumber}&bank_code=${bankName}`)
+      .then(response => response.json())
+      .then(data => {
+
+        setIsLoading(false);
+
+        if(data.error == true) {
+
+          setIsLoading(false);
+          setValidationError(true);
+
+          return;
+
+        }else{
+
+          setAccountData(data);
+          //addCustomerDetails();
+
+          return;
+        }
+         
+      });
+
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error)
+    }
+}
+
+  const loadBanksList = async () => {
+        try {
+          
+          await fetch(`https://app.nuban.com.ng/bank_codes.json`)
+          .then(response => response.json())
+          .then(data => {
+
+              //console.log(data.length)
+              let bankList = data.map((item) => {
+                return {key: item.code, value: item.bank_name}
+              })
+
+              setProfileData(bankList);
+          });
+
+        } catch (error) {
+          console.log(error)
+        }
   }
 
     //validate account number
@@ -78,18 +144,18 @@ const DisbursementAccount = ({navigation}) => {
     }
 
   // function to verify data
-  const addCustomerDetails = (values) => {
+  const addCustomerDetails = () => {
 
     //data
     const data = {
       customerID : customerID,
-      bankName: bankName,
-      bankID : "051",
-      accountNumber : values.accountNumber,
-      accountName: "Babatunde Jinadu"
+      bankName: accountData[0].bank_name,
+      bankID : accountData[0].bank_code,
+      accountNumber : accountData[0].account_number,
+      accountName: accountData[0].account_name
     }
 
-    setIsLoading(true);
+    console.log(data);
 
       axios.post(APIBaseUrl.developmentUrl + 'loanService/createAccountDetails',data,{
         headers: {
@@ -174,7 +240,9 @@ function maskAccount(str, start, end) {
       //USE EFFECT
       useEffect(() => {
 
+        loadBanksList();
         loanCustomerDetails();
+
      
       }, []);
 
@@ -244,9 +312,6 @@ function maskAccount(str, start, end) {
 
     }
   
-      
-
-
         {(addAccount) && 
         
 
@@ -255,13 +320,14 @@ initialValues={{
   accountNumber: ''
 }}
 validationSchema={AccountNumberScheme}
-onSubmit={values => checkAccountValue(values)}
+onSubmit={values => BankAccountValidation(values)}
 >
 {({values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit}) => (
         <View style={styles.addNewBox}>
             <Text style={styles.headertxt}>New Bank Account</Text>
             <View>
             <Text style={styles.dropDowntextLabel}>Bank Name</Text>
+            {/*            
             <SelectDropdown 
             data={bankList}
             onSelect={(selectedItem, index) => {
@@ -292,26 +358,93 @@ onSubmit={values => checkAccountValue(values)}
               textAlign: 'left',
               color: COLORS.sliderDescText
             }}
+          />*/}
+
+          <SelectList 
+          placeholder="Select or search here"
+          searchPlaceholder="Select or search..."
+          setSelected={(val) => setBankName(val)} 
+          data={profileData} 
+          fontFamily={FONTS.POPPINS_REGULAR}
+          save="key"
+          label="value"
+          boxStyles={styles.dropDown}
+          dropdownStyles={{
+            fontFamily: FONTS.POPPINS_REGULAR,
+            borderColor: COLORS.TextBoxBorderGrey,
+            borderWidth: 1,
+            borderStyle: 'solid',
+            fontSize: wp(3),
+          }}
+          dropdownTextStyles={{
+            fontFamily: FONTS.POPPINS_REGULAR,
+            fontSize: wp(3),
+            color: COLORS.TextColorGrey
+          }}
+          inputStyles={{
+            fontFamily: FONTS.POPPINS_REGULAR,
+            fontSize: wp(3.2),
+            color: COLORS.TextColorGrey,
+            flex:1
+          }}
           />
 
           <View style={{marginTop: wp(3), paddingRight: wp(1)}}>
-          <BiodataTextbox 
-          label="Bank Account Number"
-          full={true}
-          onChange={handleChange('accountNumber')}
-          value={values.accountNumber}
-          maxlength={10}
-          /> 
-          {errors.accountNumber && 
-            <Text style={styles.errorLabel}>{errors.accountNumber}</Text>
-          }
-        </View>
+              <BiodataTextbox 
+              label="Account Number"
+              full={true}
+              onChange={handleChange('accountNumber')}
+              value={values.accountNumber}
+              maxlength={10}
+              /> 
+              {errors.accountNumber && 
+                <Text style={styles.errorLabel}>{errors.accountNumber}</Text>
+              }
+          </View>
 
-        <TouchableOpacity
-        onPress={handleSubmit}
-        style={styles.continueBtn}>
-            <Text style={styles.continueBtnTxt}>Add Account</Text>
-</TouchableOpacity>   
+
+          {
+            (accountData != '') &&
+
+            <View style={{marginTop: wp(3), paddingRight: wp(1)}}>
+                <BiodataTextbox 
+                disable={true}
+                label="Account Name"
+                full={true}
+                value={accountData[0].account_name}
+                /> 
+            </View>
+          }
+
+         
+
+        {(validateError) && 
+          <View>
+            <Text style={styles.validation_error}>Bank account validation failed!</Text>
+          </View>
+        }
+  
+  {
+    (accountData == '') &&
+    <TouchableOpacity
+      onPress={handleSubmit}
+      style={styles.continueBtn}>
+        <Text style={styles.continueBtnTxt}>Validate Account</Text>
+    </TouchableOpacity>
+  }
+
+
+{(accountData != '') &&
+  <TouchableOpacity
+  onPress={() => addCustomerDetails()}
+  style={styles.approveBtn}>
+      <Text style={styles.continueBtnTxt}>Add Account</Text>
+  </TouchableOpacity>
+  
+
+}
+
+
 
             </View>
 
@@ -328,6 +461,18 @@ onSubmit={values => checkAccountValue(values)}
 }
 
 const styles = StyleSheet.create({
+
+  dropDown: {
+    borderRadius: wp(3),
+    borderColor: COLORS.TextBoxBorderGrey,
+    borderWidth: 1,
+    borderStyle: 'solid',
+    padding: wp(3),
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    columnGap: wp(3)
+  },
 
   errorLabel: {
     fontFamily: FONTS.POPPINS_REGULAR,
@@ -355,12 +500,46 @@ const styles = StyleSheet.create({
     marginBottom: wp(1),
   },
 
+  approveBtn: {
+    marginTop: wp(7),
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: COLORS.successGreen,
+    paddingHorizontal: wp(13),
+    paddingVertical: wp(3.5),
+    borderRadius: wp(4),
+    marginBottom: wp(1),
+  },
+
+  continueBtnAdd: {
+    marginTop: wp(7),
+    alignSelf: 'center',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    backgroundColor: COLORS.successGreen,
+    paddingHorizontal: wp(13),
+    paddingVertical: wp(3.5),
+    borderRadius: wp(4),
+    marginBottom: wp(1),
+  },
+
   dropDowntextLabel: {
     fontFamily: FONTS.POPPINS_REGULAR,
     fontSize: wp(3.2),
     color: COLORS.sliderDescText,
     marginLeft: wp(3),
     marginBottom: wp(1)
+  },
+
+  validation_error: {
+    color: COLORS.primaryRed,
+    fontFamily: FONTS.POPPINS_REGULAR,
+    fontSize: wp(3),
+    marginTop:wp(2),
+    marginLeft: wp(2)
   },
 
   headertxt: {

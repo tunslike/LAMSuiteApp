@@ -33,6 +33,9 @@ const DashboardScreen = ({navigation}) => {
   const empdata = useSelector((state) => state.customer.empdata);
   const nokdata = useSelector((state) => state.customer.nokdata);
   const docdata = useSelector((state) => state.customer.docdata);
+  const completeKYCStatus = useSelector((state) => state.customer.completeKyc);
+
+  console.log('here' + completeKYCStatus)
 
   const customerEmployerDetails = useSelector((state) => state.customer.customerEmployerDetails);
   const employerLoanProfile = useSelector((state) => state.customer.employerLoanProfile);
@@ -44,10 +47,13 @@ const DashboardScreen = ({navigation}) => {
   const [greetings, setGreetings] = useState('');
   const [approvedLoan, setApprovedLoan] = useState(false);
   const [loanAccount, setLoanAccount] = useState('');
-  const [loanAmount, setLoanAmount] = useState(0);
+  const [loanAmount, setLoanAmount] = useState(useSelector((state) => state.customer.approvedLoanAmount));
   const [KYStatus, setKYCStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
   const [transactions, setTransactions] = useState('');
+
+
+  console.log(loanAmount + '/' + loanAccount.loan_STATUS + '/' + completeKYCStatus)
 
   // check if pre-approved amount is there
   const checkPreApprovedAmount = () => {
@@ -56,7 +62,14 @@ const DashboardScreen = ({navigation}) => {
 
       let annualSal = customerEmployerDetails.annual_SALARY;
       let interest = employerLoanProfile.loan_LIMIT_PERCENT;
-      let apprvLoan = (annualSal / interest);
+      let loan_interest = employerLoanProfile.loan_INTEREST_RATE;
+      let apprvLoan = 0;
+      let monthlyApprvLoan = (((annualSal / 12) * interest) / 100) * 6;
+      let averageInterest = 1 + (6 * (loan_interest /100));
+
+      apprvLoan = monthlyApprvLoan / averageInterest
+      
+     // console.log(monthlyApprvLoan + '/' + averageInterest + '/' + interest + '/' + apprvLoan);
 
       dispatch(updateApprovedloanAmount(apprvLoan))
       setLoanAmount(apprvLoan.toLocaleString('en-US', {maximumFractionDigits:2}));
@@ -108,9 +121,9 @@ const DashboardScreen = ({navigation}) => {
 
         setIsLoading(false)
 
-        console.log(response.data)
+        console.log(response.data.loanDetails)
 
-        setLoanAccount(response.data)
+        setLoanAccount(response.data.loanDetails)
 
       })
       .catch(error => {
@@ -142,14 +155,17 @@ const DashboardScreen = ({navigation}) => {
 
 useFocusEffect(
   React.useCallback(() => {
-    validateCustomerLoan();
-    fetchTransactionDetails();
-    if(biodata == 1 && nokdata == 1 && empdata == 1 && docdata == 1) {
+
+    if(completeKYCStatus == 1) {
       setKYCStatus(true);
     }
 
+    validateCustomerLoan();
+    fetchTransactionDetails();
+    
     //check preapproved amount
-    checkPreApprovedAmount();
+    //checkPreApprovedAmount();
+
   }, [])
 );
 
@@ -196,14 +212,13 @@ useFocusEffect(
         <View style={styles.dashboardArea}>
 
         {
-          !KYStatus &&
+          (completeKYCStatus == 0) &&
           <KYCStatusCard 
           onPress={() => navigation.navigate("KYCStatus")}
           icon={icons.profile} 
           status="Pending" 
-      />
+        />
         }
-   
 
         {(loanAccount.loan_STATUS != 3) &&
           <AccountCardNoLoan />
@@ -213,7 +228,7 @@ useFocusEffect(
           <AccountCard 
             loanNumber = {loanAccount.loan_NUMBER}
             loanBalance = {(loanAccount.total_REPAYMENT - loanAccount.loan_TOTAL_REPAYMENT)}
-            nextPayment = {loanAccount.monthly_REPAYMENT}
+            nextPayment = {((loanAccount.total_REPAYMENT - loanAccount.loan_TOTAL_REPAYMENT) >= loanAccount.loan_TOTAL_REPAYMENT) ? loanAccount.monthly_REPAYMENT : (loanAccount.total_REPAYMENT - loanAccount.loan_TOTAL_REPAYMENT)}
             employer = {loanAccount.employer_NAME}
             status = {loanAccount.loan_STATUS}
           />
@@ -221,7 +236,7 @@ useFocusEffect(
 
         </View>
 
-        {(approvedLoan && loanAccount.loan_STATUS == null && KYStatus) && 
+        {(loanAmount != '' && loanAccount.loan_STATUS == null && completeKYCStatus == 1) && 
                 <TouchableOpacity 
                     onPress={() => navigation.navigate("NewLoan")}
                     style={styles.apprvLoan}>
@@ -230,7 +245,7 @@ useFocusEffect(
                   
                 <View style={{flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center'}}>
                 <Text style={styles.curSign}>₦</Text>
-                <Text style={styles.loanAmount}>{loanAmount}</Text>
+                <Text style={styles.loanAmount}>{loanAmount.toLocaleString('en-US', {maximumFractionDigits:2})}</Text>
                 </View>
         
                 </TouchableOpacity>
@@ -238,19 +253,40 @@ useFocusEffect(
 
         <View style={styles.serviceList}>
 
-                <ServiceCard 
-                  onPress={() => (loanAccount.loan_STATUS) ? Alert.alert("Finserve", "Sorry, you have an active loan!") : navigation.navigate("NewLoan")}
-                  image={images.new_loan_bg}
-                  label="New Loan"
-                  icon={icons.loan}
-                  iconStyle={{
-                    tintColor: '#0E936E' 
-                  }}
-                  textStyles={{
-                    color: '#155345'
-                  }}
-                />
+        
+        {(completeKYCStatus == 0) && 
+          <ServiceCard 
+          onPress={() => navigation.navigate("KYCStatus")}
+          image={images.new_loan_bg}
+          label="New Loan"
+          icon={icons.loan}
+          iconStyle={{
+            tintColor: '#0E936E' 
+          }}
+          textStyles={{
+            color: '#155345'
+          }}
+        />
 
+        }
+
+        {(completeKYCStatus == 1) && 
+          <ServiceCard 
+          onPress={() => (loanAccount.loan_STATUS) ? Alert.alert("Finserve", "Sorry, you have an active loan!") : navigation.navigate("NewLoan")}
+          image={images.new_loan_bg}
+          label="New Loan"
+          icon={icons.loan}
+          iconStyle={{
+            tintColor: '#0E936E' 
+          }}
+          textStyles={{
+            color: '#155345'
+          }}
+        />
+
+        }
+
+        
                 <ServiceCard 
                   onPress={() => (loanAccount.loan_ID && loanAccount.loan_STATUS == 3) ? navigation.navigate("RepayLoan") : Alert.alert("Finserve", "Sorry, you do not have an active loan!")}
                   image={images.repay_loan_bg}

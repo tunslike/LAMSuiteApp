@@ -17,6 +17,7 @@ import {
   import { COLORS, images, FONTS, icons } from '../../../constants';
   import { OnboardingTextBox, LoaderWindow } from '../../components';
   import { AuthContext } from '../../../context/AuthContext';
+  import { useSelector } from 'react-redux';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
@@ -34,13 +35,30 @@ const CreateAccountSchema = Yup.object().shape({
 
 const LoginScreen = ({route, navigation}) => {
 
+  const customerData = useSelector((state) => state.customer.customerData);
+
   const {ValidateCustomerLogin, isLoading} = useContext(AuthContext);
   const [username, setUsername] = useState('');
   const [pwd, setPwd] = useState('');
+  const [isVisible, setIsVisible] = useState(true);
 
    //Function to login
    const AuthenticateUser = async (values) => {
+
     ValidateCustomerLogin(values.username, values.pinNumber);
+
+    if(customerData.isPasswordReset == 1) {
+      navigation.navigate("ChangePin");
+      return;
+
+    }else if(customerData.isPasswordReset == 0){
+
+     // Alert.alert("Finserve", "Incorrect Username or Pin Number!")
+      return;
+    }
+
+   
+
   }
   // end of function
 
@@ -98,9 +116,12 @@ onSubmit={values => AuthenticateUser(values)}
                   icon={icons.email}
                   placeholder="Enter your PIN"
                   value={values.pinNumber}
-                  setSecureText={true}
+                  setSecureText={isVisible}
                   phone={1}
-                  maxLength={5}
+                  length={5}
+                  eye_type={isVisible == true ? icons.hidePassword : icons.showPassword}
+                  visibleOnPress={() => setIsVisible(!isVisible)}
+                  pwd={true}
                   onChange={handleChange('pinNumber')}
                 />
                 {errors.pinNumber && 

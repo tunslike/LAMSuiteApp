@@ -12,7 +12,8 @@ import {
             updateBiodataStatus, 
             updateDOCdataStatus, 
             updateEmpdataStatus,
-            updateNOKdataStatus
+            updateNOKdataStatus,
+            updateCompleteKYCStatus, updateApprovedloanAmount
         } from '../store/customerSlice';
 
 export const AuthContext = createContext();
@@ -61,24 +62,52 @@ export const AuthProvider = ({children, navigation}) => {
               console.log(response.data.response);
               console.log(response.data.response);
 
-              if(response.data.response.responseCode == '200') {
+    
+              if(response.data.response.responseCode == 200) {
 
-                   console.log('****************/ LOGIN WAS SUCCESSFUL /********************')
+                console.log('i am here inside successful')
+                console.log(typeof(response.data.customer.isPasswordReset))
 
-                   dispatch(updateCustomerData(response.data.customer))
-                   dispatch(updateLoadData(response.data.activeLoan))
-                   dispatch(updateEmployerLoanProfile(response.data.employerloanProfile))
-                   dispatch(updateCustomerEmployerDetails(response.data.customerEmployerDetails))
 
-                   dispatch(updateBiodataStatus(response.data.customer.is_RECORD_FOUND ? 1 : 0))
-                   dispatch(updateEmpdataStatus(response.data.customer.is_EMPLOYER_FOUND ? 1 : 0))
-                   dispatch(updateNOKdataStatus(response.data.customer.is_NOK_FOUND ? 1 : 0))
-                   dispatch(updateDOCdataStatus(response.data.customer.is_DOCUMENT_FOUND ? 1 : 0))
+                    if(response.data.customer.isPasswordReset == 0) {
 
-                   AsyncStorage.setItem('userLogged', response.data.customer.customer_ENTRY_ID);
+                        console.log('****************/ LOGIN WAS SUCCESSFUL /********************')
 
-                   setCustomerFullname(response.data.customer.full_NAME);
-                   setUserToken(response.data.customer.customer_ENTRY_ID);
+                        dispatch(updateCustomerData(response.data.customer))
+                        dispatch(updateLoadData(response.data.activeLoan))
+                        dispatch(updateEmployerLoanProfile(response.data.employerloanProfile))
+                        dispatch(updateCustomerEmployerDetails(response.data.customerEmployerDetails))
+     
+                        dispatch(updateBiodataStatus(response.data.customer.is_RECORD_FOUND ? 1 : 0))
+                        dispatch(updateEmpdataStatus(response.data.customer.is_EMPLOYER_FOUND ? 1 : 0))
+                        dispatch(updateNOKdataStatus(response.data.customer.is_NOK_FOUND ? 1 : 0))
+                        dispatch(updateDOCdataStatus(response.data.customer.is_DOCUMENT_FOUND ? 1 : 0))
+     
+                        dispatch(updateApprovedloanAmount(response.data.loanPreApprovedAmount));
+     
+                       if(response.data.customer.is_RECORD_FOUND && response.data.customer.is_EMPLOYER_FOUND && response.data.customer.is_NOK_FOUND && response.data.customer.is_DOCUMENT_FOUND) {
+                         dispatch(updateCompleteKYCStatus(1))
+                       }else {
+                         dispatch(updateCompleteKYCStatus(0))
+                       }
+                 
+                        AsyncStorage.setItem('userLogged', response.data.customer.customer_ENTRY_ID);
+     
+                        setCustomerFullname(response.data.customer.full_NAME);
+                        setUserToken(response.data.customer.customer_ENTRY_ID);
+
+                        return false;
+
+                    }else{
+
+                        setIsLoading(false)
+                        dispatch(updateCustomerData(response.data.customer))
+                        console.log('I am not a reserve')
+                       // Alert.alert("Finserve", "Change PIN Number!")
+                
+                    }
+
+                    return false;
                    
               }else {
 
@@ -94,6 +123,8 @@ export const AuthProvider = ({children, navigation}) => {
               Alert.alert("Finserve", "Incorrect Username or Pin Number!")
   
               console.log(error);
+
+              return;
           });
 
     }

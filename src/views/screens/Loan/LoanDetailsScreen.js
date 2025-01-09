@@ -27,6 +27,8 @@ const LoanDetailsScreen = ({route, navigation}) => {
   const customerID = useSelector((state) => state.customer.customerData.customer_ENTRY_ID);
   const accountNumberID = useSelector((state) => state.customer.bankAccountID);
   const loanData = useSelector((state) => state.customer.loanData);
+  const employerLoanProfile = useSelector((state) => state.customer.employerLoanProfile);
+  const customerEmployerDetails = useSelector((state) => state.customer.customerEmployerDetails);
 
   // STATES
   const [isLoading, setIsLoading] = useState(false)
@@ -36,8 +38,57 @@ const LoanDetailsScreen = ({route, navigation}) => {
   const [loanDetails, setLoanDetails] = useState('');
 
   const toggleButton = (value) => {
-    setToggle(value)
+
+    if(value == 1) {
+
+      loadLoanSummary();
+      setToggle(value)
+
+    }else{
+
+      fetchLoanSummary();
+      setToggle(value)
+
+    }
+   
   }
+
+
+  // functiont to submit client loan request
+  const loadLoanSummary = () => {
+
+  //data
+  const data = {
+    customerID : customerID,
+    loanAmount : loanData.loan_AMOUNT,
+    loanTenor : loanData.loan_TENOR,
+    loanInterest : loanData.interest_RATE,
+    annualSalary :  customerEmployerDetails.annual_SALARY,
+    loanPercentLimited : employerLoanProfile.loan_LIMIT_PERCENT
+  }
+
+  setIsLoading(true);
+
+    axios.post(APIBaseUrl.developmentUrl + 'loanService/CalculateSimpleInterestLoanSchedule',data,{
+      headers: {
+        'Content-Type' : 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:8082'
+      }
+    })
+    .then(response => {
+
+      setIsLoading(false)
+      
+      //console.log(response.data.totalLoanPayment)
+      setLoanDetails(response.data)
+      setLoanBreakdown(response.data.repaymentSchedule)
+
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+  // end of function
 
 
     // functiont to submit client loan request
@@ -46,7 +97,9 @@ const LoanDetailsScreen = ({route, navigation}) => {
       //data
     const data = {
       loanID : loadID,
-  }
+    }
+
+  console.log(loadID);
 
     setIsLoading(true);
 
@@ -59,10 +112,9 @@ const LoanDetailsScreen = ({route, navigation}) => {
       .then(response => {
 
         setIsLoading(false)
+
+        console.log(response.data.repayment)
         
-        console.log(response.data.breakdown.repayment_schedule)
-        setLoanDetails(response.data.loanDetails)
-        setLoanBreakdown(response.data.breakdown.repayment_schedule)
         setLoanRepayment(response.data.repayment);
 
       })
@@ -76,7 +128,7 @@ const LoanDetailsScreen = ({route, navigation}) => {
       //USE EFFECT
   useEffect(() => {
 
-   fetchLoanSummary();
+    loadLoanSummary();
 
   }, []);
 
@@ -107,31 +159,31 @@ const LoanDetailsScreen = ({route, navigation}) => {
       <View style={styles.sumRow}>
           <View>
             <Text style={styles.hdr}>Loan Amount</Text>
-            <Text style={styles.desc}>N {Intl.NumberFormat('en-US').format(loanDetails.loan_AMOUNT)}</Text>
+            <Text style={styles.desc}>N {Intl.NumberFormat('en-US').format(loanDetails.loanAmount)}</Text>
           </View>
           <View style={{alignItems: 'flex-end'}}>
             <Text style={styles.hdr}>Loan Tenor</Text>
-            <Text style={styles.desc}>{loanDetails.loan_TENOR} Months</Text>
+            <Text style={styles.desc}>{loanDetails.loanTenor} Months</Text>
           </View>
       </View>
       <View style={styles.sumRow}>
       <View>
         <Text style={styles.hdr}>Monthly Repayment</Text>
-        <Text style={styles.desc}>N {Intl.NumberFormat('en-US').format(loanDetails.monthly_REPAYMENT)}</Text>
+        <Text style={styles.desc}>N {Intl.NumberFormat('en-US').format(loanDetails.monthlyRepayment)}</Text>
       </View>
       <View style={{alignItems: 'flex-end'}}>
         <Text style={styles.hdr}>Total Repayment</Text>
-        <Text style={styles.desc}>N {Intl.NumberFormat('en-US').format(loanDetails.total_REPAYMENT)}</Text>
+        <Text style={styles.desc}>N {Intl.NumberFormat('en-US').format(loanDetails.totalLoanPayment)}</Text>
       </View>
       </View>
       <View style={styles.sumRow}>
       <View>
         <Text style={styles.hdr}>Interest Rate</Text>
-        <Text style={styles.desc}>{loanDetails.interest_RATE}%</Text>
+        <Text style={styles.desc}>{loanDetails.loanRate}%</Text>
       </View>
       <View>
       <Text style={styles.hdr}>Status</Text>
-      <Text style={styles.desc}>{(loanDetails.loan_STATUS == 3) ? "Running" : "Not Active"}</Text>
+      <Text style={styles.desc}>{(loanDetails.loan_STATUS == 3) ? "Running" : "Running"}</Text>
     </View>
       </View>
 
@@ -144,11 +196,11 @@ const LoanDetailsScreen = ({route, navigation}) => {
       {(loanBreakdown && loanBreakdown.length > 0) &&
         loanBreakdown.map((item) => {
           return (
-            <PaymentScheduleCard key={item.month}
-                month={item.month}
-                principal={item.principal}
-                interest={item.interest}
-                balance={item.balance}
+            <PaymentScheduleCard key={item.PaymentMonth}
+                month={item.PaymentMonth}
+                principal={item.principalPaid}
+                interest={item.InterestPaid}
+                balance={item.newBalance}
             />
           )
         })
@@ -168,7 +220,7 @@ const LoanDetailsScreen = ({route, navigation}) => {
           </View>
         }
     
-        {(loanRepayment && loanRepayment.length > 1) &&
+        {(loanRepayment && loanRepayment.length > 0) &&
           loanRepayment.map((item) => {
             return (
              <RepaymentCard key={item.repayment_id}

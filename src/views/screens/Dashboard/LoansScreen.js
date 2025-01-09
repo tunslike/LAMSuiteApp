@@ -29,6 +29,7 @@ const LoansScreen = ({navigation}) => {
   // STATES
   const [isLoading, setIsLoading] = useState(false)
   const [loanDetails, setLoanDetails] = useState('');
+  const [loanHistory, setLoanHistory] = useState('');
 
     // functiont to submit client loan request
     const fetchCustomerLoanDetails = () => {
@@ -54,7 +55,9 @@ const LoansScreen = ({navigation}) => {
 
         console.log(response.data)
         
-        setLoanDetails(response.data)
+        setLoanDetails(response.data.loanDetails)
+
+        setLoanHistory(response.data.loanHistory)
         
 
       })
@@ -109,9 +112,12 @@ const LoansScreen = ({navigation}) => {
 
 <Text style={styles.headerTitle}>Active Loan</Text>
 
-      {loanDetails.loan_ID &&
+      {loanDetails.loan_ID && 
     
           <View style={styles.midBody}>
+
+
+          
           <TouchableOpacity
             onPress={() => (loanDetails.loan_STATUS == 3) ? navigation.navigate("LoanDetails", {loadID: loanDetails.loan_ID}) : null}
           >
@@ -155,23 +161,33 @@ const LoansScreen = ({navigation}) => {
       <Text style={styles.headerTitle}>Loan History</Text>
 
 
-      {!loanDetails.loan_HISTORY &&
+      {(loanHistory && loanHistory.length == 0) &&
           <View style={styles.loanHistoryBody}>
             <Text style={styles.textHistory}>Your loan history will show here</Text>
           </View>
       }
 
-      {loanDetails.loan_HISTORY && 
+      {(loanHistory && loanHistory.length > 0) && 
 
         <View>
-        <LoanHistoryCard 
-        onPress={() => navigation.navigate("LoanDetails")}
-        loanPurpose="House Rent"
-        loanAmount="N57,000"
-        status="Outstanding Payment"
-        date="September 12th, 2023"
-      />
-      <LoanHistoryCard 
+
+        {
+          loanHistory.map((item) => {
+            return (
+              <LoanHistoryCard key={item.loan_id}
+                onPress={() => navigation.navigate("LoanDetails", {loadID: item.loan_id})}
+                loanPurpose={item.loan_purpose}
+                loanAmount={"N" + Intl.NumberFormat('en-US').format(item.loan_amount)}
+                status={item.loan_status == 4 ? 'Closed' : 'Pending'}
+                date={moment(item.loan_date).format('DD-MMMM-YYYY')}
+              />
+            )
+          })
+        }
+      
+        {/*
+    
+            <LoanHistoryCard 
         onPress={() => navigation.navigate("LoanDetails")}
         loanPurpose="Education"
         loanAmount="N150,000"
@@ -185,6 +201,9 @@ const LoansScreen = ({navigation}) => {
         status="Completed"
         date="November 03rd, 2023"
       />
+
+          */}
+    
         </View>
       
       }    

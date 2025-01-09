@@ -106,12 +106,12 @@ const LoanRepaymentScreen = ({navigation}) => {
           setIsLoading(false)
   
           console.log(response.data)
-          setUpdatedLoanData(response.data)
-          setLoanBalance(response.data.total_REPAYMENT - response.data.loan_TOTAL_REPAYMENT);
+          setUpdatedLoanData(response.data.loanDetails)
+          setLoanBalance(response.data.loanDetails.total_REPAYMENT - response.data.loanDetails.loan_TOTAL_REPAYMENT);
 
-          setPartPayment(response.data.monthly_REPAYMENT)
+          setPartPayment(response.data.loanDetails.monthly_REPAYMENT)
           console.log(partPayment)
-          setRequestAmount(response.data.monthly_REPAYMENT)
+          setRequestAmount(response.data.loanDetails.monthly_REPAYMENT)
 
 
         })
@@ -145,7 +145,7 @@ const LoanRepaymentScreen = ({navigation}) => {
       <Text style={styles.preTitle}>Your outstanding loan balance</Text>
     
       <View style={styles.amountCounter}>
-          <Text style={styles.textAprAmount}>₦{loanBalance.toLocaleString('en-US', {maximumFractionDigits:2})}</Text>
+          <Text style={styles.textAprAmount}>₦ {Intl.NumberFormat('en-US').format(loanBalance)}</Text>
       </View>
 
       <View style={styles.loanArea}>
@@ -175,7 +175,7 @@ const LoanRepaymentScreen = ({navigation}) => {
          />
       </TouchableOpacity>
 
-      <Text style={styles.textAprAmount}>{requestAmount.toLocaleString('en-US', {maximumFractionDigits:2})}</Text>
+      <Text style={styles.textAprAmount}>{Intl.NumberFormat('en-US').format(requestAmount)}</Text>
 
        <TouchableOpacity 
        onPress={() => increaseLoanValue(2)}

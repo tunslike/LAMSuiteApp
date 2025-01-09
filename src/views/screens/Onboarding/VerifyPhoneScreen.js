@@ -18,18 +18,21 @@ import {
   import { SafeAreaView } from 'react-native-safe-area-context';
   import { useSelector } from 'react-redux';
   import { useDispatch } from 'react-redux';
-  import { COLORS, images, FONTS, icons, SendChampAPI } from '../../../constants';
-  import { OnboardingTextBox, FormButton } from '../../components';
+  import { COLORS, images, FONTS, icons, SendChampAPI, APIBaseUrl } from '../../../constants';
+  import { OnboardingTextBox, FormButton, LoaderWindow } from '../../components';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const VerifyPhoneScreen = ({route, navigation}) => {
 
-  //const {full_name, email_address, phone_number} = route.params;
+  const {otpValue, verification_Id, phoneNumber} = route.params;
 
+  const fullname = useSelector((state) => state.account.fullname);
+  const email = useSelector((state) => state.account.email);
   const phone = useSelector((state) => state.account.phone);
 
-  const[otpValue, SetOtpValue] = useState('');
   const [activateButton, setActivateButton] = useState(true);
+  const [isLoading, setIsLoading] = useState(false)
+  const [newOtpValue, setNewOTPValue] = useState('');
   const [counter, setCounter] = useState(60);
 
   // function to enable verify button
@@ -37,6 +40,7 @@ const VerifyPhoneScreen = ({route, navigation}) => {
   
     if(text != '' && text.length == 5) {
       console.log('it is completed here');
+      setNewOTPValue(text);
       setActivateButton(false)
     }else{
       setActivateButton(true);
@@ -44,23 +48,63 @@ const VerifyPhoneScreen = ({route, navigation}) => {
 
   }// end of function
 
-  const sendVerifyPhoneOTP = () => {
+  // function to verify data
+  const sendRegistrationOTPVerification = () => {
+
 
     const data = {
-     to: '2348023429574',
-     message: 'This is a test SMS to verify phone number, please enter OTP 039393',
-     sender_name: 'Finserve',
-     route: 'non_dnd'
+      verification_id : verification_Id,
+      otp_value : newOtpValue,
+      phoneNumber : phoneNumber
+    };
+
+    setIsLoading(true);
+
+    axios.post(APIBaseUrl.developmentUrl + 'customer/verifyRegistrationOTP',data,{
+      headers: {
+        'Content-Type' : 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:8082'
+      }
+    })
+    .then(response => {
+
+      setIsLoading(false)
+
+      console.log(response.data)
+
+      if(response.data == 'verified') {
+        navigation.navigate("CreatePIN");
+        return;
+      }
+
+      Alert.alert("Finserve", "The OTP you have entered is incorrect!")
+    
+    })
+    .catch(error => {
+      setIsLoading(false)
+      console.log(error);
+    });
+
+  }
+
+  const sendVerifyPhoneOTP = () => {
+
+    let sms_phone = phoneNumber.slice(1);
+
+    const data = {
+     to: `234${sms_phone}`,
+     message: `Dear Customer, your Finserve registration verification OTP number is ${otpValue}. Expires in 15 minutes. Thank you`,
+     sender_name: 'SAlert',
+     route: 'dnd'
     };
 
     console.log(data)
-    console.log('Sending Request out!');
 
     axios.post(SendChampAPI.live_base_url + 'sms/send',data,{
       headers: {
         'Content-Type' : 'application/json',
         'Accept' : 'application/json',
-        'Authorization' : 'Bearer ' + SendChampAPI.access_key
+        'Authorization' : 'Bearer ' + SendChampAPI.accessrt_key
       }
     })
     .then(response => {
@@ -77,11 +121,14 @@ const VerifyPhoneScreen = ({route, navigation}) => {
     //USE EFFECT
     useEffect(() => {
 
-      //sendVerifyPhoneOTP();
+      if(phoneNumber != '') {
+        //sendVerifyPhoneOTP();
+      }
+      
 
-      counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+      //counter > 0 && setTimeout(() => setCounter(counter - 1), 5000);
   
-    }, [counter]);
+    }, []);
 
   
   return (
@@ -97,6 +144,7 @@ const VerifyPhoneScreen = ({route, navigation}) => {
 
  <SafeAreaView>
  <StatusBar barStyle="dark-content" />
+ <LoaderWindow loading={isLoading} />
  <View style={styles.logo}>
        <Image source={images.appLogo} 
        style={{
@@ -110,7 +158,7 @@ const VerifyPhoneScreen = ({route, navigation}) => {
 
     <View style={styles.title}>
       <Text style={styles.mainTitle}>Account Verification</Text>
-      <Text style={styles.titleDesc}>Please enter the 4-digit code we sent to your phone 
+      <Text style={styles.titleDesc}>Please enter the 5-digit code we sent to your phone 
       number and email to complete verification</Text>
     </View>
 
@@ -145,7 +193,7 @@ const VerifyPhoneScreen = ({route, navigation}) => {
        />
     </View>
 
-    <Text style={styles.promptTxt}>Code is valid for {counter} seconds</Text>
+    <Text style={styles.promptTxt}>Code is valid for 15 minutes</Text>
     <TouchableOpacity 
       onPress={(counter == 0) ? () => ResendValidateOTP() : null}
       style={styles.btnResend}>
@@ -159,7 +207,7 @@ const VerifyPhoneScreen = ({route, navigation}) => {
 
  <View style={styles.btnBox}>
  <FormButton 
-    onPress={() => navigation.navigate("CreatePIN")} 
+    onPress={() => sendRegistrationOTPVerification()} 
     disable={activateButton}
     label="Verify Code" />
  </View>

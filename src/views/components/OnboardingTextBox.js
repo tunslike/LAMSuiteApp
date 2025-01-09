@@ -4,11 +4,11 @@ import { StyleSheet,
          View,
          Image, 
          Keyboard,
-        TextInput } from 'react-native'
+        TextInput, TouchableOpacity } from 'react-native'
          import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 import { FONTS, COLORS, icons } from '../../constants'
 
-const OnboardingTextBox = ({ placeholder,maxlength, phone, onFocus, onChange, value, icon, setSecureText}) => {
+const OnboardingTextBox = ({ placeholder,length, phone, pwd, visibleOnPress, onFocus, onChange, value, icon, eye_type, setSecureText}) => {
   return (
     <View style={styles.container}>
 
@@ -26,15 +26,31 @@ const OnboardingTextBox = ({ placeholder,maxlength, phone, onFocus, onChange, va
             style={styles.inputStyle}
             placeholder={placeholder}
             placeholderTextColor="#bfbfbf"
-            keyboardType={(phone == 1) ? "phone-pad" : "default"}
+            keyboardType={(phone == 1) ? 'numeric': "default"}
             autoCapitalize='none'
             onSubmitEditing={Keyboard.dismiss}
             blurOnSubmit={false}
             secureTextEntry={setSecureText}
             returnKeyType='next'
-            maxLength={maxlength}
+            maxLength={length}
             onFocus={onFocus}
         />
+
+        {pwd == true &&
+          <TouchableOpacity
+          onPress={visibleOnPress}
+      >
+          <Image 
+          source={eye_type}
+          style={{
+              height:wp(5), width:wp(5), resizeMode: 'contain',
+              tintColor: COLORS.TextColorGrey
+          }}
+          />
+      </TouchableOpacity>
+         
+
+        }
         
     </View>
   )
@@ -44,8 +60,8 @@ const styles = StyleSheet.create({
     inputStyle: {
     fontFamily: FONTS.POPPINS_MEDIUM,
     fontSize: wp(3.2),
-    width: wp(100),
     color: COLORS.TextColorGrey,
+    flex: 1
 
   },
    container : {

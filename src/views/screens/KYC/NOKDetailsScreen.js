@@ -55,7 +55,7 @@ const statesList = ["Abuja", "Abia", "Adamawa", "Akwa Ibom","Anambra", "Bauchi",
 "Kebbi", "Kogi", "Kwara", "Lagos", "Nassarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau",
 "Rivers","Sokoto", "Taraba", "Yobe","Zamfara"]
 
-const relationshipList = ["Father", "Mother", "Son", "Daughter", "Brother", "Sister", "Friend"]
+const relationshipList = ["Father", "Mother", "Husband", "Wife", "Son", "Daughter", "Brother", "Sister", "Friend"]
 
 const NOKDetailsScreen = ({navigation}) => {
 

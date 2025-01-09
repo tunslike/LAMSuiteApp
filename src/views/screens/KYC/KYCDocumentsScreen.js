@@ -38,7 +38,6 @@ const KYCDocumentsScreen = ({navigation}) => {
 
     <InnerHeader onPress={() => navigation.goBack()} title="Upload Documents" />
 
-
       <View style={styles.whiteBG}> 
 
       <View style={styles.title}>

@@ -56,6 +56,8 @@ const EmployerDetailsScreen = ({navigation}) => {
   const [employerid, setEmployerID] = useState('');
   const [profileData, setProfileData] = useState('');
 
+  const [paymentDate, setPaymentDate] = useState('');
+
   const sectorList = ["Private", "Public", "Government"];
 
   const [sector, setSector] = useState('');
@@ -73,6 +75,51 @@ const EmployerDetailsScreen = ({navigation}) => {
       {text: 'Yes', onPress: () => validateAccountData(values)},
     ]);
   }
+
+  //component states
+  const [calendarMode, setCalendarMode] = useState('');
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  //show date picker
+  const showDatePicker = (mode) => {
+    setDatePickerVisibility(true);
+    setCalendarMode(mode)
+  };
+
+  //hide date pickers
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+ // handle confirm 
+ const handleConfirm = (date) => {
+  setPaymentDate(FormatDate(date))
+  hideDatePicker();
+};
+
+ // function to format to date
+ const FormatDate = (data) => {
+
+  let dateTimeString =
+    data.getFullYear() +
+    '-' +
+    (data.getMonth() + 1) +
+    '-' +  data.getDate();
+
+  return dateTimeString; // It will look something like this 3-5-2021 16:23
+};
+
+ // Function to include date component
+ function IncludeDateComponent() {
+  return (
+  <DateTimePickerModal
+    isVisible={isDatePickerVisible}
+    mode={calendarMode}
+    onConfirm={handleConfirm}
+    onCancel={hideDatePicker}
+  />
+)
+}
 
   // function to verify data
   const validateAccountData = (values) => {
@@ -191,9 +238,10 @@ const EmployerDetailsScreen = ({navigation}) => {
       gradelevel: '',
       servicelength: '',
       idnumber: '',
-      salarydate: '',
+      salarydate: paymentDate,
       annualsalary: '',
     }}
+    enableReinitialize={true}
     validationSchema={CreateAccountSchema}
     onSubmit={values => confirmValidateAccountData(values)}
     >
@@ -274,6 +322,7 @@ const EmployerDetailsScreen = ({navigation}) => {
         <BiodataTextbox 
         label="Staff ID Number"
         value={values.idnumber}
+        placeholder="Sample: 001 or A100"
         onChange={handleChange('idnumber')}
         /> 
         {errors.idnumber && 
@@ -283,16 +332,18 @@ const EmployerDetailsScreen = ({navigation}) => {
         </View>
         
         <View style={styles.formRow}>
-        <View>
-          <BiodataTextbox 
+
+        <Pressable onPress={() => showDatePicker("date")}>
+        <BiodataTextbox 
           label="Salary Payment Date"
-          value={values.salarydate}
-          onChange={handleChange('salarydate')}
-          /> 
-          {errors.salarydate && 
-            <Text style={styles.errorLabel}>{errors.salarydate}</Text>
-          }
-        </View>
+          placeholder="Tap icon"
+          value={paymentDate}
+          icon={icons.calender}
+          onChange={(text) => setPaymentDate(text)}
+        /> 
+      </Pressable>
+
+
         <View>
         <BiodataTextbox 
         label="Annual Salary"
@@ -317,6 +368,10 @@ const EmployerDetailsScreen = ({navigation}) => {
 )}
 </Formik>
  {/* FORM ENDS HERE */}
+
+
+      {/* Include Date Components */}
+      {IncludeDateComponent()}
 
     </KeyboardAwareScrollView>
   )

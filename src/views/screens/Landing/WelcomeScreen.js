@@ -8,6 +8,7 @@ import {
     StyleSheet, 
     Text, 
     View } from 'react-native';
+    import axios from 'axios';
     import { COLORS, images, FONTS, icons } from '../../../constants';
     import { FeatureLabel, Button } from '../../components';
     import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -17,6 +18,39 @@ import {
 const WelcomeScreen = ({navigation}) => {
 
   const [isUserValid, setIsUserValid] = useState(null);
+  const [data, setData] = useState(null);
+  const [token, setToken] = useState("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0dW5zbGlrZSIsImlhdCI6MTczMDEwOTE3NSwiZXhwIjoxNzMwMTI3MTc1fQ.YlkUplTDCWldpCjma4J1My8aDoPr4y6KgJC2etb7Sui6OQi0Cmky8zUOuv26rYJbDq-6OaJxrIP-oI0daC-qGg");
+
+
+  // function to verify data
+  const fetchBearerToken = () => {
+
+    const data = {
+      username: "tunslike",
+      password: "@Dmin123$"
+
+    };
+
+    axios.post('http://localhost:8082/api/v1/auth/login',data,{
+      headers: {
+        'Content-Type' : 'application/json',
+        'Access-Control-Allow-Origin': 'http://localhost:8082',
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then(response => {
+
+      console.log(response.data)
+
+      setData(response.data)
+
+    })
+    .catch(error => {
+      console.log(error);
+    });
+
+}// end of function 
+
 
    // FUNCTION TO CHECK LOGGED USER
    const ValidatedAuthenticatedUser = async () => {
@@ -40,6 +74,8 @@ const WelcomeScreen = ({navigation}) => {
 
 //USE EFFECT
 useEffect(() => {
+
+  fetchBearerToken();
 
   ValidatedAuthenticatedUser();
 
