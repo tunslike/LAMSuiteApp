@@ -79,6 +79,19 @@ const ForgotPassword = ({route, navigation}) => {
           return false;
         }
 
+        if(response.data.responseCode == '303') {
+  
+          Alert.alert('Finserve', 'Sorry, account does not exists!');
+          return false;
+        }
+
+
+        if(response.data.responseCode == '404') {
+  
+          Alert.alert('Finserve', 'Unable to process your request, please retry!');
+          return false;
+        }
+
       
       })
       .catch(error => {

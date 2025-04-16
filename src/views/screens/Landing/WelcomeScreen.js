@@ -10,7 +10,7 @@ import {
     View } from 'react-native';
     import axios from 'axios';
     import { COLORS, images, FONTS, icons } from '../../../constants';
-    import { FeatureLabel, Button } from '../../components';
+    import { FeatureLabel, Button, UpdateAppChecker } from '../../components';
     import AsyncStorage from '@react-native-async-storage/async-storage';
     import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
@@ -75,7 +75,7 @@ const WelcomeScreen = ({navigation}) => {
 //USE EFFECT
 useEffect(() => {
 
-  fetchBearerToken();
+  //fetchBearerToken();
 
   ValidatedAuthenticatedUser();
 
@@ -84,6 +84,7 @@ useEffect(() => {
 
   return (
     <View style={{ flex: 1 }}>
+      <UpdateAppChecker />
       <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
       <ImageBackground
         resizeMethod="auto"

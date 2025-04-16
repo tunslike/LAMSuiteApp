@@ -33,8 +33,12 @@ import NetworkAmount from "./NetworkAmount";
 import TransactionCarButton from "./TransactionCarButton";
 import LoaderWindow from "./LoaderWindow";
 import RepaymentCard from "./RepaymentCard";
+import AppUpdateChecker from "./AppUpdateChecker";
+import UpdateAppChecker from "./UpdateAppChecker";
 
 export {
+    UpdateAppChecker,
+    AppUpdateChecker,
     RepaymentCard,
     LoaderWindow,
     TransactionCarButton,

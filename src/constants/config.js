@@ -1,5 +1,5 @@
 export const APIBaseUrl = {
-    developmentUrl: "https://lamsuite.finserveinvestment.com/backend/api/v1/",
+    developmentUrl: "http://localhost:8082/api/v1/",
     productionUrl: "http://localhost:8082/api/v1/",
 }
 
@@ -15,6 +15,11 @@ export const SendChampAPI = {
 
 export const AppName = {
     AppName: "Finserve",
+}
+
+export const AppStoreUrl = {
+    android: "https://play.google.com/apps/testing/com.innovetsolutionstech.finserve",
+    ios: "https://play.google.com/apps/testing/com.innovetsolutionstech.finserve"
 }
 
 export const ApIHeaderOptions = {
