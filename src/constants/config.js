@@ -1,5 +1,5 @@
 export const APIBaseUrl = {
-    developmentUrl: "http://localhost:8082/api/v1/",
+    developmentUrl: "https://lamsuite.finserveinvestment.com/backend/api/v1/",
     productionUrl: "http://localhost:8082/api/v1/",
 }
 
