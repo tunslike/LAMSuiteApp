@@ -20,7 +20,6 @@ import {
   import { AuthContext } from '../../../context/AuthContext';
   import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-
 const CreateAccountSchema = Yup.object().shape({
 
     username: Yup.string()

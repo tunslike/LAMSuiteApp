@@ -26,10 +26,11 @@ const TabNavigator = () => {
                 left: 0,
                 right: 0,
                 elevation: 0,
-                height: hp(6.9),
+                height: hp(6),
                 borderRadius: wp(5),
-                marginBottom: Platform.OS === 'ios' ? hp(3.5) : hp(2),
+                marginBottom: Platform.OS === 'ios' ? hp(3) : hp(6),
                 marginHorizontal:10,
+                paddingBottom:Platform.OS === 'ios' ? wp(6) : hp(0),
                 borderTopColor: 'transparent'
             }
         }}

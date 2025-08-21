@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderBottomLeftRadius: wp(8),
         borderBottomRightRadius: wp(8),
-        paddingTop:Platform.OS === 'android' ? wp(5) : wp(17),
+        paddingTop:Platform.OS === 'android' ? wp(10) : wp(12),
         paddingBottom: wp(5),
         paddingHorizontal: wp(3)
       }
